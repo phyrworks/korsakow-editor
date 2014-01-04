@@ -1,0 +1,52 @@
+﻿<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+	    <Component Id="DesktopShortcut" Directory="INSTALLDIR" Guid="958d94c6-081d-48aa-beb1-f283c5878d2f">
+			<Directory Id="DesktopFolder" Name="Desktop" />
+	    	
+	    	<Condition>INSTALLDESKTOPSHORTCUT</Condition>
+	    	
+	        <RegistryValue Id="RegShortcutDesktop" Root="HKCU" 
+	                Key="SOFTWARE\korsakow.org" Name="installed" Value="1" 
+	                Type="integer" KeyPath="yes" />
+	    	
+	        <Shortcut Id="desktopSC" Target="[INSTALLDIR]Korsakow.exe"
+	                Directory="DesktopFolder" Name="Korsakow"
+	                WorkingDirectory="APPLICATIONFOLDER" Advertise="no"/>
+	    </Component>
+		
+	
+	        <Directory Id="ProgramMenuFolder" Name="Programs">
+		        <Directory Id="ProgramMenuKorsakow" Name="Korsakow">
+				    <Component Id="StartMenuEntries" Guid="8087937f-9d33-423d-37ec-7212bac237fd">
+				    	<Condition>INSTALLSTARTMENUSHORTCUT</Condition>
+				    	
+		            	<RemoveFolder Id="ProgramMenuKorsakow" On="uninstall" />
+				    	
+				        <RegistryValue Id="RegShortcutDesktop" Root="HKCU" 
+				                Key="SOFTWARE\korsakow.org" Name="installed" Value="1" 
+				                Type="integer" KeyPath="yes" />
+				    	
+				        <Shortcut Id="startSC" Target="[INSTALLDIR]Korsakow.exe"
+				                Directory="ProgramMenuKorsakow" Name="Korsakow" 
+				                WorkingDirectory="APPLICATIONFOLDER" Advertise="no"/>
+						<Shortcut Id="UninstallProduct"             
+								Name="Uninstall Korsakow"
+								Description="Uninstalls Kosrakow"
+								Target="[System64Folder]msiexec.exe"
+								Arguments="/x [ProductCode]"/>
+		        	</Component>
+	        	</Directory>
+	    	</Directory>
+			
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+				<Directory Id="INSTALLDIR" Name="Korsakow">
+					<Component Id="InstallDir" Guid="4a7e181c-2e2a-4e0f-a412-e97d96fd32fc">
+		            	<RemoveFolder Id="INSTALLDIR" On="uninstall" />
+					</Component>
+				</Directory>
+			</Directory>
+
+	
+	</Fragment>
+</Wix>

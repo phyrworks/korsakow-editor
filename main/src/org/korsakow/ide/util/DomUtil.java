@@ -128,6 +128,7 @@ public class DomUtil
 	}
 	public static void writeDomXML(Document doc, OutputStream output) throws TransformerException, IOException
 	{
+		// TODO: Revisit this. Also this impl seems to strip namespaces.
 		// ug, the transformer stuff is broken under OSX for java 1.5, as far as pretty printing xml goes
         XMLSerializer serializer = new XMLSerializer(output, new OutputFormat("xml", "UTF-8", true));
         serializer.serialize(doc);

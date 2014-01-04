@@ -1,0 +1,64 @@
+﻿<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+	    <Component Id="DesktopShortcut" Directory="INSTALLDIR">
+	    	<Condition>INSTALLDESKTOPSHORTCUT</Condition>
+	    	
+	        <RegistryValue Id="RegShortcutDesktop" Root="HKCU" 
+	                Key="SOFTWARE\korsakow.org" Name="desktop" Value="1" 
+	                Type="integer" KeyPath="yes" />
+	    	
+	        <Shortcut Id="DesktopSC" Target="[INSTALLDIR]Korsakow.exe"
+	                Directory="DesktopFolder" Name="Korsakow" 
+	                WorkingDirectory="APPLICATIONFOLDER" Advertise="no"/>
+	    </Component>
+		
+	
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="DesktopFolder" Name="Desktop" />
+			
+	        <Directory Id="ProgramMenuFolder" Name="Programs">
+		        <Directory Id="ProgramMenuKorsakow" Name="Korsakow">
+				    <Component Id="StartMenuEntries">
+				    	<Condition>INSTALLSTARTMENUSHORTCUT</Condition>
+				    	
+				        <RegistryValue Id="RegShortcutMenu" Root="HKCU" 
+				                Key="SOFTWARE\korsakow.org" Name="startmenu" Value="1" 
+				                Type="integer" KeyPath="yes" />
+				    	
+		            	<RemoveFolder Id="ProgramMenuKorsakow" On="uninstall" />
+				    	
+				        <Shortcut Id="StartSC" Target="[INSTALLDIR]Korsakow.exe"
+				                Name="Korsakow" 
+				                WorkingDirectory="APPLICATIONFOLDER"/>
+				    	
+						<Shortcut Id="UninstallStartMenuSC"             
+								Name="Uninstall Korsakow"
+								Description="Uninstalls Kosrakow"
+								Target="[System64Folder]msiexec.exe"
+								Arguments="/x [ProductCode]"/>
+		        	</Component>
+	        	</Directory>
+	    	</Directory>
+			
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+				<Directory Id="INSTALLDIR" Name="Korsakow">
+					<Component Id="InstallDir">
+				        <RegistryValue Id="RegInstalled" Root="HKCU" 
+				                Key="SOFTWARE\korsakow.org" Name="installed" Value="1" 
+				                Type="integer" KeyPath="yes" />
+						
+		            	<RemoveFolder Id="INSTALLDIR" On="uninstall" />
+						<Shortcut Id="UninstallAppDir"             
+								Name="Uninstall Korsakow"
+								Description="Uninstalls Kosrakow"
+								Target="[System64Folder]msiexec.exe"
+								Arguments="/x [ProductCode]"/>
+					</Component>
+				</Directory>
+			</Directory>
+
+		</DirectoryRef>
+	
+	</Fragment>
+</Wix>
