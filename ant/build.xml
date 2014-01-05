@@ -245,7 +245,10 @@
 
 	<!-- /targets -->
 
-	<target name="default" depends="userInput, clean, dist-all, upload">
-	</target>
+    <target name="upload-win" depends="userInput, clean, dist-win32, upload">
+    </target>
+
+    <target name="upload-osx" depends="userInput, clean, dist-osx, upload">
+    </target>
 
 </project>
