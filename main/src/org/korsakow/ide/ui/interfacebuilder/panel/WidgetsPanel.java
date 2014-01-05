@@ -42,6 +42,7 @@ public class WidgetsPanel extends JPanel
 			WidgetType.SnuAutoLink,
 			WidgetType.InsertText,
 			WidgetType.Subtitles,
+			WidgetType.RestartButton,
 		});
 		ListSections.put("Media Controls", new Object[] {
 			" ",

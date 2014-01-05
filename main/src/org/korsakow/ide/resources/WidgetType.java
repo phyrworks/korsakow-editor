@@ -18,6 +18,7 @@ import org.korsakow.ide.ui.interfacebuilder.widget.MediaArea;
 import org.korsakow.ide.ui.interfacebuilder.widget.MediaControls;
 import org.korsakow.ide.ui.interfacebuilder.widget.PlayButton;
 import org.korsakow.ide.ui.interfacebuilder.widget.PlayTime;
+import org.korsakow.ide.ui.interfacebuilder.widget.RestartButton;
 import org.korsakow.ide.ui.interfacebuilder.widget.Scrubber;
 import org.korsakow.ide.ui.interfacebuilder.widget.SnuAutoLink;
 import org.korsakow.ide.ui.interfacebuilder.widget.SnuAutoMultiLink;
@@ -43,6 +44,7 @@ public enum WidgetType
 	MediaControls("org.korsakow.widget.MediaControls", LanguageBundle.getString("widget.mediacontrols.label"), MediaControls.class),
 	PlayButton("org.korsakow.widget.PlayButton", LanguageBundle.getString("widget.playbutton.label"), PlayButton.class),
 	FullscreenButton("org.korsakow.widget.FullscreenButton", LanguageBundle.getString("widget.fullscreenbutton.label"), FullscreenButton.class),
+	RestartButton("org.korsakow.widget.RestartButton", LanguageBundle.getString("widget.restart.label"), RestartButton.class),
 	TotalTime("org.korsakow.widget.TotalTime", LanguageBundle.getString("widget.totaltime.label"), TotalTime.class),
 	PlayTime("org.korsakow.widget.PlayTime", LanguageBundle.getString("widget.playtime.label"), PlayTime.class)
 	;

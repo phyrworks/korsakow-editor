@@ -106,6 +106,14 @@ public class XMLExportTask extends AbstractTask
 	public XMLExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, Collection<Font> fontsToExport, File rootDir, Map<String, String> filenamemap)
 //	public XMLExportTask(IProject project, Collection<ISnu> snusToExport, Collection<IInterface> interfacesToExport, File rootDir)
 	{
+		List<IImage> adjustedImages = new ArrayList<IImage>(imagesToExport);
+		for (ISnu snu : snusToExport) {
+			if (snu.getThumbnail() != null) {
+				adjustedImages.add(snu.getThumbnail());
+			}
+		}
+		imagesToExport = adjustedImages;
+		
 		this.dataPath = dataPath;
 		this.videosToExport = videosToExport;
 		this.soundsToExport = soundsToExport;
