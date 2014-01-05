@@ -54,6 +54,7 @@ public class UIResourceManager
 	public static final String ICON_CONTROL_SEEK_START = "control_start_blue.png";
 	public static final String ICON_CONTROL_SEEK_END = "control_end_blue.png";
 	public static final String ICON_CONTROL_FULLSCREEN = "fullscreenbw.png";
+	public static final String ICON_CONTROL_RESTART = "arrow_rotate_clockwise.png";
 	public static final String ICON_CHECK = "check.png";
 
 	public static final String ICON_SNU_IN = "SNU_in.png";
