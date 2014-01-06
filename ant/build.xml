@@ -1,4 +1,4 @@
-<project name="Korsakow" default="default" basedir="../">
+<project name="Korsakow" basedir="../">
 
 	<!-- input -->
 	<target name="userInput1">
@@ -191,7 +191,6 @@
 			outputFile="${dist-dir}/${plaf-win32-dir}/wix/Files.wxs"
 			/>
 		
-		<property name="win32-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
 		<wix
 			workingDir="${dist-dir}/${plaf-win32-dir}/wix"
 			outputFile="${win32-output}"
@@ -202,7 +201,7 @@
 	</target>
 
 	<target name="dist-win32" depends="dist-common">
-
+		<property name="win32-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
 			
 		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}" />
 		<copy todir="${dist-dir}/${plaf-win32-install-dir}/">
@@ -232,23 +231,19 @@
 	<target name="dist-all" depends="dist-osx, dist-win32">
 	</target>
 
-	<!--
-		A helper to upload the build.
-	-->
-	<target name="upload" if="ssh.do">
-		<property name="ssh.host" value="korsakow.net" />
-		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" verbose="true">
-			<fileset file="${osx-output}" />
-			<fileset file="${win32-output}" />
-		</scp>
-	</target>
-
 	<!-- /targets -->
 
-    <target name="upload-win" depends="userInput, clean, dist-win32, upload">
+    <target name="upload-win" depends="userInput, clean, dist-win32">
+		<property name="ssh.host" value="korsakow.net" />
+		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
+			<fileset file="${win32-output}" />
+		</scp>
     </target>
 
-    <target name="upload-osx" depends="userInput, clean, dist-osx, upload">
+    <target name="upload-osx" depends="userInput, clean, dist-osx">
+		<property name="ssh.host" value="korsakow.net" />
+		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
+			<fileset file="${osx-output}" />
+		</scp>
     </target>
-
 </project>
