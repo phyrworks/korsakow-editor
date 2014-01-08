@@ -1,4 +1,4 @@
-<project name="Korsakow" default="default" basedir="../">
+<project name="Korsakow" basedir="../">
 
 	<!-- input -->
 	<target name="userInput1">
