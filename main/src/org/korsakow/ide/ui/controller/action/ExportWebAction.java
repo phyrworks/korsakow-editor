@@ -45,18 +45,19 @@ public class ExportWebAction implements ActionListener {
 
 	public void actionPerformed(ActionEvent event) {
 		try {
+			boolean isModifierDown = (event.getModifiers()&KeyEvent.SHIFT_MASK)==KeyEvent.SHIFT_MASK;
+			
 			ISettings settings = SettingsInputMapper.find();
 			String defaultPath = settings.getString(Settings.ExportDirectory);
 			File file = null;
-			if ( defaultPath == null || defaultPath.trim().isEmpty() ) {
-				Application.getInstance().showAlertDialog("About to export", "You are about to export your film. You will need to select where to save your files but next time that location will be used automatically. You can change the location any time in the settings.");
+			if (isModifierDown && defaultPath != null && !defaultPath.trim().isEmpty()) {
+				file = new File(defaultPath);
+			} else {
 				file = Application.getInstance().showFileSaveDialog(Application.getInstance().getProjectExplorer(), new File("index.html"));
 				if ( file == null )
 					return;
 				settings.setString(Settings.ExportDirectory, file.getPath());
 				CommandExecutor.executeCommand(UpdateSettingsCommand.class, ProjectHelper.createRequest(settings));
-			} else {
-				file = new File(defaultPath);
 			}
 	
 			if (Platform.isMacOS() && FileUtil.getFileExtension(file.getName()).isEmpty())
@@ -70,8 +71,7 @@ public class ExportWebAction implements ActionListener {
 				Application.getInstance().showAlertDialog("Invalid Path", LanguageBundle.getString("general.errors.pathcontainsinvalidcharacters"));
 			}
 			
-			boolean isAltDown = (event.getModifiers()&KeyEvent.SHIFT_MASK)==KeyEvent.SHIFT_MASK;
-			export(file, isAltDown, settings.getBoolean(Settings.EncodeVideoOnExport));
+			export(file, isModifierDown, settings.getBoolean(Settings.EncodeVideoOnExport));
 			
 		} catch (IOException e) {
 			Application.getInstance().showUnhandledErrorDialog(LanguageBundle.getString("general.errors.cantexport.title"), e);
