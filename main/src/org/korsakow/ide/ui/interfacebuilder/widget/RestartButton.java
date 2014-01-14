@@ -48,9 +48,11 @@ public class RestartButton extends WidgetModel
 			
 			icon = new ResourceIcon();
 			
-			defaultIcon = new ImageLabel((ImageIcon)UIResourceManager.getIcon(UIResourceManager.ICON_CONTROL_RESTART));
+			final ImageIcon defaultImageIcon = (ImageIcon)UIResourceManager.getIcon(UIResourceManager.ICON_CONTROL_RESTART);
+			defaultIcon = new ImageLabel(defaultImageIcon);
 			
 			setImage(null);
+			setSize(defaultImageIcon.getIconWidth(), defaultImageIcon.getIconHeight());
 		}
 		@Override
 		public void setEnabled(boolean b)
