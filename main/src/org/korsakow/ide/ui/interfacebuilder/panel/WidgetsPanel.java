@@ -42,7 +42,6 @@ public class WidgetsPanel extends JPanel
 			WidgetType.SnuAutoLink,
 			WidgetType.InsertText,
 			WidgetType.Subtitles,
-			WidgetType.RestartButton,
 		});
 		ListSections.put("Media Controls", new Object[] {
 			" ",
@@ -55,6 +54,7 @@ public class WidgetsPanel extends JPanel
 		});
 		ListSections.put("Experimental", new Object[] {
 			" ",
+			WidgetType.RestartButton,
 			WidgetType.MediaControls,
 			WidgetType.Comments,
 			WidgetType.History,
