@@ -201,12 +201,12 @@
 	</target>
 
 	<target name="build-win32-zip">
-        <property name="win32-zip-output" value="${dist-dir}/korsakow-${release-number}-${win32}.zip" />
         <zip level="9" compress="true" basedir="${dist-dir}/${plaf-win32-dir}/" file="${win32-zip-output}" />
 	</target>
 
 	<target name="dist-win32" depends="dist-common">
 		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
+        <property name="win32-zip-output" value="${dist-dir}/korsakow-${release-number}-${win32}.zip" />
 			
 		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}" />
 		<copy todir="${dist-dir}/${plaf-win32-install-dir}/">
@@ -230,7 +230,7 @@
 		</copy>
 
         <antcall target="build-win32-installer" />
-        <antcall target="build-zip-installer" />
+        <antcall target="build-win32-zip" />
 
 	</target>
 
