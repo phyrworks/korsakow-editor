@@ -201,7 +201,7 @@
 	</target>
 
 	<target name="build-win32-zip">
-        <zip level="9" compress="true" basedir="${dist-dir}/${plaf-win32-dir}/" file="${win32-zip-output}" />
+        <zip level="9" compress="true" basedir="${dist-dir}/${plaf-win32-dir}/install" file="${win32-zip-output}" />
 	</target>
 
 	<target name="dist-win32" depends="dist-common">
