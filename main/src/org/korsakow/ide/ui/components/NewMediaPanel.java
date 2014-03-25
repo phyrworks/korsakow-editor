@@ -142,28 +142,36 @@ public class NewMediaPanel extends JPanel //  extends ResourcePanel<M>
 	{
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playable.start();
-				playButton.setVisible(false);
-				stopButton.setVisible(true);
+				if (playable != null) {
+					playable.start();
+					playButton.setVisible(false);
+					stopButton.setVisible(true);
 //				seekSliderTimer.start();
+				}
 			}
 		});
 		stopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playable.stop();
-				playButton.setVisible(true);
-				stopButton.setVisible(false);
-//				seekSliderTimer.stop();
+				if (playable != null) {
+					playable.stop();
+					playButton.setVisible(true);
+					stopButton.setVisible(false);
+	//				seekSliderTimer.stop();
+				}
 			}
 		});
 		seekStartButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playable.setTime(0);
+				if (playable != null) {
+					playable.setTime(0);
+				}
 			}
 		});
 		seekEndButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playable.setTime( duration );
+				if (playable != null) {
+					playable.setTime( duration );
+				}
 			}
 		});
 		seekSlider.addChangeListener(new ChangeListener() {
