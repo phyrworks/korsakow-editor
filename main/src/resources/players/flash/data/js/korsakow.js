@@ -141,10 +141,12 @@ function showEmbedOverlay()
         var baseUrl = window.location.toString();
 
         var baseUrl = (function() {
-            var url = $('#korsakow_js').attr('src');
-            var index = url.lastIndexOf('/');
-            if (index != -1)
-                url = url.substring(0, index);
+            var url = $('#korsakow_js').prop('src');
+            ['js', 'data', '/'].forEach(function(p) {
+                var index = url.lastIndexOf(p);
+                if (index != -1)
+                    url = url.substring(0, index);
+            });
             return url;
         })();
 
