@@ -62,7 +62,7 @@ public class Exporter
 		"data/swf/expressInstall.swf",
 		"data/js/swfobject.js",
 		"data/js/swfaddress.js",
-		"data/js/jquery-1.4.2.min.js",
+		"data/js/jquery-2.1.0.min.js",
 		"data/js/embed.js",
 		"data/js/korsakow.js",
 		"data/css/cross.png",
