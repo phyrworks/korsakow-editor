@@ -6,12 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.korsakow.domain.Settings;
 import org.korsakow.domain.command.ExportFlashProjectCommand;
-import org.korsakow.services.export.ExportOptions;
-import org.korsakow.services.export.Exporter;
-import org.korsakow.services.export.IVideoEncodingProfile;
-import org.korsakow.services.export.PropertiesVideoEncodingProfile;
 import org.korsakow.domain.interf.IImage;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IProject;
@@ -24,7 +19,9 @@ import org.korsakow.domain.task.ITask;
 import org.korsakow.domain.task.IWorker;
 import org.korsakow.ide.resources.ResourceType;
 import org.korsakow.ide.task.UIWorker;
-import org.korsakow.ide.util.ResourceManager;
+import org.korsakow.services.export.ExportOptions;
+import org.korsakow.services.export.Exporter;
+import org.korsakow.services.export.FlashExporter;
 
 public class ExportHelper
 {
@@ -60,13 +57,12 @@ public class ExportHelper
 		}
 		
 		
-		Exporter exporter = new Exporter();
+		FlashExporter exporter = new FlashExporter();
 		ExportOptions exportOptions = exporter.getExportOptions();
 		synchronized (exportOptions) {
 			exportOptions.overwriteExisting = false;
 		}
 
-		exporter.setExportFonts(settings.getBoolean(Settings.EXPORT_FONTS));
 		exporter.setProject(project);
 		exporter.setSettings(settings);
 		exporter.setSnus(project.getSnus());
@@ -75,9 +71,6 @@ public class ExportHelper
 		exporter.setVideos(videos);
 		exporter.setInterfaces(project.getInterfaces());
 		exporter.setTexts(texts);
-		
-		IVideoEncodingProfile videoEncodingProfile = new PropertiesVideoEncodingProfile(ResourceManager.getResourceStream("encodingprofiles/" + "flv_low" + ".properties"));
-		exporter.setVideoEncodingProfile(videoEncodingProfile);
 		
 		return exporter;
 	}

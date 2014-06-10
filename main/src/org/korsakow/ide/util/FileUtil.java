@@ -23,9 +23,6 @@ import java.util.zip.ZipInputStream;
 import javax.swing.filechooser.FileFilter;
 
 import org.korsakow.ide.io.AsyncStreamPipe;
-import org.korsakow.services.encoders.image.ImageFormat;
-import org.korsakow.services.encoders.sound.SoundFormat;
-import org.korsakow.services.encoders.video.VideoCodec;
 
 public class FileUtil
 {
@@ -105,18 +102,6 @@ public class FileUtil
 	public static boolean isTextFile(String filename)
 	{
 		return TEXT_FILE_EXTENSION_PATTERN.matcher(filename).matches();
-	}
-	public static String getFileExtension(SoundFormat format)
-	{
-		return format.name().toLowerCase();
-	}
-	public static String getFileExtension(ImageFormat format)
-	{
-		return format.name().toLowerCase();
-	}
-	public static String getFileExtension(VideoCodec format)
-	{
-		return format.name().toLowerCase();
 	}
 	public static String setFileExtension(String filename, String ext)
 	{

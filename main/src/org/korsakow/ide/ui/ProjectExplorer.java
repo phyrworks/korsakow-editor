@@ -129,7 +129,6 @@ public class ProjectExplorer extends JFrame
 				KeyStroke.getKeyStroke('E', UIUtil.getPlatformCommandKeyMask())));
 		addAccelerator(menus.get(Action.MenuFileExportWeb), 
 				KeyStroke.getKeyStroke('E', UIUtil.getPlatformCommandKeyMask() | InputEvent.SHIFT_MASK));
-
 		exportMenu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.export.draftweb.label"), 
 				Action.MenuFileExportDraftWeb, 
 				KeyEvent.VK_E));

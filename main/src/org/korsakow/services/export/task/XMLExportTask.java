@@ -3,7 +3,6 @@
  */
 package org.korsakow.services.export.task;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -54,10 +53,8 @@ import org.korsakow.ide.rules.RuleType;
 import org.korsakow.ide.task.AbstractTask;
 import org.korsakow.ide.task.TaskException;
 import org.korsakow.ide.util.DomUtil;
-import org.korsakow.ide.util.FileUtil;
 import org.korsakow.ide.util.Util;
 import org.korsakow.services.export.ExportException;
-import org.korsakow.services.export.Exporter;
 import org.korsakow.services.plugin.predicate.IArgumentInfo;
 import org.korsakow.services.plugin.predicate.IPredicateTypeInfo;
 import org.korsakow.services.plugin.predicate.PredicateTypeInfoFactory;
@@ -98,12 +95,11 @@ public class XMLExportTask extends AbstractTask
 	private final Collection<IText> textsToExport;// = new HashSet<Text>();
 	private final Collection<IInterface> interfacesToExport;// = new HashSet<IInterface>();;
 	private final Collection<ISnu> snusToExport;// = new HashSet<ISnu>();
-	private final Collection<Font> fontsToExport;
 	private final IProject project;
 	private final File rootDir;
 	private final String dataPath;
 	private final Map<String, String> filenamemap;
-	public XMLExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, Collection<Font> fontsToExport, File rootDir, Map<String, String> filenamemap)
+	public XMLExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
 //	public XMLExportTask(IProject project, Collection<ISnu> snusToExport, Collection<IInterface> interfacesToExport, File rootDir)
 	{
 		List<IImage> adjustedImages = new ArrayList<IImage>(imagesToExport);
@@ -121,7 +117,6 @@ public class XMLExportTask extends AbstractTask
 		this.textsToExport = textsToExport;
 		this.snusToExport = snusToExport;
 		this.interfacesToExport = interfacesToExport;
-		this.fontsToExport = fontsToExport;
 		this.project = project;
 		this.rootDir = rootDir;
 		this.filenamemap = filenamemap;
@@ -334,8 +329,7 @@ public class XMLExportTask extends AbstractTask
 		Element elm = doc.createElement("Sound");
 		resourceToDom(doc, sound, elm);
 		
-		String filename = FileUtil.setFileExtension(sound.getFilename(), FileUtil.getFileExtension(Exporter.SOUND_EXPORT_FORMAT));
-		filename = getExportFilename(sound.getAbsoluteFilename());
+		String filename = getExportFilename(sound.getAbsoluteFilename());
 		
 		DomUtil.appendTextNode(doc, elm, "filename", formatExportUrl(filename));
 		if (sound.getSubtitles() != null) {
@@ -538,11 +532,6 @@ public class XMLExportTask extends AbstractTask
         }
         Element fontsNode = doc.createElement("fonts");
         root.appendChild(fontsNode);
-        
-		if (!fontsToExport.isEmpty()) {
-			String fontfilename = getExportFilename(new File(Exporter.FONT_DIR, "font.swf").getPath());
-			DomUtil.appendTextNode(doc, fontsNode, "Font", formatExportUrl(fontfilename));
-        }
         
         return doc;
 	}

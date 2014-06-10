@@ -39,7 +39,6 @@ public class Settings extends KDomainObject implements ISettings
 			return getId();
 		}
 	}
-	public static final String EXPORT_FONTS = "exportFonts"; 
 	public static final String FLEX_SDK_PATH = "flexSDKPath";
 	public static final String EncodeVideoOnExport = "encodeVideoOnExport";
 	public static final String VideoEncodingProfile = "videoEncodingProfile";

@@ -7,7 +7,15 @@ package org.korsakow.services.encoders.video;
  */
 public enum VideoCodec
 {
-	H264,
-	FLV,
-	JPG, // used for exporting single frames
+	H264("mp4"),
+	FLV("flv"),
+	JPG("jpg"), // used for exporting single frames
+	;
+
+	private String fileExtension;
+	VideoCodec(String fileExtension) {
+		this.fileExtension = fileExtension;
+	}
+	
+	public String getFileExtension() { return fileExtension; }
 }

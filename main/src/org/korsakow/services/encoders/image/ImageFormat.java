@@ -7,6 +7,14 @@ package org.korsakow.services.encoders.image;
  */
 public enum ImageFormat
 {
-	PNG,
-	JPG,
+	PNG("png"),
+	JPG("jpg"),
+	;
+	
+	private String fileExtension;
+	ImageFormat(String fileExtension) {
+		this.fileExtension = fileExtension;
+	}
+	
+	public String getFileExtension() { return fileExtension; }
 }

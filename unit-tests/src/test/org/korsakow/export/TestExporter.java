@@ -9,9 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.korsakow.domain.ImageFactory;
@@ -26,7 +25,9 @@ import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.IText;
 import org.korsakow.domain.interf.IVideo;
 import org.korsakow.ide.DataRegistry;
-import org.korsakow.services.export.Exporter;
+import org.korsakow.services.encoders.sound.SoundFormat;
+import org.korsakow.services.encoders.video.VideoCodec;
+import org.korsakow.services.export.FlashExporter;
 import org.korsakow.services.export.task.CreateFilenameMapTask;
 
 import test.util.BaseTestCase;
@@ -78,11 +79,12 @@ public class TestExporter extends BaseTestCase
 			Assert.assertTrue(file.getPath(), file.createNewFile());
 		}
 		Map<String, String> map = CreateFilenameMapTask.createFilenameMap(
-				Exporter.IMAGE_DIR, images,
-				Exporter.VIDEO_DIR, videos,
-				Exporter.SOUND_DIR, sounds,
-				Exporter.TEXT_DIR, texts,
-				Exporter.FONT_DIR
+				FlashExporter.IMAGE_DIR, images,
+				FlashExporter.VIDEO_DIR, videos,
+				FlashExporter.SOUND_DIR, sounds,
+				FlashExporter.TEXT_DIR, texts,
+				FlashExporter.FONT_DIR,
+				VideoCodec.H264, SoundFormat.MP3
 		);
 		System.out.println(map.toString().replace(',', '\n'));
 		Set<String> set = new HashSet<String>();
@@ -136,11 +138,12 @@ public class TestExporter extends BaseTestCase
 			Assert.assertTrue(file.createNewFile());
 		}
 		Map<String, String> map = CreateFilenameMapTask.createFilenameMap(
-				Exporter.IMAGE_DIR, images,
-				Exporter.VIDEO_DIR, videos,
-				Exporter.SOUND_DIR, sounds,
-				Exporter.TEXT_DIR, texts,
-				Exporter.FONT_DIR
+				FlashExporter.IMAGE_DIR, images,
+				FlashExporter.VIDEO_DIR, videos,
+				FlashExporter.SOUND_DIR, sounds,
+				FlashExporter.TEXT_DIR, texts,
+				FlashExporter.FONT_DIR,
+				VideoCodec.H264, SoundFormat.MP3
 		);
 		System.out.println(map.toString().replace(',', '\n'));
 		Set<String> set = new LinkedHashSet<String>();

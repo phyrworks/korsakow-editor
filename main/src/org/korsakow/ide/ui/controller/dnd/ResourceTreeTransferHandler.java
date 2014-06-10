@@ -35,6 +35,7 @@ public class ResourceTreeTransferHandler extends AggregateTransferHandler
 		
 		AggregateFileTransferHandler fileHandler = new AggregateFileTransferHandler();
 		fileHandler.addHandler(new ResourceTreeKifTransferHandler());
+		fileHandler.addHandler(new ResourceTreePluginTransferHandler());
 		fileHandler.addHandler(new ResourceTreeProjectTransferHandler());
 		fileHandler.addHandler(new ResourceTreeMediaFileTransferHandler(this));
 		

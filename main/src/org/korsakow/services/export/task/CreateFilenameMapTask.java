@@ -26,7 +26,10 @@ import org.korsakow.ide.task.AbstractTask;
 import org.korsakow.ide.task.TaskException;
 import org.korsakow.ide.util.FileUtil;
 import org.korsakow.ide.util.Triple;
+import org.korsakow.services.encoders.sound.SoundFormat;
+import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.Exporter;
+import org.korsakow.services.export.FlashExporter;
 
 public class CreateFilenameMapTask extends AbstractTask
 {
@@ -70,7 +73,7 @@ public class CreateFilenameMapTask extends AbstractTask
 	{
 		Map<String, String> map;
 		try {
-			map = createFilenameMap(imageDir, imageCollection, videoDir, videoCollection, soundDir, soundCollection, textDir, textCollection, fontDir);
+			map = createFilenameMap(imageDir, imageCollection, videoDir, videoCollection, soundDir, soundCollection, textDir, textCollection, fontDir, exporter.getVideoFormat(), exporter.getSoundFormat());
 		} catch (FileNotFoundException e) {
 			throw new TaskException(e);
 		}
@@ -93,8 +96,8 @@ public class CreateFilenameMapTask extends AbstractTask
 				if (video.getSubtitles() != null) {
 					String subtitleExtension = FileUtil.getFileExtension(video.getSubtitles());
 					String subtitleBase = FileUtil.getFilenameWithoutExtension(new File(video.getSubtitles()).getName());
-					String subtitleOriginal = new File(Exporter.SUBTITLE_DIR, subtitleBase).getPath();
-					String subtitleMangled = new File(Exporter.SUBTITLE_DIR, subtitleBase + "-" + medium.getId()).getPath();
+					String subtitleOriginal = new File(FlashExporter.SUBTITLE_DIR, subtitleBase).getPath();
+					String subtitleMangled = new File(FlashExporter.SUBTITLE_DIR, subtitleBase + "-" + medium.getId()).getPath();
 					Triple<String,String,String> subtitleDesc = new Triple<String,String, String>(subtitleOriginal, subtitleMangled, subtitleExtension);
 					mangledMap.put(Media.getAbsoluteFilename(video.getSubtitles()), subtitleDesc);
 				}
@@ -104,8 +107,8 @@ public class CreateFilenameMapTask extends AbstractTask
 				if (sound.getSubtitles() != null) {
 					String subtitleExtension = FileUtil.getFileExtension(sound.getSubtitles());
 					String subtitleBase = FileUtil.getFilenameWithoutExtension(new File(sound.getSubtitles()).getName());
-					String subtitleOriginal = new File(Exporter.SUBTITLE_DIR, subtitleBase).getPath();
-					String subtitleMangled = new File(Exporter.SUBTITLE_DIR, subtitleBase + "-" + medium.getId()).getPath();
+					String subtitleOriginal = new File(FlashExporter.SUBTITLE_DIR, subtitleBase).getPath();
+					String subtitleMangled = new File(FlashExporter.SUBTITLE_DIR, subtitleBase + "-" + medium.getId()).getPath();
 					Triple<String,String,String> subtitleDesc = new Triple<String,String, String>(subtitleOriginal, subtitleMangled, subtitleExtension);
 					mangledMap.put(Media.getAbsoluteFilename(sound.getSubtitles()), subtitleDesc);
 				}
@@ -117,7 +120,8 @@ public class CreateFilenameMapTask extends AbstractTask
 			String videoDir, Collection<IVideo> videoCollection, 
 			String soundDir, Collection<ISound> soundCollection, 
 			String textDir, Collection<IText> textCollection,
-			String fontDir
+			String fontDir,
+			VideoCodec videoFormat, SoundFormat soundFormat
 			) throws FileNotFoundException
 	{
 		final CreateFilenameMapTask.SortMediaById sortById = new CreateFilenameMapTask.SortMediaById();
@@ -132,8 +136,8 @@ public class CreateFilenameMapTask extends AbstractTask
 		// mangle all
 		Map<String, Triple<String,String, String>> mangledMap = new LinkedHashMap<String, Triple<String,String, String>>(); // want the choice of non-mangling to be consistent
 		CreateFilenameMapTask.createMangledMap(imageDir, images, mangledMap, null);
-		CreateFilenameMapTask.createMangledMap(videoDir, videos, mangledMap, FileUtil.getFileExtension(Exporter.VIDEO_EXPORT_FORMAT));
-		CreateFilenameMapTask.createMangledMap(soundDir, sounds, mangledMap, FileUtil.getFileExtension(Exporter.SOUND_EXPORT_FORMAT));
+		CreateFilenameMapTask.createMangledMap(videoDir, videos, mangledMap, videoFormat.getFileExtension());
+		CreateFilenameMapTask.createMangledMap(soundDir, sounds, mangledMap, soundFormat.getFileExtension());
 		CreateFilenameMapTask.createMangledMap(textDir, texts, mangledMap, "txt");
 		mangledMap.put(new File(fontDir, "font.swf").getPath(), new Triple<String, String, String>("fonts", "font", "swf"));
 		

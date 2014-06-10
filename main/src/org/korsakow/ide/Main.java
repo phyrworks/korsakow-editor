@@ -2,12 +2,17 @@ package org.korsakow.ide;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 import javax.swing.Timer;
+
+import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.base.impl.PluginManagerFactory;
+import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import org.apache.log4j.Logger;
 import org.dsrg.soenea.service.threadLocal.DbRegistry;
@@ -25,6 +30,9 @@ import org.korsakow.services.encoders.sound.lame.plaf.LameEncoderWin32;
 import org.korsakow.services.encoders.video.VideoEncoderFactory;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderOSX;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderWin32;
+import org.korsakow.services.plugin.PluginHelper;
+import org.korsakow.services.plugin.PluginRegistry;
+import org.korsakow.services.plugin.export.ExportPlugin;
 import org.korsakow.services.updater.Updater;
 
 import quicktime.QTException;
@@ -54,12 +62,19 @@ public class Main {
 			try {
 				shutdown();
 			} catch (Exception e) {
-				Logger.getLogger(Main.class).error("", e);
+				getLogger().error("", e);
 			}
 		}
 	}
 	
 	private final ApplicationShutdownListener applicationShutdownListener = new ApplicationShutdownListener();
+	private static Logger logger;
+	private static final Logger getLogger() {
+		if (logger == null ) {
+			logger = Logger.getLogger(Main.class);
+		}
+		return logger;
+	}
 
 	public Main(String[] args) throws Exception {
 		if (Platform.getOS() == Platform.OS.UNKNOWN ||
@@ -96,9 +111,9 @@ public class Main {
 
 		setup();
 		
-		Logger.getLogger(Main.class).info("CommandLine Arguments");
+		getLogger().info("CommandLine Arguments");
 		for (String arg : args) {
-			Logger.getLogger(Main.class).info("\t" + arg + "\n");
+			getLogger().info("\t" + arg + "\n");
 		}
 		
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
@@ -125,11 +140,36 @@ public class Main {
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow(){
 			public void run() throws Throwable {
 				// doing this separately avoids an issue where the splash shows up unpainted for a second
-				splashDialog.setVisible(true);
+//				splashDialog.setVisible(true);
 				splashDialog.toFront();
 			}
 		});
 
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+			public void run() throws Throwable {
+				File pluginDir = PluginHelper.ensurePluginsDir();
+				getLogger().info("Loading plugins from ..." + pluginDir.getPath());
+
+				PluginManager pluginManager = PluginManagerFactory.createPluginManager();
+				if (pluginDir.listFiles() != null) {
+					for (File child : pluginDir.listFiles()) {
+						if (child.isFile()) {
+							getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
+							pluginManager.addPluginsFrom(child.toURI());
+						}
+					}
+				}
+				
+				PluginManagerUtil pluginUtil = new PluginManagerUtil(pluginManager);
+				
+				for (ExportPlugin plugin : pluginUtil.getPlugins(ExportPlugin.class)) {
+					getLogger().info(String.format("Installing Export Plugin: %s", plugin.getName()));
+					PluginRegistry.get().register(plugin);
+				}
+				
+			}
+		});
+		
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() throws Throwable {
 				long beforeTime = System.currentTimeMillis();
@@ -162,7 +202,7 @@ public class Main {
 	}
 
 	private void shutdownLibs() throws Exception {
-		Logger.getLogger(Main.class).info("shutdown libs");
+		getLogger().info("shutdown libs");
 		// QT is pretty quirky, and for example might keep processes hanging
 		// around if the shutdown isnt complete
 		// so we try our best to make sure each part of the shutdown is
@@ -170,34 +210,34 @@ public class Main {
 		try {
 			QTSession.exitMovies();
 		} catch (Exception e) {
-			Logger.getLogger(Main.class).error("", e);
+			getLogger().error("", e);
 		}
 		try {
 			QTSession.close();
 		} catch (Exception e) {
-			Logger.getLogger(Main.class).error("", e);
+			getLogger().error("", e);
 		}
 	}
 
 	private void shutdown() throws Exception {
-		Logger.getLogger(Main.class).info("shutdown begin");
+		getLogger().info("shutdown begin");
 		try {
 			shutdownUoW();
 		} catch (Exception e) {
-			Logger.getLogger(Main.class).error("", e);
+			getLogger().error("", e);
 		}
 		try {
 			DataRegistry.getConnection().commit();
 		} catch (Exception e) {
-			Logger.getLogger(Main.class).error("", e);
+			getLogger().error("", e);
 		}
 		;
 		try {
 			shutdownLibs();
 		} catch (Exception e) {
-			Logger.getLogger(Main.class).error("", e);
+			getLogger().error("", e);
 		}
-		Logger.getLogger(Main.class).info(
+		getLogger().info(
 				"shutdown complete (this should be the last item logged)");
 		System.exit(0);
 	}
@@ -235,10 +275,10 @@ public class Main {
 
 	public static void setupLogging() {
 		System.setProperty("org.korsakow.log.filename", Application.getLogfilename());
-		Logger.getLogger(Main.class).info(Build.getAboutString());
-		Logger.getLogger(Main.class).info(String.format("Java: JVM %s, JRE %s, ", System.getProperty("java.version"), System.getProperty("java.class.version")));
-		Logger.getLogger(Main.class).info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch().getCanonicalName()));
-		Logger.getLogger(Main.class).info(String.format("UUID: %s", Application.getUUID()));
+		getLogger().info(Build.getAboutString());
+		getLogger().info(String.format("Java: JVM %s, JRE %s, ", System.getProperty("java.version"), System.getProperty("java.class.version")));
+		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch().getCanonicalName()));
+		getLogger().info(String.format("UUID: %s", Application.getUUID()));
 	}
 
 	private static void setupPlatform() {

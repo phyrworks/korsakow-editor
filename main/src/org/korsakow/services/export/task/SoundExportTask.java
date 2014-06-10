@@ -19,17 +19,18 @@ import org.korsakow.services.encoders.sound.SoundEncoder;
 import org.korsakow.services.encoders.sound.SoundEncoderFactory;
 import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.export.ExportOptions;
-import org.korsakow.services.export.Exporter;
 
 public class SoundExportTask extends AbstractTask
 {
+	private final SoundFormat format;
 	private final ISound sound;
 	private final File subtitleFile;
 	private final File srcFile;
 	private final File destFile;
-	public SoundExportTask(ExportOptions options, ISound sound, File destFile, File subtitleFile) throws FileNotFoundException
+	public SoundExportTask(ExportOptions options, SoundFormat format, ISound sound, File destFile, File subtitleFile) throws FileNotFoundException
 	{
 		super(options);
+		this.format = format;
 		this.sound = sound;
 		this.subtitleFile = subtitleFile;
 		this.destFile = destFile;
@@ -98,7 +99,7 @@ public class SoundExportTask extends AbstractTask
 			System.out.println(srcFile.getPath() + "->" + destFile.getPath());
 			try {
 				SoundEncoder soundEncoder = SoundEncoderFactory.getDefaultFactory().createSoundEncoder();
-				soundEncoder.encode(Exporter.SOUND_EXPORT_FORMAT, srcFile, destFile);
+				soundEncoder.encode(format, srcFile, destFile);
 			} catch (EncoderException e) {
 				throw new TaskException(e);
 			}
