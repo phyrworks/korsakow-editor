@@ -34,8 +34,6 @@ public class PluginHelper
 	}
 	
 	public static Collection<KorsakowPlugin> installPlugins(File pluginFile) throws IOException {
-//		File pluginsDir = new File("plugins");
-//		FileUtil.mkdirs(pluginsDir);
 		PluginManager pluginManager = PluginManagerFactory.createPluginManager();
 		pluginManager.addPluginsFrom(pluginFile.toURI());
 		
@@ -53,7 +51,6 @@ public class PluginHelper
 			for (ExportPlugin plugin : exportPlugins) {
 				logger.info(String.format("Installing Export Plugin: %s to %s", plugin.getName(), copiedPlugin.getAbsolutePath()));
 				FileUtil.copyFile(pluginFile, copiedPlugin);
-				PluginRegistry.get().register(plugin);
 			}
 		}
 		return plugins;

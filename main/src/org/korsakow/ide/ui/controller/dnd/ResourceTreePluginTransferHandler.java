@@ -35,7 +35,7 @@ class ResourceTreePluginTransferHandler implements FileTransferHandler
 			if (installed.isEmpty()) {
 				app.showAlertDialog("No plugins installed", "No plugins were found");
 			} else {
-				String message = String.format("The following plugins were successfully installed:\n\t%s", Util.join(installed, "\t\n"));
+				String message = String.format("The following plugins were successfully installed. Please restart Korsakow.\n\t%s", Util.join(installed, "\t\n"));
 				app.showAlertDialog("Plugins installed", message);
 			}
 			return true;
