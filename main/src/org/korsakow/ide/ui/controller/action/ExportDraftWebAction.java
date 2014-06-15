@@ -34,7 +34,8 @@ public class ExportDraftWebAction extends AbstractExportWebAction {
 		request.set(AbstractExportProjectCommand.PROJECT_ID, project.getId());
 		request.set(AbstractExportProjectCommand.EXPORT_DIR, parentFile.getPath());
 		request.set(AbstractExportProjectCommand.INDEX_FILENAME, mainFile.getName());
-		request.set(AbstractExportProjectCommand.OVERWRITE_EXISTING, forceSkipOverwrite);
+		if (forceSkipOverwrite)
+			request.set(AbstractExportProjectCommand.OVERWRITE_EXISTING, forceSkipOverwrite);
 		request.set(AbstractExportProjectCommand.VIDEO_ENCODING_ENABLED, encodeVideo);
 		CommandExecutor.executeCommand(ExportFlashProjectCommand.class, request, response);
 		IWorker exportWorker = (IWorker)response.get(AbstractExportProjectCommand.WORKER);

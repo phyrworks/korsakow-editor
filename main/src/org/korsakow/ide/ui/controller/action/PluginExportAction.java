@@ -41,7 +41,8 @@ public class PluginExportAction extends AbstractExportWebAction implements Actio
 		request.set(AbstractExportProjectCommand.PROJECT_ID, project.getId());
 		request.set(AbstractExportProjectCommand.EXPORT_DIR, parentFile.getPath());
 		request.set(AbstractExportProjectCommand.INDEX_FILENAME, mainFile.getName());
-		request.set(AbstractExportProjectCommand.OVERWRITE_EXISTING, forceSkipOverwrite);
+		if (forceSkipOverwrite)
+			request.set(AbstractExportProjectCommand.OVERWRITE_EXISTING, forceSkipOverwrite);
 		request.set(AbstractExportProjectCommand.VIDEO_ENCODING_ENABLED, encodeVideo);
 		request.set(PluginExportProjectCommand.PLUGIN, plugin);
 		CommandExecutor.executeCommand(PluginExportProjectCommand.class, request, response);

@@ -163,7 +163,8 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			boolean exportAllMedia = request.has(EXPORT_ALL_MEDIA) && request.getBoolean(EXPORT_ALL_MEDIA);
 			
 			Exporter exporter = createExporter();
-			exporter.setOverwriteExistingFiles(request.getBoolean(OVERWRITE_EXISTING));
+			if (request.has(OVERWRITE_EXISTING))
+				exporter.setOverwriteExistingFiles(request.getBoolean(OVERWRITE_EXISTING));
 			exporter.setVideoEncodingEnabled(request.getBoolean(VIDEO_ENCODING_ENABLED));
 			
 			IWorker exportWorker = new UIWorker();
