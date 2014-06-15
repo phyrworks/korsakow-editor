@@ -7,17 +7,8 @@
 		    addproperty="release-number"
 			defaultvalue="x"
 		/>
-		<input 
-		    message="Upload successful build?"
-			validargs="y,n"
-			defaultvalue="n"
-		    addproperty="ssh.do1"
-		/>
-		<condition property="ssh.do" value="y">
-			<equals arg1="${ssh.do1}" arg2="y" />
-		</condition>
 	</target>
-	<target name="userInput2" if="ssh.do">
+	<target name="userInput2">
 		<input 
 		    message="(optional) SSH username:"
 		    addproperty="ssh.user"
