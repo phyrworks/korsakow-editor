@@ -75,6 +75,9 @@ import org.korsakow.ide.util.UIUtil;
 import org.korsakow.ide.util.Util;
 import org.korsakow.services.ErrorMailer;
 
+/**
+ * TODO: refactor into something testable
+ */
 public class Application
 {
 	private static Application instance;
@@ -367,10 +370,6 @@ public class Application
 			openEditors2.put(editor, resource.getId());
 		}
 		editor.addWindowListener(openEditorsListener);
-//		Dimension size = editor.getPreferredSize();
-//		size.width = Math.min(size.width, 500);
-//		size.height = Math.min(size.height, 500);
-//		editor.setSize(size);
 		return editor;
 	}
 	public ResourceEditor editSound(long id) throws Exception
@@ -421,9 +420,37 @@ public class Application
 			return openEditors.get(resource.getId());
 		return null;
 	}
+	
+	/**
+	 * Returns the currently open editors for the given type in order of most recently focused
+	 * @throws MapperException 
+	 */
+	public Collection<ResourceEditor> getOpenEditors(ResourceType type) throws MapperException
+	{
+		Collection<ResourceEditor> editors = new ArrayList<ResourceEditor>();
+		for (ResourceEditor editor : openEditors.values()) {
+			if (type == ResourceType.forId(getResourceForEditor(editor).getType()))
+				editors.add(editor);
+		}
+		return editors;
+	}
+	
+	/**
+	 * Returns the currently open editors for the given type in order of most recently focused
+	 * @throws MapperException 
+	 */
+	public Collection<IResource> getOpenResources(ResourceType type) throws MapperException
+	{
+		Collection<IResource> resources = new ArrayList<IResource>();
+		for (ResourceEditor editor : openEditors.values()) {
+			if (type == ResourceType.forId(getResourceForEditor(editor).getType()))
+				resources.add(getResourceForEditor(editor));
+		}
+		return resources;
+	}
+	
 	/**
 	 * Returns the currently open editors in order of most recently focused
-	 * @return
 	 */
 	public Collection<ResourceEditor> getOpenEditors()
 	{
