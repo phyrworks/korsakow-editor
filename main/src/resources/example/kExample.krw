@@ -86,7 +86,9 @@
                     <height><![CDATA[5]]></height>
                     <barHeight dynamic="true"><![CDATA[5]]></barHeight>
                     <barWidth dynamic="true"><![CDATA[5]]></barWidth>
-                    <foregroundColor dynamic="true"><![CDATA[65536]]></foregroundColor>
+                    <foregroundColor dynamic="true"><![CDATA[#ffffff]]></foregroundColor>
+                    <loadingColor dynamic="true"><![CDATA[#dddddd]]></loadingColor>
+                    <backgroundColor dynamic="true"><![CDATA[0]]></backgroundColor>
                 </Widget>
             </widgets>
         </Interface>
