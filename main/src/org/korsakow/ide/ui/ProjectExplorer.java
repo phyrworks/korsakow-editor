@@ -45,6 +45,7 @@ public class ProjectExplorer extends JFrame
 		MenuFileNew,
 		MenuFileRecent,
 		MenuFileProjectSettings,
+		MenuFilePlugins,
 		MenuFileExit,
 		
 		MenuEdit,
@@ -136,6 +137,10 @@ public class ProjectExplorer extends JFrame
 		exportMenu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.export.interface.label"), Action.MenuFileExportInterface, KeyEvent.VK_E));
 		menu.add(new JSeparator());
 		menu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.projectsettings.label"), Action.MenuFileProjectSettings, KeyEvent.VK_COMMA, ','));
+
+		menu.add(menu = createMenu(LanguageBundle.getString("projectexplorer.menu.file.plugins.label"), Action.MenuFilePlugins, KeyEvent.VK_P));
+		
+		
 		JSeparator exitSeparator = new JSeparator(); // keep reference so we can hide on Mac
 		menu.add(exitSeparator);
 		menu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.exit.label"), Action.MenuFileExit, KeyEvent.VK_X));

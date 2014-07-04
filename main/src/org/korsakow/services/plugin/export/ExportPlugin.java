@@ -8,8 +8,6 @@ import org.korsakow.services.plugin.KorsakowPlugin;
 
 public interface ExportPlugin extends KorsakowPlugin 
 {
-	void initialize();
-	void shutdown();
 	Exporter getExporter();
 	String getMenuItemLabel();
 }

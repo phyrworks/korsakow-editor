@@ -13,24 +13,38 @@ public class PluginRegistry
 		return instance;
 	}
 
-	private final Collection<ExportPlugin> exportPlugins = new ArrayList<ExportPlugin>();
+	private final Collection<KorsakowPlugin> plugins = new ArrayList<KorsakowPlugin>();
 	
-	public void register(ExportPlugin plugin) {
-		ExportPlugin existing = find(exportPlugins, plugin.getName());
+	public Collection<KorsakowPlugin> getPlugins() {
+		return Collections.unmodifiableCollection(plugins);
+	}
+	
+	public void register(KorsakowPlugin plugin) throws KorsakowPluginException {
+		KorsakowPlugin existing = find(plugins, plugin.getClass());
 		if (existing != null) {
-			plugin.shutdown();
+			existing.shutdown();
 		}
-		exportPlugins.add(plugin);
+		plugins.add(plugin);
 		plugin.initialize();
 	}
 	
-	public Collection<ExportPlugin> getExportPlugins() {
-		return Collections.unmodifiableCollection(exportPlugins);
+	public void unregister(KorsakowPlugin plugin) {
+		plugin.shutdown();
+		plugins.remove(plugin);
 	}
 	
-	private <T extends KorsakowPlugin> T find(Collection<T> plugins, String name) {
+	public Collection<ExportPlugin> getExportPlugins() {
+		Collection<ExportPlugin> exportPlugins = new ArrayList<ExportPlugin>();
+		for (KorsakowPlugin plugin : plugins) {
+			if (plugin instanceof ExportPlugin)
+				exportPlugins.add((ExportPlugin)plugin);
+		}
+		return exportPlugins; 
+	}
+	
+	private <T extends KorsakowPlugin> T find(Collection<T> plugins, Class<? extends KorsakowPlugin> klass) {
 		for (T plugin : plugins) {
-			if (plugin.getName().equals(name))
+			if (plugin.getClass().getName().equals(klass.getName()))
 				return plugin;
 		}
 		return null;

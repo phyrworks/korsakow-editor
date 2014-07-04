@@ -27,7 +27,7 @@ class ResourceTreePluginTransferHandler implements FileTransferHandler
 			Collection<String> installed = new HashSet<String>();
 			for ( File file : files ) {
 				for (KorsakowPlugin plugin: PluginHelper.installPlugins(file)) {
-					installed.add(plugin.getName());
+					installed.add(String.format("%s version %s", plugin.getName(), plugin.getVersion()));
 				}
 			}
 			

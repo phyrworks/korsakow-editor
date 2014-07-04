@@ -31,6 +31,7 @@ import org.korsakow.ide.ui.controller.action.MenuWindowAction;
 import org.korsakow.ide.ui.controller.action.NewProjectAction;
 import org.korsakow.ide.ui.controller.action.OpenProjectFileAction;
 import org.korsakow.ide.ui.controller.action.PasteAction;
+import org.korsakow.ide.ui.controller.action.PluginsMenuAction;
 import org.korsakow.ide.ui.controller.action.ProjectSettingsAction;
 import org.korsakow.ide.ui.controller.action.SaveProjectAction;
 import org.korsakow.ide.ui.controller.action.SaveProjectAsAction;
@@ -70,6 +71,8 @@ public class ProjectExplorerController
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExportWeb, new ExportWebAction());
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExportDraftWeb, new ExportDraftWebAction());
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExportInterface, new ExportInterfaceAction(projectExplorer.getResourceBrowser().getResourceTreeTable()));
+		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFilePlugins, new PluginsMenuAction());
+		
 		exitAction = new ExitAction();
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExit, exitAction);
 		Application.getInstance().getPlatformApplication().addApplicationListener(new PlatformActionHandler());

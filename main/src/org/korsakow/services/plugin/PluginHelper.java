@@ -2,6 +2,9 @@ package org.korsakow.services.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -17,6 +20,14 @@ import org.korsakow.services.plugin.export.ExportPlugin;
 public class PluginHelper
 {
 	private static final Logger logger = Logger.getLogger(PluginHelper.class);
+	
+	private static File getJar(KorsakowPlugin plugin) throws IOException, URISyntaxException {
+		CodeSource src = plugin.getClass().getProtectionDomain().getCodeSource();
+		if (src == null)
+			throw new IOException("Could not determine jar file");
+		URL url = src.getLocation();
+		return new File(url.toURI());
+	}
 	
 	public static File ensurePluginsDir() throws IOException {
 		File dir = new File(Application.getKorsakowHome(), "plugins");
@@ -54,5 +65,16 @@ public class PluginHelper
 			}
 		}
 		return plugins;
+	}
+	
+	public static void uninstallPlugin(KorsakowPlugin plugin) throws IOException, URISyntaxException {
+		File pluginsDir = ensurePluginsDir();
+		 
+		File jar = getJar(plugin);
+		
+		// Extra paranoia around deleting files: make sure its in the plugins dir.
+		if (!jar.getAbsolutePath().startsWith(pluginsDir.getAbsolutePath()))
+			throw new IOException("Plugin is not in the plugins directory");
+		FileUtil.delete(jar);
 	}
 }
