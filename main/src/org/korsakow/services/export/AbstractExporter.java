@@ -45,7 +45,6 @@ import org.korsakow.services.export.task.SubtitleExportTask;
 import org.korsakow.services.export.task.TextExportTask;
 import org.korsakow.services.export.task.ThumbnailExportTask;
 import org.korsakow.services.export.task.VideoExportTask;
-import org.korsakow.services.export.task.XMLExportTask;
 
 public abstract class AbstractExporter implements Exporter {
 
@@ -248,7 +247,7 @@ public abstract class AbstractExporter implements Exporter {
 				if (settings.getBoolean(Settings.ExportWebFiles))
 					exportTasks.add(createCopyTask(rootDir, project, dataPath));
 			
-				exportTasks.addAll(createXMLExportTasks(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, dataDir, filenamemap));
+				exportTasks.addAll(createDataExportTasks(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, dataDir, filenamemap));
 				
 				return exportTasks;
 			}
@@ -278,15 +277,10 @@ public abstract class AbstractExporter implements Exporter {
 				return fontsToExport;
 			}
 
-	protected static List<ITask> createXMLExportTasks(String dataPath, IProject project,
+	protected abstract List<ITask> createDataExportTasks(String dataPath, IProject project,
 			Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport,
 			Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
-			throws IOException {
-				List<ITask> tasks = new ArrayList<ITask>();
-				XMLExportTask task = new XMLExportTask(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, rootDir, filenamemap);
-				tasks.add(task);
-				return Util.list(ITask.class, new DelegateTask(LanguageBundle.getString("export.task.processingproject"), tasks));
-			}
+			throws IOException;
 
 	protected List<ITask> createVideoExportTasks(ExportOptions options, File rootDir,
 			IVideoEncodingProfile encodingProfile, Dimension maxVideoSize, Collection<IVideo> videosToExport) throws IOException, ExportException {

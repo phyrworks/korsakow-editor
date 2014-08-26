@@ -2,15 +2,29 @@ package org.korsakow.services.export;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
+import org.korsakow.domain.interf.IImage;
+import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IProject;
+import org.korsakow.domain.interf.ISnu;
+import org.korsakow.domain.interf.ISound;
+import org.korsakow.domain.interf.IText;
+import org.korsakow.domain.interf.IVideo;
 import org.korsakow.domain.task.ITask;
+import org.korsakow.ide.lang.LanguageBundle;
+import org.korsakow.ide.task.DelegateTask;
+import org.korsakow.ide.util.Util;
 import org.korsakow.services.encoders.font.FontFormat;
 import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.task.CopyFlashPlayerExportTask;
+import org.korsakow.services.export.task.XMLExportTask;
 
 public class FlashExporter extends AbstractExporter
 {
@@ -41,6 +55,17 @@ public class FlashExporter extends AbstractExporter
 	protected ITask createCopyTask(File rootDir, IProject project, String dataPath) {
 		return new CopyFlashPlayerExportTask(rootDir, indexFilename, dataPath, project, getStaticResourceRoot(), getStaticResources());
 	}
+	
+	@Override
+	protected List<ITask> createDataExportTasks(String dataPath, IProject project,
+			Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport,
+			Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
+			throws IOException {
+				List<ITask> tasks = new ArrayList<ITask>();
+				XMLExportTask task = new XMLExportTask(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, rootDir, filenamemap);
+				tasks.add(task);
+				return Util.list(ITask.class, new DelegateTask(LanguageBundle.getString("export.task.processingproject"), tasks));
+			}
 	
 	@Override
 	public String getStaticResourceRoot() { return PLAYER_ROOT; }
