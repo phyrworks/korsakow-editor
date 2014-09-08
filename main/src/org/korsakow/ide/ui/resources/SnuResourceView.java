@@ -34,8 +34,8 @@ import javax.swing.event.ChangeListener;
 import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IResource;
-import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.ISnu.BackgroundSoundMode;
+import org.korsakow.domain.interf.ISound;
 import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.resources.ResourceType;
 import org.korsakow.ide.ui.components.DelayedMediaPanelLoader;
@@ -161,7 +161,7 @@ public class SnuResourceView extends ResourceView
 		livesCombo.setEditable(true);
 		
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBounds(10, 95, 500, 23);
+		bottomPanel.setBounds(10, 80, 500, 23);
 		snuPanel.add(bottomPanel);
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 //		bottomPanel.setLayout(new HorizontalFlowLayout(HorizontalFlowLayout.LEFT));
@@ -194,7 +194,7 @@ public class SnuResourceView extends ResourceView
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 		snuPanel.add(topPanel);
-		topPanel.setBounds(10, 14, 500, 23);
+		topPanel.setBounds(10, 0, 500, 23);
 		
 		topPanel.add(uifac.createLabel("startingSnuLabel", LanguageBundle.getString("snuresourceview.startingsnu.label")));
 		topPanel.add(Box.createHorizontalStrut(5));
