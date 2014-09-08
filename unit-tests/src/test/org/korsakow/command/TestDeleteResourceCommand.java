@@ -125,7 +125,7 @@ public class TestDeleteResourceCommand extends AbstractDomainObjectTestCase
 	@Test public void testDeleteSnu() throws Exception
 	{
 		final long id = 0L;
-		SnuTDG.insert(id, 1L, "2", null, 3.0f, null, BackgroundSoundMode.KEEP.getId(), 4.0f, false, null, 6L, false, 7L, true, false, null, "8", "9");
+		SnuTDG.insert(id, 1L, "2", null, 3.0f, null, BackgroundSoundMode.KEEP.getId(), 4.0f, false, null, 6L, false, 7L, true, false, null, null, "8", "9");
 		DataRegistry.flush();
 		
 		Request request = new Request();

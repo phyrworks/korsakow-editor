@@ -135,7 +135,26 @@
         <x>0</x>
         <y>0</y>
         <width>480</width>
-        <height>130</height>
+        <height>140</height>
+    </component>
+    
+    <component>
+        <id>previewImageLabel</id>
+        <x>245</x>
+        <y>5</y>
+    </component>
+    <component>
+        <id>previewImageCombo</id>
+        <x>325</x>
+        <y>5</y>
+        <width>150</width>
+    </component>
+    <component>
+        <id>previewImagePanel</id>
+        <x>245</x>
+        <y>30</y>
+        <width>136</width>
+        <height>78</height>
     </component>
     
     <component>
@@ -143,18 +162,16 @@
         <x>10</x>
         <y>5</y>
     </component>
-
     <component>
         <id>previewMediaCombo</id>
         <x>90</x>
         <y>5</y>
         <width>150</width>
     </component>
-
     <component>
         <id>previewMediaPanel</id>
         <x>10</x>
-        <y>28</y>
+        <y>30</y>
         <width>136</width>
         <height>78</height>
     </component>
@@ -162,13 +179,13 @@
     <component>
         <id>previewTextLabel</id>
         <x>10</x>
-        <y>109</y>
+        <y>118</y>
         <height>20</height>
     </component>
     <component>
         <id>previewTextField</id>
         <x>140</x>
-        <y>109</y>
+        <y>118</y>
         <width>335</width>
         <height>20</height>
     </component>

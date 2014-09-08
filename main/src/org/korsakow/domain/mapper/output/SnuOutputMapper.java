@@ -32,11 +32,12 @@ public class SnuOutputMapper implements GenericOutputMapper<Long, Snu>{
 			Long backgroundSoundId = a.getBackgroundSound()!=null?a.getBackgroundSound().getId():null;
 			Long mainMediaId = a.getMainMedia()!=null?a.getMainMedia().getId():null;
 			Long interfaceId = a.getInterface()!=null?a.getInterface().getId():null;
+			Long previewImageId = a.getPreviewImage()!=null?a.getPreviewImage().getId():null;
 			Long previewMediaId = a.getPreviewMedia()!=null?a.getPreviewMedia().getId():null;
 			if(a.getId()==0){
-				SnuTDG.insert(a.getVersion(), a.getName(), mainMediaId, a.getRating(), backgroundSoundId, a.getBackgroundSoundMode().getId(), a.getBackgroundSoundVolume(), a.getBackgroundSoundLooping(), interfaceId, a.getLives(), a.getLooping(), a.getMaxLinks(), a.getStarter(), a.getEnder(), previewMediaId, a.getPreviewText(), a.getInsertText());
+				SnuTDG.insert(a.getVersion(), a.getName(), mainMediaId, a.getRating(), backgroundSoundId, a.getBackgroundSoundMode().getId(), a.getBackgroundSoundVolume(), a.getBackgroundSoundLooping(), interfaceId, a.getLives(), a.getLooping(), a.getMaxLinks(), a.getStarter(), a.getEnder(), previewImageId, previewMediaId, a.getPreviewText(), a.getInsertText());
 			} else {
-				SnuTDG.insert(a.getId(), a.getVersion(), a.getName(), mainMediaId, a.getRating(), backgroundSoundId, a.getBackgroundSoundMode().getId(), a.getBackgroundSoundVolume(), a.getBackgroundSoundLooping(), interfaceId, a.getLives(), a.getLooping(), a.getMaxLinks(), a.getStarter(), a.getEnder(), previewMediaId, a.getPreviewText(), a.getInsertText());
+				SnuTDG.insert(a.getId(), a.getVersion(), a.getName(), mainMediaId, a.getRating(), backgroundSoundId, a.getBackgroundSoundMode().getId(), a.getBackgroundSoundVolume(), a.getBackgroundSoundLooping(), interfaceId, a.getLives(), a.getLooping(), a.getMaxLinks(), a.getStarter(), a.getEnder(), previewImageId, previewMediaId, a.getPreviewText(), a.getInsertText());
 			}
 			for (IKeyword keyword : a.getKeywords())
 				KeywordOutputMapper.insert(a.getId(), keyword);
@@ -56,8 +57,9 @@ public class SnuOutputMapper implements GenericOutputMapper<Long, Snu>{
 			Long backgroundSoundId = a.getBackgroundSound()!=null?a.getBackgroundSound().getId():null;
 			Long mainMediaId = a.getMainMedia()!=null?a.getMainMedia().getId():null;
 			Long interfaceId = a.getInterface()!=null?a.getInterface().getId():null;
+			Long previewImageId = a.getPreviewImage()!=null?a.getPreviewImage().getId():null;
 			Long previewMediaId = a.getPreviewMedia()!=null?a.getPreviewMedia().getId():null;
-			if(SnuTDG.update(a.getId(), a.getVersion(), a.getName(), mainMediaId, a.getRating(), backgroundSoundId, a.getBackgroundSoundMode().getId(), a.getBackgroundSoundVolume(), a.getBackgroundSoundLooping(), interfaceId, a.getLives(), a.getLooping(), a.getMaxLinks(), a.getStarter(), a.getEnder(), previewMediaId, a.getPreviewText(), a.getInsertText()) == 0) {
+			if(SnuTDG.update(a.getId(), a.getVersion(), a.getName(), mainMediaId, a.getRating(), backgroundSoundId, a.getBackgroundSoundMode().getId(), a.getBackgroundSoundVolume(), a.getBackgroundSoundLooping(), interfaceId, a.getLives(), a.getLooping(), a.getMaxLinks(), a.getStarter(), a.getEnder(), previewImageId, previewMediaId, a.getPreviewText(), a.getInsertText()) == 0) {
 				throw new LostUpdateException("Your version is out of date. No records were altered.");
 			}
 			for (IKeyword keyword : a.getKeywords())

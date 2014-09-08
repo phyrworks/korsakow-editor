@@ -17,21 +17,21 @@ public class SnuTDG
 			Long backgroundSoundId, String backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping,
 			Long interfaceId,
 			Long lives, boolean looping, Long max_links, boolean starter, boolean ender,
-			Long previewMediaId, String previewText,
+			Long previewImageId, Long previewMediaId, String previewText,
 			String insertText) throws XPathException{
-		return insert(DataRegistry.getMaxId(), version, name, mainMediaId, rating, backgroundSoundId, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interfaceId, lives, looping, max_links, starter, ender, previewMediaId, previewText, insertText);
+		return insert(DataRegistry.getMaxId(), version, name, mainMediaId, rating, backgroundSoundId, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interfaceId, lives, looping, max_links, starter, ender, previewImageId, previewMediaId, previewText, insertText);
 	}
 	public static int insert(long id, long version,
 			String name, Long mainMediaId, float rating,
 			Long backgroundSoundId, String backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping,
 			Long interfaceId,
 			Long lives, boolean looping, Long max_links, boolean starter, boolean ender,
-			Long previewMediaId, String previewText,
+			Long previewImageId, Long previewMediaId, String previewText,
 			String insertText) throws XPathExpressionException{
 		Element element = DataRegistry.getHelper().appendElement("/korsakow/snus", NODE_NAME);
 		DataRegistry.getHelper().setLong(element, "id", id);
 		DataRegistry.getHelper().setLong(element, "version", version);
-		return update(id, version, name, mainMediaId, rating, backgroundSoundId, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interfaceId, lives, looping, max_links, starter, ender, previewMediaId, previewText, insertText);
+		return update(id, version, name, mainMediaId, rating, backgroundSoundId, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interfaceId, lives, looping, max_links, starter, ender, previewImageId, previewMediaId, previewText, insertText);
 	}
 
 	public static int delete(long id, long version) throws XPathExpressionException {
@@ -44,7 +44,7 @@ public class SnuTDG
 			Long backgroundSoundId, String backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping,
 			Long interfaceId,
 			Long lives, boolean looping, Long max_links, boolean starter, boolean ender,
-			Long previewMediaId, String previewText,
+			Long previewImageId, Long previewMediaId, String previewText,
 			String insertText) throws XPathExpressionException{
 		Element element = DataRegistry.getHelper().findElementByIdTag(id);
 //		Element element = DataRegistry.getHelper().xpathAsElement(XPathHelper.formatQuery("/korsakow/snus/Snu[id=? and version=?]", id, version));
@@ -65,6 +65,7 @@ public class SnuTDG
 		DataRegistry.getHelper().setLong(element, "maxLinks", max_links);
 		DataRegistry.getHelper().setBoolean(element, "starter", starter);
 		DataRegistry.getHelper().setBoolean(element, "ender", ender);
+		DataRegistry.getHelper().setLong(element, "previewImageId", previewImageId);
 		DataRegistry.getHelper().setLong(element, "previewMediaId", previewMediaId);
 		DataRegistry.getHelper().setString(element, "previewText", previewText);
 		DataRegistry.getHelper().setString(element, "insertText", insertText);

@@ -16,6 +16,7 @@ import org.korsakow.domain.SnuFactory;
 import org.korsakow.domain.interf.ISnu;
 import org.korsakow.domain.interf.ISnu.BackgroundSoundMode;
 import org.korsakow.domain.proxy.EventListProxy;
+import org.korsakow.domain.proxy.ImageProxy;
 import org.korsakow.domain.proxy.InterfaceProxy;
 import org.korsakow.domain.proxy.KeywordCollectionProxy;
 import org.korsakow.domain.proxy.RuleListProxy;
@@ -192,6 +193,7 @@ public class SnuInputMapper {
 				rs.getObject("maxLinks")!=null?rs.getLong("maxLinks"):null,
 				rs.getBoolean("starter"),
 				rs.getBoolean("ender"),
+				rs.getObject("previewImageId")!=null?new ImageProxy(rs.getLong("previewImageId")):null,
 				rs.getObject("previewMediaId")!=null?new UnknownMediaProxy(rs.getLong("previewMediaId")):null,
 				rs.getObject("previewText")!=null?rs.getString("previewText"):null,
 				rs.getObject("insertText")!=null?rs.getString("insertText"):null,

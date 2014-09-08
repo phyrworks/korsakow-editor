@@ -28,7 +28,7 @@ public class TestPredicateTDG {
 	@Ignore @Test public void timeInsert() throws Exception
 	{
 		long snuId = DataRegistry.getMaxId();
-		SnuTDG.insert(snuId, 0L, "name", null, 0, null, BackgroundSoundMode.KEEP.getId(), 0, false, null, null, false, null, false, false, null, "previewText", "insertText");
+		SnuTDG.insert(snuId, 0L, "name", null, 0, null, BackgroundSoundMode.KEEP.getId(), 0, false, null, null, false, null, false, false, null, null, "previewText", "insertText");
 		int count = 2000;
 		List<Long> ids = new ArrayList<Long>();
 		for (int i = 0; i < count; ++i)

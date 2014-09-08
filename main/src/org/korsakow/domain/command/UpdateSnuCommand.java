@@ -19,8 +19,8 @@ import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IKeyword;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IRule;
-import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.ISnu.BackgroundSoundMode;
+import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.mapper.input.ImageInputMapper;
 import org.korsakow.domain.mapper.input.MediaInputMapper;
 import org.korsakow.domain.mapper.input.SnuInputMapper;
@@ -45,6 +45,7 @@ public class UpdateSnuCommand extends AbstractCommand{
 	public static final String KEYWORDS = "keywords";
 	public static final String INSERT_TEXT = "insert_text";
 	public static final String PREVIEW_TEXT = "preview_text";
+	public static final String PREVIEW_IMAGE_ID = "preview_image_id";
 	public static final String PREVIEW_MEDIA_ID = "preview_media_id";
 	public static final String ENDER = "ender";
 	public static final String STARTER = "starter";

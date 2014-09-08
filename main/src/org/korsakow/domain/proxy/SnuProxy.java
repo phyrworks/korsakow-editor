@@ -123,6 +123,14 @@ public class SnuProxy extends ResourceProxy<Snu> implements ISnu {
 	{
 		return getInnerObject().getStarter();
 	}
+	public void setPreviewImage(IImage previewImage)
+	{
+		getInnerObject().setPreviewImage(previewImage);
+	}
+	public IImage getPreviewImage()
+	{
+		return getInnerObject().getPreviewImage();
+	}
 	public void setPreviewMedia(IMedia previewMedia)
 	{
 		getInnerObject().setPreviewMedia(previewMedia);
