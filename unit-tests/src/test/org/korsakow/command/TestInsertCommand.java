@@ -1,7 +1,6 @@
 package test.org.korsakow.command;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.dsrg.soenea.uow.UoW;
@@ -149,6 +148,7 @@ public class TestInsertCommand extends AbstractDomainObjectTestCase
 		request.set(UpdateSnuCommand.LOOPING, obj.getLooping());
 		request.set(UpdateSnuCommand.MAIN_MEDIA_ID, obj.getMainMedia()!=null?obj.getMainMedia().getId():null);
 		request.set(UpdateSnuCommand.MAX_LINKS, obj.getMaxLinks());
+		request.set(UpdateSnuCommand.PREVIEW_IMAGE_ID, obj.getPreviewImage()!=null?obj.getPreviewImage().getId():null);
 		request.set(UpdateSnuCommand.PREVIEW_MEDIA_ID, obj.getPreviewMedia()!=null?obj.getPreviewMedia().getId():null);
 		request.set(UpdateSnuCommand.PREVIEW_TEXT, obj.getPreviewText());
 		request.set(UpdateSnuCommand.RATING, obj.getRating());

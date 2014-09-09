@@ -5,13 +5,14 @@ import java.util.List;
 
 import org.dsrg.soenea.uow.UoW;
 import org.korsakow.domain.interf.IEvent;
+import org.korsakow.domain.interf.IImage;
 import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IKeyword;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IRule;
 import org.korsakow.domain.interf.ISnu;
-import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.ISnu.BackgroundSoundMode;
+import org.korsakow.domain.interf.ISound;
 import org.korsakow.ide.DataRegistry;
 
 public class SnuFactory {
@@ -26,16 +27,16 @@ public class SnuFactory {
 		return createNew(DataRegistry.getMaxId(), 0);
 	}
 
-	public static Snu createNew(String name, Collection<IKeyword> keywords, IMedia mainMedia, float rating, ISound backgroundSound, BackgroundSoundMode backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping, IInterface interf, List<IRule> rules, Long lives, boolean looping, Long maxLinks, boolean isStarter, boolean isEnder, IMedia previewMedia, String previewText, String insertText, Collection<IEvent> events)
+	public static Snu createNew(String name, Collection<IKeyword> keywords, IMedia mainMedia, float rating, ISound backgroundSound, BackgroundSoundMode backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping, IInterface interf, List<IRule> rules, Long lives, boolean looping, Long maxLinks, boolean isStarter, boolean isEnder, IImage previewImage, IMedia previewMedia, String previewText, String insertText, Collection<IEvent> events)
 	{
-		Snu object = new Snu(DataRegistry.getMaxId(), 0, name, keywords, mainMedia, rating, backgroundSound, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interf, rules, lives, looping, maxLinks, isStarter, isEnder, previewMedia, previewText, insertText, events);
+		Snu object = new Snu(DataRegistry.getMaxId(), 0, name, keywords, mainMedia, rating, backgroundSound, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interf, rules, lives, looping, maxLinks, isStarter, isEnder, previewImage, previewMedia, previewText, insertText, events);
 		UoW.getCurrent().registerNew(object);
 		return object;
 	}
 	
-	public static Snu createClean(long id, long version, String name, Collection<IKeyword> keywords, IMedia mainMedia, float rating, ISound backgroundSound, BackgroundSoundMode backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping, IInterface interf, List<IRule> rules, Long lives, boolean looping, Long maxLinks, boolean isStarter, boolean isEnder, IMedia previewMedia, String previewText, String insertText, Collection<IEvent> events)
+	public static Snu createClean(long id, long version, String name, Collection<IKeyword> keywords, IMedia mainMedia, float rating, ISound backgroundSound, BackgroundSoundMode backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping, IInterface interf, List<IRule> rules, Long lives, boolean looping, Long maxLinks, boolean isStarter, boolean isEnder, IImage previewImage, IMedia previewMedia, String previewText, String insertText, Collection<IEvent> events)
 	{
-		Snu object = new Snu(id, version, name, keywords, mainMedia, rating, backgroundSound, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interf, rules, lives, looping, maxLinks, isStarter, isEnder, previewMedia, previewText, insertText, events);
+		Snu object = new Snu(id, version, name, keywords, mainMedia, rating, backgroundSound, backgroundSoundMode, backgroundSoundVolume, backgroundSoundLooping, interf, rules, lives, looping, maxLinks, isStarter, isEnder, previewImage, previewMedia, previewText, insertText, events);
 		UoW.getCurrent().registerClean(object);
 		return object;
 	}
@@ -60,6 +61,7 @@ public class SnuFactory {
 				src.getMaxLinks(),
 				src.getStarter(),
 				src.getEnder(),
+				getSwap(originalMainMedia, copyMainMedia, src.getPreviewImage()),
 				getSwap(originalMainMedia, copyMainMedia, src.getPreviewMedia()),
 				src.getPreviewText(),
 				src.getInsertText(),

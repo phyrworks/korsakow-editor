@@ -31,11 +31,12 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.korsakow.domain.interf.IImage;
 import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IResource;
-import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.ISnu.BackgroundSoundMode;
+import org.korsakow.domain.interf.ISound;
 import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.resources.ResourceType;
 import org.korsakow.ide.ui.components.DelayedMediaPanelLoader;
@@ -88,6 +89,9 @@ public class SnuResourceView extends ResourceView
 	
 	private JCheckBox startingSnuCheck;
 	private JCheckBox endingSnuCheck;
+	
+	private JComboBox previewImageCombo;
+	private NewMediaPanel previewImagePanel;
 	
 	private JComboBox previewMediaCombo;
 	private NewMediaPanel previewMediaPanel;
@@ -161,7 +165,7 @@ public class SnuResourceView extends ResourceView
 		livesCombo.setEditable(true);
 		
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBounds(10, 95, 500, 23);
+		bottomPanel.setBounds(10, 80, 500, 23);
 		snuPanel.add(bottomPanel);
 		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 //		bottomPanel.setLayout(new HorizontalFlowLayout(HorizontalFlowLayout.LEFT));
@@ -194,7 +198,7 @@ public class SnuResourceView extends ResourceView
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 		snuPanel.add(topPanel);
-		topPanel.setBounds(10, 14, 500, 23);
+		topPanel.setBounds(10, 0, 500, 23);
 		
 		topPanel.add(uifac.createLabel("startingSnuLabel", LanguageBundle.getString("snuresourceview.startingsnu.label")));
 		topPanel.add(Box.createHorizontalStrut(5));
@@ -249,6 +253,15 @@ public class SnuResourceView extends ResourceView
 		JPanel previewPanelSizer = uifac.customComponent("previewPanelSizer", new JPanel());
 		previewPanelSizer.setVisible(false);
 		previewPanel.add(previewPanelSizer);
+		
+		previewPanel.add(uifac.createLabel("previewImageLabel", LanguageBundle.getString("snuresourceview.previewimage.label")));
+		previewPanel.add(previewImageCombo = uifac.createComboBox("previewImageCombo", new ResourceComboBoxModel(true), new ResourceDOComboBoxRenderer()));
+		previewImageCombo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				setPreviewImage(getPreviewImage());
+			}
+		});
+		previewPanel.add(previewImagePanel = uifac.customComponent("previewImagePanel", new NewMediaPanel()));
 		
 		previewPanel.add(uifac.createLabel("previewMediaLabel", LanguageBundle.getString("snuresourceview.previewmedia.label")));
 		previewPanel.add(previewMediaCombo = uifac.createComboBox("previewMediaCombo", new ResourceComboBoxModel(true), new ResourceDOComboBoxRenderer()));
@@ -418,6 +431,23 @@ public class SnuResourceView extends ResourceView
 	public void setBackgroundSoundLoop(boolean loop)
 	{
 		backgroundSoundLoopCheck.setSelected(loop);
+	}
+	public void setPreviewImageChoices(Collection<IImage> choices)
+	{
+		previewImageCombo.setModel(new ResourceComboBoxModel(choices, true));
+	}
+	public void setPreviewImage(final IImage media)
+	{
+		previewImageCombo.setSelectedItem(media);
+		DelayedMediaPanelLoader.load(this, previewImagePanel, media);
+	}
+	private IImage getPreviewImage()
+	{
+		return (IImage)previewImageCombo.getSelectedItem();
+	}
+	public Long getPreviewImageId()
+	{
+		return getPreviewImage()!=null?getPreviewImage().getId():null;
 	}
 	public void setPreviewMediaChoices(Collection<IMedia> choices)
 	{

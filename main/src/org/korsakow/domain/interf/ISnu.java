@@ -77,6 +77,8 @@ public interface ISnu extends IResource
 	void setLives(Long lives);
 	Long getLives();
 	
+	void setPreviewImage(IImage image);
+	IImage getPreviewImage();
 	void setPreviewMedia(IMedia media);
 	IMedia getPreviewMedia();
 	void setPreviewText(String text);

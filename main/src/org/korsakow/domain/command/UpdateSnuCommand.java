@@ -1,8 +1,11 @@
 package org.korsakow.domain.command;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -12,6 +15,8 @@ import org.dsrg.soenea.domain.command.CommandException;
 import org.dsrg.soenea.environment.CreationException;
 import org.dsrg.soenea.environment.KeyNotFoundException;
 import org.dsrg.soenea.uow.UoW;
+import org.korsakow.domain.ImageFactory;
+import org.korsakow.domain.KeywordFactory;
 import org.korsakow.domain.RuleFactory;
 import org.korsakow.domain.Snu;
 import org.korsakow.domain.interf.IImage;
@@ -19,18 +24,22 @@ import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IKeyword;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IRule;
-import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.ISnu.BackgroundSoundMode;
+import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.mapper.input.ImageInputMapper;
 import org.korsakow.domain.mapper.input.MediaInputMapper;
 import org.korsakow.domain.mapper.input.SnuInputMapper;
+import org.korsakow.domain.proxy.ImageProxy;
 import org.korsakow.domain.proxy.InterfaceProxy;
 import org.korsakow.domain.proxy.SoundProxy;
 import org.korsakow.domain.proxy.UnknownMediaProxy;
 import org.korsakow.ide.resources.ResourceType;
+import org.korsakow.ide.util.FileUtil;
+import org.korsakow.services.encoders.EncoderException;
+import org.korsakow.services.export.task.ThumbnailExportTask;
 
 public class UpdateSnuCommand extends AbstractCommand{
-	private final Log log = LogFactory.getLog(getClass());
+	private static final Log log = LogFactory.getLog(UpdateSnuCommand.class);
 
 
 	public static final String RULE_COUNT = "ruleCount";
@@ -42,9 +51,11 @@ public class UpdateSnuCommand extends AbstractCommand{
 	public static final String RULE_NAME = "ruleName";
 	
 	public static final String SNU = "snu";
+	public static final String GENERATED_PREVIEW_IMAGE = "generatedPreviewImage";
 	public static final String KEYWORDS = "keywords";
 	public static final String INSERT_TEXT = "insert_text";
 	public static final String PREVIEW_TEXT = "preview_text";
+	public static final String PREVIEW_IMAGE_ID = "preview_image_id";
 	public static final String PREVIEW_MEDIA_ID = "preview_media_id";
 	public static final String ENDER = "ender";
 	public static final String STARTER = "starter";
@@ -123,6 +134,19 @@ public class UpdateSnuCommand extends AbstractCommand{
 			s.setPreviewMedia(previewMedia);
 			s.setPreviewText(request.getString(PREVIEW_TEXT));
 			
+			IImage previewImage = null;
+			if (request.get(PREVIEW_IMAGE_ID) != null)
+				previewImage = new ImageProxy(request.getLong(PREVIEW_IMAGE_ID));
+			if (previewImage == null && previewMedia != null) {
+				try {
+					previewImage = generateStill(previewMedia);
+					response.set(GENERATED_PREVIEW_IMAGE, previewImage);
+				} catch (Exception e) {
+					log.error("", e);
+				}
+			}
+			s.setPreviewImage(previewImage);
+			
 			s.setInsertText(request.getString(INSERT_TEXT));
 			
 			s.setKeywords((Collection<IKeyword>)request.get(KEYWORDS));
@@ -171,5 +195,19 @@ public class UpdateSnuCommand extends AbstractCommand{
 			}
 		}
 		return rules;
+	}
+	private static IImage generateStill(IMedia media) throws IOException, InterruptedException, EncoderException {
+		File mediaPath = new File(media.getAbsoluteFilename());
+		String stillName = FileUtil.getFilenameWithoutExtension(mediaPath.getName()) + "_still";
+		stillName = FileUtil.setFileExtension(stillName, FileUtil.getFileExtension(mediaPath.getName()));
+		File stillPath = new File(mediaPath.getParent(), stillName);
+
+		log.info(String.format("Generating still from '%s' at '%s", mediaPath.getPath(), stillPath.getPath()));
+		ThumbnailExportTask.createThumbnail(media, mediaPath, stillPath, null, null);
+		
+		Collection<IKeyword> keywords = new HashSet<IKeyword>();
+		keywords.add(KeywordFactory.createNew(stillName));
+		IImage still = ImageFactory.createNew(stillName, keywords, stillPath.getPath(), null);
+		return still;
 	}
 }

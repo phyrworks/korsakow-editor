@@ -31,6 +31,7 @@ public class Snu extends Resource implements ISnu
 	private Long maxLinks;
 	private boolean isEnder = false;
 	private boolean isStarter = false;
+	private IImage previewImage;
 	private IMedia previewMedia;
 	private String previewText;
 	private String insertText;
@@ -42,7 +43,7 @@ public class Snu extends Resource implements ISnu
 	{
 		super(id, version);
 	}
-	Snu(long id, long version, String name, Collection<IKeyword> keywords, IMedia mainMedia, float rating, ISound backgroundSound, BackgroundSoundMode backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping, IInterface interf, List<IRule> rules, Long lives, boolean looping, Long maxLinks, boolean isStarter, boolean isEnder, IMedia previewMedia, String previewText, String insertText, Collection<IEvent> events)
+	Snu(long id, long version, String name, Collection<IKeyword> keywords, IMedia mainMedia, float rating, ISound backgroundSound, BackgroundSoundMode backgroundSoundMode, float backgroundSoundVolume, boolean backgroundSoundLooping, IInterface interf, List<IRule> rules, Long lives, boolean looping, Long maxLinks, boolean isStarter, boolean isEnder, IImage previewImage, IMedia previewMedia, String previewText, String insertText, Collection<IEvent> events)
 	{
 		super(id, version, name, keywords);
 		setBackgroundSound(backgroundSound);
@@ -59,6 +60,7 @@ public class Snu extends Resource implements ISnu
 		setInterface(interf);
 		setStarter(isStarter);
 		setEnder(isEnder);
+		setPreviewImage(previewImage);
 		setPreviewMedia(previewMedia);
 		setPreviewText(previewText);
 		setInsertText(insertText);
@@ -159,6 +161,14 @@ public class Snu extends Resource implements ISnu
 	public float getBackgroundSoundVolume()
 	{
 		return backgroundSoundVolume;
+	}
+	public void setPreviewImage(IImage previewImage)
+	{
+		this.previewImage= previewImage;
+	}
+	public IImage getPreviewImage()
+	{
+		return previewImage;
 	}
 	public void setPreviewMedia(IMedia previewMedia)
 	{

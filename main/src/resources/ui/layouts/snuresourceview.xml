@@ -135,26 +135,43 @@
         <x>0</x>
         <y>0</y>
         <width>480</width>
-        <height>120</height>
+        <height>140</height>
+    </component>
+    
+    <component>
+        <id>previewImageLabel</id>
+        <x>245</x>
+        <y>5</y>
+    </component>
+    <component>
+        <id>previewImageCombo</id>
+        <x>325</x>
+        <y>5</y>
+        <width>150</width>
+    </component>
+    <component>
+        <id>previewImagePanel</id>
+        <x>245</x>
+        <y>30</y>
+        <width>136</width>
+        <height>78</height>
     </component>
     
     <component>
         <id>previewMediaLabel</id>
         <x>10</x>
-        <y>10</y>
+        <y>5</y>
     </component>
-
     <component>
         <id>previewMediaCombo</id>
-        <x>10</x>
-        <y>30</y>
+        <x>90</x>
+        <y>5</y>
         <width>150</width>
     </component>
-
     <component>
         <id>previewMediaPanel</id>
-        <x>240</x>
-        <y>10</y>
+        <x>10</x>
+        <y>30</y>
         <width>136</width>
         <height>78</height>
     </component>
@@ -162,13 +179,13 @@
     <component>
         <id>previewTextLabel</id>
         <x>10</x>
-        <y>95</y>
+        <y>118</y>
         <height>20</height>
     </component>
     <component>
         <id>previewTextField</id>
         <x>140</x>
-        <y>95</y>
+        <y>118</y>
         <width>335</width>
         <height>20</height>
     </component>
@@ -176,26 +193,26 @@
     <component>
         <id>backgroundSoundLabel</id>
         <x>285</x>
-        <y>65</y>
+        <y>54</y>
     </component>
     
     <component>
         <id>backgroundSoundPanel</id>
         <x>395</x>
-        <y>65</y>
+        <y>54</y>
         <width>80</width>
     </component>
     
     <component>
         <id>backgroundSoundLoopCheck</id>
         <x>395</x>
-        <y>85</y>
+        <y>76</y>
     </component>
 
     <component>
         <id>livesLabel</id>
         <x>10</x>
-        <y>65</y>
+        <y>54</y>
         <width>54</width>
         <height>15</height>
     </component>
@@ -203,7 +220,7 @@
     <component>
         <id>livesComboBox</id>
         <x>45</x>
-        <y>65</y>
+        <y>54</y>
         <width>40</width>
     </component>
 
@@ -221,20 +238,20 @@
         <x>0</x>
         <y>0</y>
         <width>480</width>
-        <height>120</height>
+        <height>105</height>
     </component>
     
     <component>
         <id>startingSnuLabel</id>
         <x>10</x>
-        <y>14</y>
+        <y>5</y>
         <height>15</height>
     </component>
     
     <component>
         <id>startingSnuCheckBox</id>
         <x>75</x>
-        <y>14</y>
+        <y>5</y>
         <width>12</width>
         <height>12</height>
     </component>
@@ -242,14 +259,14 @@
     <component>
         <id>endingSnuLabel</id>
         <x>115</x>
-        <y>14</y>
+        <y>5</y>
         <height>15</height>
     </component>
     
     <component>
         <id>endingSnuCheckBox</id>
         <x>170</x>
-        <y>14</y>
+        <y>5</y>
         <width>12</width>
         <height>12</height>
     </component>
@@ -257,7 +274,7 @@
     <component>
         <id>interfaceLabel</id>
         <x>90</x>
-        <y>65</y>
+        <y>54</y>
         <width>65</width>
         <height>15</height>
     </component>
@@ -265,7 +282,7 @@
     <component>
         <id>interfacePanel</id>
         <x>150</x>
-        <y>65</y>
+        <y>54</y>
         <width>120</width>
     </component>
     
@@ -320,13 +337,13 @@
     <component>
     	<id>insertTextLabel</id>
         <x>10</x>
-        <y>40</y>
+        <y>31</y>
         <height>15</height>
     </component>
     <component>
     	<id>insertTextField</id>
         <x>120</x>
-        <y>37</y>
+        <y>28</y>
         <width>355</width>
         <height>20</height>
     </component>
@@ -334,27 +351,27 @@
     <component>
     	<id>ratingBorder</id>
     	<x>115</x>
-    	<y>90</y>
+    	<y>81</y>
     	<width>160</width>
     	<height>25</height>
     </component>
     <component>
     	<id>ratingLabel</id>
     	<x>10</x>
-    	<y>95</y>
+    	<y>86</y>
     	<height>15</height>
     </component>
     <component>
     	<id>ratingSlider</id>
     	<x>120</x>
-    	<y>95</y>
+    	<y>86</y>
     	<width>100</width>
     	<height>15</height>
     </component>
     <component>
     	<id>ratingField</id>
     	<x>220</x>
-    	<y>95</y>
+    	<y>86</y>
     	<width>50</width>
     	<height>15</height>
     </component>
