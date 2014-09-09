@@ -143,4 +143,3 @@ public class ThumbnailExportTask extends AbstractTask
 	}
 	
 }
-
