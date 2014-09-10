@@ -393,6 +393,8 @@ public class JSONExportTask extends AbstractTask
 		obj.put("interfaceId", snu.getInterface().getId());
 		if (snu.getPreviewMedia()!=null)
 			obj.put("previewMediaId", snu.getPreviewMedia().getId());
+		if (snu.getPreviewImage()!=null)
+			obj.put("previewImageId", snu.getPreviewImage().getId());
 		obj.put("previewText", snu.getPreviewText());
 		obj.put("insertText", snu.getInsertText());
 		return obj;
