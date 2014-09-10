@@ -399,6 +399,8 @@ public class XMLExportTask extends AbstractTask
 		DomUtil.appendTextNode(doc, elm, "interfaceId", snu.getInterface().getId());
 		if (snu.getPreviewMedia()!=null)
 			DomUtil.appendTextNode(doc, elm, "previewMediaId", snu.getPreviewMedia().getId());
+		if (snu.getPreviewImage()!=null)
+			DomUtil.appendTextNode(doc, elm, "previewImageId", snu.getPreviewImage().getId());
 		DomUtil.appendTextNode(doc, elm, "previewText", snu.getPreviewText());
 		DomUtil.appendTextNode(doc, elm, "insertText", snu.getInsertText());
 		return elm;
