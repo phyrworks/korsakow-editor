@@ -137,7 +137,8 @@ public class UpdateSnuCommand extends AbstractCommand{
 			IImage previewImage = null;
 			if (request.get(PREVIEW_IMAGE_ID) != null)
 				previewImage = new ImageProxy(request.getLong(PREVIEW_IMAGE_ID));
-			if (previewImage == null && previewMedia != null) {
+			if (previewImage == null && previewMedia != null && 
+					(ResourceType.forId(previewMedia.getType()) != ResourceType.IMAGE)) {
 				try {
 					previewImage = generateStill(previewMedia);
 					response.set(GENERATED_PREVIEW_IMAGE, previewImage);
