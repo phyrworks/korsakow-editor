@@ -40,7 +40,6 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 	public static final String PROJECT_ID = "project_id";
 	public static final String EXPORT_DIR = "export_dir";
 	public static final String INDEX_FILENAME = "index_filename";
-	public static final String EXPORT_ALL_MEDIA = "export_all_media";
 	public static final String OVERWRITE_EXISTING = "overwrite_existing";
 	public static final String VIDEO_ENCODING_ENABLED = "video_encoding_enabled";
 
@@ -51,15 +50,13 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 		private final File exportDir;
 		private final Exporter exporter;
 		private final IProject project;
-		private final boolean exportAllMedia;
-		public SetupExporterTask(IWorker uiWorker, Exporter exporter, File exportDir, String indexFilename, IProject project, boolean exportOnlyReferencedMedia)
+		public SetupExporterTask(IWorker uiWorker, Exporter exporter, File exportDir, String indexFilename, IProject project)
 		{
 			this.uiWorker = uiWorker;
 			this.exporter = exporter;
 			this.exportDir = exportDir;
 			this.indexFilename = indexFilename;
 			this.project = project;
-			exportAllMedia = exportOnlyReferencedMedia;
 		}
 	
 		@Override
@@ -71,7 +68,7 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			Collection<IMedia> media;
 			try {
 				settings = SettingsInputMapper.find();
-				media = exportAllMedia?project.getMedia():MediaInputMapper.findReferencedMedia();
+				media = MediaInputMapper.findReferencedMedia();
 			} catch (XPathExpressionException e) {
 				throw new TaskException(e);
 			} catch (MapperException e) {
@@ -160,8 +157,6 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			
 			String indexFilename = request.getString(INDEX_FILENAME);
 			
-			boolean exportAllMedia = request.has(EXPORT_ALL_MEDIA) && request.getBoolean(EXPORT_ALL_MEDIA);
-			
 			Exporter exporter = createExporter();
 			if (request.has(OVERWRITE_EXISTING))
 				exporter.setOverwriteExistingFiles(request.getBoolean(OVERWRITE_EXISTING));
@@ -172,7 +167,7 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			// we want to do the setup in a task since its lengthy
 			// however we can't generate the other tasks from the exporter until that's done
 			// so the setup tasks does that and then adds them to the worker
-			exportWorker.addTask(new SetupExporterTask(exportWorker, exporter, exportDir, indexFilename, project, exportAllMedia));
+			exportWorker.addTask(new SetupExporterTask(exportWorker, exporter, exportDir, indexFilename, project));
 	
 			
 			response.set(WORKER, exportWorker);

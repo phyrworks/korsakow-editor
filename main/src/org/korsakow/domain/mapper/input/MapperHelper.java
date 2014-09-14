@@ -40,7 +40,8 @@ public class MapperHelper
 	                				"mediaId",
 	                				"startingSnuId",
 	                				"interfaceId",
-	                				"previewMediaId"
+	                				"previewMediaId",
+	                				"previewImageId",
 	};
 	/**
 	 * This is a terrible implementation.
