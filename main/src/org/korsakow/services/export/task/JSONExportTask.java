@@ -51,6 +51,7 @@ import org.korsakow.ide.task.AbstractTask;
 import org.korsakow.ide.task.TaskException;
 import org.korsakow.ide.util.FileUtil;
 import org.korsakow.ide.util.Util;
+import org.korsakow.services.export.ExportData;
 import org.korsakow.services.export.ExportException;
 import org.korsakow.services.plugin.predicate.IArgumentInfo;
 import org.korsakow.services.plugin.predicate.IPredicateTypeInfo;
@@ -98,29 +99,56 @@ public class JSONExportTask extends AbstractTask
 	private final File rootDir;
 	private final String dataPath;
 	private final Map<String, String> filenamemap;
-	public JSONExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
-//	public XMLExportTask(IProject project, Collection<ISnu> snusToExport, Collection<IInterface> interfacesToExport, File rootDir)
+	
+	/* Deprecate in favor of public JSONExportTask(ExportData data) -- Phoenix 09/17/2014 */
+//	public JSONExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
+////	public XMLExportTask(IProject project, Collection<ISnu> snusToExport, Collection<IInterface> interfacesToExport, File rootDir)
+//	{
+//		dataPath = FileUtil.setFileExtension(dataPath, "js");
+//		List<IImage> adjustedImages = new ArrayList<IImage>(imagesToExport);
+//		for (ISnu snu : snusToExport) {
+//			if (snu.getThumbnail() != null) {
+//				adjustedImages.add(snu.getThumbnail());
+//			}
+//		}
+//		imagesToExport = adjustedImages;
+//		
+//		this.dataPath = dataPath;
+//		this.videosToExport = videosToExport;
+//		this.soundsToExport = soundsToExport;
+//		this.imagesToExport = imagesToExport;
+//		this.textsToExport = textsToExport;
+//		this.snusToExport = snusToExport;
+//		this.interfacesToExport = interfacesToExport;
+//		this.project = project;
+//		this.rootDir = rootDir;
+//		this.filenamemap = filenamemap;
+//	}
+	
+	public JSONExportTask(ExportData data)
 	{
-		dataPath = FileUtil.setFileExtension(dataPath, "js");
-		List<IImage> adjustedImages = new ArrayList<IImage>(imagesToExport);
-		for (ISnu snu : snusToExport) {
+		data.dataPath = FileUtil.setFileExtension(data.dataPath, "js");
+		List<IImage> adjustedImages = new ArrayList<IImage>(data.imagesToExport);
+		for (ISnu snu : data.snusToExport) {
 			if (snu.getThumbnail() != null) {
 				adjustedImages.add(snu.getThumbnail());
 			}
 		}
-		imagesToExport = adjustedImages;
+		data.imagesToExport = adjustedImages;
 		
-		this.dataPath = dataPath;
-		this.videosToExport = videosToExport;
-		this.soundsToExport = soundsToExport;
-		this.imagesToExport = imagesToExport;
-		this.textsToExport = textsToExport;
-		this.snusToExport = snusToExport;
-		this.interfacesToExport = interfacesToExport;
-		this.project = project;
-		this.rootDir = rootDir;
-		this.filenamemap = filenamemap;
+		dataPath = data.dataPath;
+		videosToExport = data.videosToExport;
+		soundsToExport = data.soundsToExport;
+		imagesToExport = data.imagesToExport;
+		textsToExport = data.textsToExport;
+		snusToExport = data.snusToExport;
+		interfacesToExport = data.interfacesToExport;
+		project = data.project;
+		rootDir = data.rootDir;
+		filenamemap = data.filenamemap;
+		
 	}
+	
 	@Override
 	public String getTitleString()
 	{

@@ -47,7 +47,7 @@ import org.korsakow.services.export.task.ThumbnailExportTask;
 import org.korsakow.services.export.task.VideoExportTask;
 
 public abstract class AbstractExporter implements Exporter {
-
+	
 	public static final String VIDEO_DIR = "video";
 	public static final String TEXT_DIR = "text";
 	public static final String IMAGE_DIR = "image";
@@ -247,7 +247,8 @@ public abstract class AbstractExporter implements Exporter {
 				if (settings.getBoolean(Settings.ExportWebFiles))
 					exportTasks.add(createCopyTask(rootDir, project, dataPath));
 			
-				exportTasks.addAll(createDataExportTasks(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, dataDir, filenamemap));
+				ExportData data = new ExportData(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, dataDir, filenamemap);
+				exportTasks.addAll(createDataExportTasks(data));
 				
 				return exportTasks;
 			}
@@ -277,10 +278,7 @@ public abstract class AbstractExporter implements Exporter {
 				return fontsToExport;
 			}
 
-	protected abstract List<ITask> createDataExportTasks(String dataPath, IProject project,
-			Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport,
-			Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
-			throws IOException;
+	protected abstract List<ITask> createDataExportTasks(ExportData data) throws IOException;
 
 	protected List<ITask> createVideoExportTasks(ExportOptions options, File rootDir,
 			IVideoEncodingProfile encodingProfile, Dimension maxVideoSize, Collection<IVideo> videosToExport) throws IOException, ExportException {
