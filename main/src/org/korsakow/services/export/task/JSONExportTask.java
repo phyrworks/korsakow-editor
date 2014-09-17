@@ -99,7 +99,7 @@ public class JSONExportTask extends AbstractTask
 	private final File rootDir;
 	private final String dataPath;
 	private final Map<String, String> filenamemap;
-		
+
 	public JSONExportTask(ExportData data)
 	{
 		data.dataPath = FileUtil.setFileExtension(data.dataPath, "js");
