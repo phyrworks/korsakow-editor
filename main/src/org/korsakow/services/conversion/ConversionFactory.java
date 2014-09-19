@@ -46,8 +46,8 @@ public class ConversionFactory extends ConversionModule
 			return new ConvertUpTo24_10(document);
 		if (versionMinor.compareTo(new BigDecimal("25.02")) < 0)
 			return new ConvertUpTo25_02(document);
-		if (versionMinor.compareTo(new BigDecimal("26.06")) < 0)
-			return new ConvertUpTo26_06(document);
+		if (versionMinor.compareTo(new BigDecimal("26.07")) < 0)
+			return new ConvertUpTo26_07(document);
 		return new ConvertUpToBuild(document);
 	}
 

@@ -13,9 +13,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class ConvertUpTo26_06 extends ConversionModule
+public class ConvertUpTo26_07 extends ConversionModule
 {
-	public ConvertUpTo26_06(Document document)
+	public ConvertUpTo26_07(Document document)
 	{
 		super(document);
 	}
@@ -25,7 +25,7 @@ public class ConvertUpTo26_06 extends ConversionModule
 	{
 		try {
 			document.getDocumentElement().setAttribute("versionMajor", "5.0.6.6");
-			document.getDocumentElement().setAttribute("versionMinor", "26.06");
+			document.getDocumentElement().setAttribute("versionMinor", "26.07");
 
 			addMissingFields();
 		} catch (XPathException e) {
