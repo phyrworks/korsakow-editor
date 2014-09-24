@@ -7,15 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import org.korsakow.domain.interf.IImage;
-import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IProject;
-import org.korsakow.domain.interf.ISnu;
-import org.korsakow.domain.interf.ISound;
-import org.korsakow.domain.interf.IText;
-import org.korsakow.domain.interf.IVideo;
 import org.korsakow.domain.task.ITask;
 import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.task.DelegateTask;
@@ -57,12 +50,10 @@ public class FlashExporter extends AbstractExporter
 	}
 	
 	@Override
-	protected List<ITask> createDataExportTasks(String dataPath, IProject project,
-			Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport,
-			Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
+	protected List<ITask> createDataExportTasks(ExportData data)
 			throws IOException {
 				List<ITask> tasks = new ArrayList<ITask>();
-				XMLExportTask task = new XMLExportTask(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, rootDir, filenamemap);
+				XMLExportTask task = new XMLExportTask(data.dataPath, data.project, data.snusToExport, data.textsToExport, data.imagesToExport, data.soundsToExport, data.videosToExport, data.interfacesToExport, data.rootDir, data.filenamemap);
 				tasks.add(task);
 				return Util.list(ITask.class, new DelegateTask(LanguageBundle.getString("export.task.processingproject"), tasks));
 			}

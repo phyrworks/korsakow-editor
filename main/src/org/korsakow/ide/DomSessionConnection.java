@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Struct;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
 import org.dsrg.soenea.service.SoenEAConnection;
 
@@ -26,6 +27,27 @@ public class DomSessionConnection extends SoenEAConnection implements Connection
 			super("Unsupported Feature");
 		}
 	}
+	
+    public void setSchema(String schema) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getSchema() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getNetworkTimeout() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void abort(Executor executor) throws SQLException {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 	public DomSessionConnection()
 	{
 		super(new DummyConnection());
@@ -110,6 +132,7 @@ public class DomSessionConnection extends SoenEAConnection implements Connection
 			throws SQLClientInfoException
 	{
 	}
+	
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException
 	{
