@@ -138,7 +138,6 @@ public class SaveSnuAction extends AbstractAction
 			KNode insertParent = node.getParent();
 			int insertIndex = model.getIndexOfChild( insertParent, node );
 			model.insertNodeInto( ResourceNode.create( generated ), insertParent, insertIndex );
-			model.appendNode( ResourceNode.create( snu ), model.getRoot() );
 		}
 		
 		return response;
