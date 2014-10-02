@@ -67,6 +67,16 @@ public class DefaultResourceTreeTableModel extends DefaultKTreeTableModel implem
 	{
 		return idMap.get(id);
 	}
+	public FolderNode findFolder(FolderNode parent, String name) {
+		for (KNode child : parent.getChildren()) {
+			if (child instanceof FolderNode == false)
+				continue;
+			FolderNode folder = (FolderNode)child;
+			if (folder.getName().equals(name))
+				return folder;
+		}
+		return null;
+	}
 	public void fireChanged()
 	{
         fireTreeStructureChanged(this, new TreePath(getPathToRoot(getRoot())));

@@ -36,6 +36,7 @@ import org.korsakow.domain.proxy.UnknownMediaProxy;
 import org.korsakow.ide.resources.ResourceType;
 import org.korsakow.ide.util.FileUtil;
 import org.korsakow.services.encoders.EncoderException;
+import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.task.ThumbnailExportTask;
 
 public class UpdateSnuCommand extends AbstractCommand{
@@ -199,8 +200,8 @@ public class UpdateSnuCommand extends AbstractCommand{
 	}
 	private static IImage generateStill(IMedia media) throws IOException, InterruptedException, EncoderException {
 		File mediaPath = new File(media.getAbsoluteFilename());
-		String stillName = FileUtil.getFilenameWithoutExtension(mediaPath.getName()) + "_still";
-		stillName = FileUtil.setFileExtension(stillName, FileUtil.getFileExtension(mediaPath.getName()));
+		String stillName = FileUtil.getFilenameWithoutExtension(mediaPath.getName()) + "~ipad";
+		stillName = FileUtil.setFileExtension(stillName, VideoCodec.JPG.getFileExtension());
 		File stillPath = new File(mediaPath.getParent(), stillName);
 
 		log.info(String.format("Generating still from '%s' at '%s", mediaPath.getPath(), stillPath.getPath()));
