@@ -12,7 +12,6 @@ import org.korsakow.domain.command.InsertSnuCommand;
 import org.korsakow.domain.command.Request;
 import org.korsakow.domain.command.Response;
 import org.korsakow.domain.command.UpdateSnuCommand;
-import org.korsakow.domain.interf.IImage;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.ISnu;
 import org.korsakow.domain.mapper.input.MediaInputMapper;
@@ -20,7 +19,6 @@ import org.korsakow.domain.mapper.input.SnuInputMapper;
 import org.korsakow.ide.Application;
 import org.korsakow.ide.DataRegistry;
 import org.korsakow.ide.lang.LanguageBundle;
-import org.korsakow.ide.ui.components.tree.FolderNode;
 import org.korsakow.ide.ui.components.tree.KNode;
 import org.korsakow.ide.ui.components.tree.ResourceNode;
 import org.korsakow.ide.ui.controller.action.AbstractAction;
@@ -133,17 +131,6 @@ public class SaveSnuAction extends AbstractAction
 		} else
 		Application.getInstance().notifyResourceModified( snu );
 
-		IImage generated = (IImage)response.get(UpdateSnuCommand.GENERATED_PREVIEW_IMAGE);
-		final String iOSFolderName = "Preview iOS";
-		if (generated != null) {
-			FolderNode folder = model.findFolder(model.getRoot(), iOSFolderName);
-			if (folder == null) {
-				folder = new FolderNode(iOSFolderName);
-				model.appendNode(folder, model.getRoot());
-			}
-			model.appendNode(ResourceNode.create( generated ), folder);
-		}
-		
 		return response;
 	}
 }
