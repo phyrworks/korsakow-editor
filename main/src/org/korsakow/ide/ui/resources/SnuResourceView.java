@@ -20,6 +20,7 @@ import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -254,8 +255,11 @@ public class SnuResourceView extends ResourceView
 		previewPanelSizer.setVisible(false);
 		previewPanel.add(previewPanelSizer);
 		
-		previewPanel.add(uifac.createLabel("previewImageLabel", LanguageBundle.getString("snuresourceview.previewimage.label")));
+		((JComponent)previewPanel.add(uifac.createLabel("previewImageLabel", LanguageBundle.getString("snuresourceview.previewimage.label"))))
+			.setToolTipText(LanguageBundle.getString("snuresourceview.previewimage.tooltip"));
 		previewPanel.add(previewImageCombo = uifac.createComboBox("previewImageCombo", new ResourceComboBoxModel(true), new ResourceDOComboBoxRenderer()));
+		previewImageCombo.setToolTipText(LanguageBundle.getString("snuresourceview.previewimage.tooltip"));
+
 		previewImageCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				setPreviewImage(getPreviewImage());

@@ -14,6 +14,7 @@ import org.korsakow.domain.command.UpdateSnuCommand;
 import org.korsakow.domain.interf.IEvent;
 import org.korsakow.domain.interf.IImage;
 import org.korsakow.domain.interf.IInterface;
+import org.korsakow.domain.interf.IKeyword;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IPredicate;
 import org.korsakow.domain.interf.IProject;
@@ -46,54 +47,101 @@ import org.korsakow.ide.ui.model.RuleModel;
 import org.korsakow.ide.ui.model.TriggerModel;
 import org.korsakow.ide.ui.resources.SnuResourceView;
 
-public class SnuHelper {
-	public static Request createRequest(SnuResourceView view, Long id)
-	{
-		Request request = new Request();
-		
-		request.set(UpdateSnuCommand.ID, id);
-		request.set(UpdateSnuCommand.NAME, view.getNameFieldText().trim());
-		request.set(UpdateSnuCommand.KEYWORDS, view.getKeywords());
-		
-		request.set(UpdateSnuCommand.MAIN_MEDIA_ID, view.getMainMediaId());
-		if ( view.getMainMediaCustomDuration() != null )
-			request.set(UpdateSnuCommand.MAIN_MEDIA_CUSTOM_DURATION, view.getMainMediaCustomDuration() );
-		request.set(UpdateSnuCommand.RATING, view.getRating());
-		switch (view.getBackgroundSoundMode())
-		{
-		case CLEAR:
-		case KEEP:
-			request.set(UpdateSnuCommand.BACKGROUND_SOUND_ID, null);
-			break;
-		case SET:
-			request.set(UpdateSnuCommand.BACKGROUND_SOUND_ID, view.getBackgroundSoundId());
-			break;
-		}
-		request.set(UpdateSnuCommand.BACKGROUND_SOUND_MODE, view.getBackgroundSoundMode());
-		request.set(UpdateSnuCommand.BACKGROUND_SOUND_VOLUME, 1.0f);
-		request.set(UpdateSnuCommand.BACKGROUND_SOUND_LOOPING, view.getBackgroundSoundLooping());
-		request.set(UpdateSnuCommand.LIVES, view.getLives());
-		request.set(UpdateSnuCommand.INTERFACE_ID, view.getInterfaceId());
-		request.set(UpdateSnuCommand.MAX_LINKS, view.getMaxLinks());
-		request.set(UpdateSnuCommand.LOOPING, view.getLooping());
-		request.set(UpdateSnuCommand.STARTER, view.getStarter());
-		request.set(UpdateSnuCommand.ENDER, view.getEnder());
-		request.set(UpdateSnuCommand.PREVIEW_IMAGE_ID, view.getPreviewImageId());
-		request.set(UpdateSnuCommand.PREVIEW_MEDIA_ID, view.getPreviewMediaId());
-		request.set(UpdateSnuCommand.PREVIEW_TEXT, view.getPreviewText());
-		request.set(UpdateSnuCommand.INSERT_TEXT, view.getInsertText());
-		
-		// TODO: remove reference to Rule objects
-		List<IRule> searchRules = getSearchRules(view);
-		List<IRule> rules = (List<IRule>)view.getCachedRules();
-		if (rules == null)
-			rules = new ArrayList<IRule>();
-		rules.addAll(searchRules);
-		
-		ViewHelper.addRulesToRequest(request, rules);
-		
-		return request;
+interface SnuValueExtractor {
+	String getName();
+	Collection<IKeyword> getKeywords();
+	boolean getStarter();
+	boolean getEnder();
+	Long getMaxLinks();
+	boolean getLooping();
+	Long getMainMediaId();
+	Long getMainMediaCustomDuration();
+	BackgroundSoundMode getBackgroundSoundMode();
+	Long getBackgroundSoundId();
+	boolean getBackgroundSoundLooping();
+	Long getInterfaceId();
+	List<IRule> getRules();
+	Long getLives();
+	Long getPreviewImageId();
+	Long getPreviewMediaId();
+	String getPreviewText();
+	String getInsertText();
+	float getRating();
+}
+
+class SnuDomainObjectExtractor implements SnuValueExtractor {
+	private final ISnu snu;
+	public SnuDomainObjectExtractor(ISnu snu) {
+		this.snu = snu;
 	}
+	@Override
+	public String getName() { return snu.getName(); }
+	@Override
+	public Collection<IKeyword> getKeywords() { return snu.getKeywords(); }
+	@Override
+	public boolean getStarter() { return snu.getStarter(); }
+	@Override
+	public boolean getEnder() { return snu.getEnder(); }
+	@Override
+	public Long getMaxLinks() { return snu.getMaxLinks(); }
+	@Override
+	public boolean getLooping() { return snu.getLooping(); }
+	@Override
+	public Long getMainMediaId() { return snu.getMainMedia()!=null ? snu.getMainMedia().getId() : null; }
+	@Override
+	public Long getMainMediaCustomDuration() { return null; }
+	@Override
+	public BackgroundSoundMode getBackgroundSoundMode() { return snu.getBackgroundSoundMode(); }
+	@Override
+	public Long getBackgroundSoundId() { return snu.getBackgroundSound()!=null? snu.getBackgroundSound().getId() : null; }
+	@Override
+	public boolean getBackgroundSoundLooping() { return snu.getBackgroundSoundLooping(); }
+	@Override
+	public Long getInterfaceId() { return snu.getInterface().getId(); }
+	@Override
+	public List<IRule> getRules() { return snu.getRules(); }
+	@Override
+	public Long getLives() { return snu.getLives(); }
+	@Override
+	public Long getPreviewImageId() { return snu.getPreviewImage()!=null ? snu.getPreviewImage().getId() : null; }
+	@Override
+	public Long getPreviewMediaId() { return snu.getPreviewMedia()!=null ? snu.getPreviewMedia().getId() : null; }
+	@Override
+	public String getPreviewText() { return snu.getPreviewText(); }
+	@Override
+	public String getInsertText() { return snu.getInsertText(); }
+	@Override
+	public float getRating() { return snu.getRating(); }
+}
+
+class SnuResourceViewExtractor implements SnuValueExtractor {
+	
+	private final SnuResourceView view;
+	
+	public SnuResourceViewExtractor(SnuResourceView view) {
+		this.view = view;	
+	}
+
+	public String getName() { return view.getNameFieldText(); }
+	public Collection<IKeyword> getKeywords() { return view.getKeywords(); }
+	public boolean getStarter() { return view.getStarter(); }
+	public boolean getEnder() { return view.getEnder(); }
+	public Long getMaxLinks() { return view.getMaxLinks(); }
+	public boolean getLooping() { return view.getLooping(); }
+	public Long getMainMediaId() { return view.getMainMediaId(); }
+	public Long getMainMediaCustomDuration() { return view.getMainMediaCustomDuration(); }
+	public BackgroundSoundMode getBackgroundSoundMode() { return view.getBackgroundSoundMode(); }
+	public Long getBackgroundSoundId() { return view.getBackgroundSoundId(); }
+	public boolean getBackgroundSoundLooping() { return view.getBackgroundSoundLooping(); }
+	public Long getInterfaceId() { return view.getInterfaceId(); }
+	public List<IRule> getRules() { return getSearchRules(view); }
+	public Long getLives() { return view.getLives(); }
+	public Long getPreviewImageId() { return view.getPreviewImageId(); }
+	public Long getPreviewMediaId() { return view.getPreviewMediaId(); }
+	public String getPreviewText() { return view.getPreviewText(); }
+	public String getInsertText() { return view.getInsertText(); }
+	public float getRating() { return view.getRating(); }
+
 	public static List<IRule> getSearchRules(SnuResourceView resourceView)
 	{
 		K5RuleParser parser = new K5RuleParser();
@@ -145,6 +193,55 @@ public class SnuHelper {
 			isFirstTime = false;
 		}
 		return rules;
+	}
+}
+
+public class SnuHelper {
+	public static Request createRequest(ISnu snu) {
+		return createRequest(new SnuDomainObjectExtractor(snu), snu.getId());
+	}
+	public static Request createRequest(SnuResourceView view, Long id) {
+		return createRequest(new SnuResourceViewExtractor(view), id);
+	}
+	private static Request createRequest(SnuValueExtractor view, Long id)
+	{
+		Request request = new Request();
+		
+		request.set(UpdateSnuCommand.ID, id);
+		request.set(UpdateSnuCommand.NAME, view.getName().trim());
+		request.set(UpdateSnuCommand.KEYWORDS, view.getKeywords());
+		
+		request.set(UpdateSnuCommand.MAIN_MEDIA_ID, view.getMainMediaId());
+		if ( view.getMainMediaCustomDuration() != null )
+			request.set(UpdateSnuCommand.MAIN_MEDIA_CUSTOM_DURATION, view.getMainMediaCustomDuration() );
+		request.set(UpdateSnuCommand.RATING, view.getRating());
+		switch (view.getBackgroundSoundMode())
+		{
+		case CLEAR:
+		case KEEP:
+			request.set(UpdateSnuCommand.BACKGROUND_SOUND_ID, null);
+			break;
+		case SET:
+			request.set(UpdateSnuCommand.BACKGROUND_SOUND_ID, view.getBackgroundSoundId());
+			break;
+		}
+		request.set(UpdateSnuCommand.BACKGROUND_SOUND_MODE, view.getBackgroundSoundMode());
+		request.set(UpdateSnuCommand.BACKGROUND_SOUND_VOLUME, 1.0f);
+		request.set(UpdateSnuCommand.BACKGROUND_SOUND_LOOPING, view.getBackgroundSoundLooping());
+		request.set(UpdateSnuCommand.LIVES, view.getLives());
+		request.set(UpdateSnuCommand.INTERFACE_ID, view.getInterfaceId());
+		request.set(UpdateSnuCommand.MAX_LINKS, view.getMaxLinks());
+		request.set(UpdateSnuCommand.LOOPING, view.getLooping());
+		request.set(UpdateSnuCommand.STARTER, view.getStarter());
+		request.set(UpdateSnuCommand.ENDER, view.getEnder());
+		request.set(UpdateSnuCommand.PREVIEW_IMAGE_ID, view.getPreviewImageId());
+		request.set(UpdateSnuCommand.PREVIEW_MEDIA_ID, view.getPreviewMediaId());
+		request.set(UpdateSnuCommand.PREVIEW_TEXT, view.getPreviewText());
+		request.set(UpdateSnuCommand.INSERT_TEXT, view.getInsertText());
+		
+		ViewHelper.addRulesToRequest(request, view.getRules());
+		
+		return request;
 	}
 	
 	public static void initView(SnuResourceView view, String name, IMedia mainMedia) throws MapperException

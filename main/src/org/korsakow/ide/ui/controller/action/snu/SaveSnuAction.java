@@ -12,7 +12,6 @@ import org.korsakow.domain.command.InsertSnuCommand;
 import org.korsakow.domain.command.Request;
 import org.korsakow.domain.command.Response;
 import org.korsakow.domain.command.UpdateSnuCommand;
-import org.korsakow.domain.interf.IImage;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.ISnu;
 import org.korsakow.domain.mapper.input.MediaInputMapper;
@@ -132,15 +131,6 @@ public class SaveSnuAction extends AbstractAction
 		} else
 		Application.getInstance().notifyResourceModified( snu );
 
-		IImage generated = (IImage)response.get(UpdateSnuCommand.GENERATED_PREVIEW_IMAGE);
-		if (generated != null) {
-			KNode node = model.findResource( snu.getId() );
-			KNode insertParent = node.getParent();
-			int insertIndex = model.getIndexOfChild( insertParent, node );
-			model.insertNodeInto( ResourceNode.create( generated ), insertParent, insertIndex );
-			model.appendNode( ResourceNode.create( snu ), model.getRoot() );
-		}
-		
 		return response;
 	}
 }
