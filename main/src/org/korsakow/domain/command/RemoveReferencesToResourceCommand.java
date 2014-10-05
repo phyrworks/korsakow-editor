@@ -134,6 +134,10 @@ public class RemoveReferencesToResourceCommand extends AbstractCommand{
 			from.setPreviewMedia(null);
 			dirty = true;
 		}
+		if (to.equals(from.getPreviewImage())) {
+			from.setPreviewImage(null);
+			dirty = true;
+		}
 		if (to.equals(from.getInterface())) {
 			if ( !to.equals( project.getDefaultInterface() ) ) {
 				from.setInterface( project.getDefaultInterface() );
