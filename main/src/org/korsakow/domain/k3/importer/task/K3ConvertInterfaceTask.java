@@ -109,6 +109,7 @@ public class K3ConvertInterfaceTask extends AbstractTask
 				k5Widget = WidgetFactory.createNew(WidgetType.InsertText.getId());
 				addWidgetTextProperties(k5Widget);
 			} else
+				
 				report.addUnsupported(k3Widget.type, "Widget");
 			
 			if (k5Widget != null) {
