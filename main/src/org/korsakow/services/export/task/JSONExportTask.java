@@ -99,32 +99,7 @@ public class JSONExportTask extends AbstractTask
 	private final File rootDir;
 	private final String dataPath;
 	private final Map<String, String> filenamemap;
-	
-	/* Deprecate in favor of public JSONExportTask(ExportData data) -- Phoenix 09/17/2014 */
-//	public JSONExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
-////	public XMLExportTask(IProject project, Collection<ISnu> snusToExport, Collection<IInterface> interfacesToExport, File rootDir)
-//	{
-//		dataPath = FileUtil.setFileExtension(dataPath, "js");
-//		List<IImage> adjustedImages = new ArrayList<IImage>(imagesToExport);
-//		for (ISnu snu : snusToExport) {
-//			if (snu.getThumbnail() != null) {
-//				adjustedImages.add(snu.getThumbnail());
-//			}
-//		}
-//		imagesToExport = adjustedImages;
-//		
-//		this.dataPath = dataPath;
-//		this.videosToExport = videosToExport;
-//		this.soundsToExport = soundsToExport;
-//		this.imagesToExport = imagesToExport;
-//		this.textsToExport = textsToExport;
-//		this.snusToExport = snusToExport;
-//		this.interfacesToExport = interfacesToExport;
-//		this.project = project;
-//		this.rootDir = rootDir;
-//		this.filenamemap = filenamemap;
-//	}
-	
+		
 	public JSONExportTask(ExportData data)
 	{
 		data.dataPath = FileUtil.setFileExtension(data.dataPath, "js");

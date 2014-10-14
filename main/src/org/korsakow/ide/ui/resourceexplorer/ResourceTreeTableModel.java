@@ -9,6 +9,7 @@ public interface ResourceTreeTableModel extends KTreeTableModel
 	FolderNode getRoot();
 	KNode remove(Long id);
 	KNode findResource(Long id);
+	FolderNode findFolder(FolderNode parent, String name);
 	void fireChanged();
 	void fireChanged(KNode changed);
 }

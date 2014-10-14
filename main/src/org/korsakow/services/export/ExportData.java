@@ -28,16 +28,16 @@ public class ExportData {
 		Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport,
 		Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
 	{
-	this.dataPath = dataPath;
-	this.project = project;
-	this.snusToExport = snusToExport;
-	this.textsToExport = textsToExport;
-	this.imagesToExport = imagesToExport;
-	this.soundsToExport = soundsToExport;
-	this.videosToExport = videosToExport;
-	this.interfacesToExport = interfacesToExport;
-	this.rootDir = rootDir;
-	this.filenamemap = filenamemap;
+		this.dataPath = dataPath;
+		this.project = project;
+		this.snusToExport = snusToExport;
+		this.textsToExport = textsToExport;
+		this.imagesToExport = imagesToExport;
+		this.soundsToExport = soundsToExport;
+		this.videosToExport = videosToExport;
+		this.interfacesToExport = interfacesToExport;
+		this.rootDir = rootDir;
+		this.filenamemap = filenamemap;
 	}
 }
 
