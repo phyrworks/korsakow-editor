@@ -13,9 +13,7 @@ import org.korsakow.domain.command.Request;
 import org.korsakow.domain.command.Response;
 import org.korsakow.domain.interf.IProject;
 import org.korsakow.domain.interf.IResource;
-import org.korsakow.domain.k3.importer.K3Importer;
 import org.korsakow.domain.mapper.input.ProjectInputMapper;
-import org.korsakow.domain.task.IWorker;
 
 /**
  * Helper between application and webservice. Handles serialization/deserialization.
@@ -132,16 +130,6 @@ public class Command
 		Response response = call(CMD_FIND_RESOURCE_BY_PREVIEWMEDIA, request);
 		List<IResource> domain = (List<IResource>)response.get("resources");
 		return domain;
-	}
-	
-	public static Pair<IWorker, K3Importer> importK3(String filename)
-	{
-		Request request = new Request();
-		request.set("filename", filename);
-		Response response = call(CMD_IMPORTK3, request);
-		IWorker worker = (IWorker)response.get("worker");
-		K3Importer importer = (K3Importer)response.get("importer");
-		return new Pair<IWorker, K3Importer>(worker, importer);
 	}
 	
 }
