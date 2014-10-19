@@ -42,7 +42,6 @@ public class FindMissingFilesCommand extends AbstractCommand{
 		}
 		Collection<IMedia> media = project.getMedia();
 		Collection<IMedia> mediaMissingFiles = new HashSet<IMedia>();
-		MultiMap<String, File, Set<File>> filesToPossibleMatches = new MultiHashMapHashSet<String, File>();
 		
 		// find media with missing files
 		for (IMedia medium : media)
@@ -54,8 +53,22 @@ public class FindMissingFilesCommand extends AbstractCommand{
 				mediaMissingFiles.add(medium);
 				continue;
 			}
+			
+			if ( ResourceType.VIDEO.isInstance( medium ) ) {
+				// map it because UnknownResourceProxy is a broken solution & we can't cast to IVideo
+				Video video;
+				try {
+					video = VideoInputMapper.map( medium.getId() );
+				} catch (MapperException e) {
+					throw new CommandException(e);
+				}
+				
+				if (video.getSubtitles() != null)
+					mediaMissingFiles.add(video);
+			}
 		}
 		
+		MultiMap<String, File, Set<File>> filesToPossibleMatches = new MultiHashMapHashSet<String, File>();
 		boolean modified = false;
 		Collection<String> uniqueMatches = new HashSet<String>();
 		Collection<IMedia> uniqueMatchedMedia = new HashSet<IMedia>();
@@ -81,10 +94,12 @@ public class FindMissingFilesCommand extends AbstractCommand{
 						}
 						
 						if ( video.getSubtitles() != null ) {
-							if ( match.getParent() != null ) {
-								File testFile = new File( match.getParent(), new File( video.getSubtitles() ).getName() );
-								if ( testFile.exists() && testFile.isFile() )
-									video.setSubtitles( testFile.getAbsolutePath() );
+							File subFile = new File(new File(video.getSubtitles()).getName());
+							findFileRecursive(subFile, basePath, filesToPossibleMatches);
+
+							if (filesToPossibleMatches.containsKey(subFile.getName())) {
+								File subMatch = filesToPossibleMatches.get(subFile.getName()).iterator().next();
+								video.setSubtitles(subMatch.getAbsolutePath());
 							}
 						}
 					}
