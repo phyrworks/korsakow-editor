@@ -53,6 +53,7 @@ import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.resources.WidgetType;
 import org.korsakow.ide.resources.widget.PreviewTextEffect;
 import org.korsakow.ide.resources.widget.PreviewTextMode;
+import org.korsakow.ide.resources.widget.WidgetModel;
 import org.korsakow.ide.resources.widget.WidgetPersistAction;
 import org.korsakow.ide.resources.widget.WidgetPersistCondition;
 import org.korsakow.ide.rules.RuleType;
@@ -151,8 +152,8 @@ public class K3ConvertProjectTask extends K3ImportTask
 				widget.setDynamicProperty(id, new SnuAutoLink().getDynamicProperty(id));
 			}
 			widget.setDynamicProperty("index", i);
-			widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.previewTextColor));
-			widget.setDynamicProperty("fontFamily", (k3Settings.previewTextFontFamily));
+			if (k3Settings.previewTextColor != null) widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.previewTextColor));
+			if (k3Settings.previewTextFontFamily != null) widget.setDynamicProperty("fontFamily", (k3Settings.previewTextFontFamily));
 			widget.setDynamicProperty("fontSize", (k3Settings.previewTextSize));
 			widget.setDynamicProperty("previewTextMode", PreviewTextMode.MOUSEOVER.getId());
 			widget.setDynamicProperty("previewTextEffect", PreviewTextEffect.ANIMATE.getId());
@@ -169,8 +170,8 @@ public class K3ConvertProjectTask extends K3ImportTask
 		for (String id : new Subtitles().getDynamicPropertyIds()) {
 			widget.setDynamicProperty(id, new Subtitles().getDynamicProperty(id));
 		}
-		widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.subtitleTextColor));
-		widget.setDynamicProperty("fontFamily", (k3Settings.subtitleTextFontFamily));
+		if (k3Settings.subtitleTextColor != null) widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.subtitleTextColor));
+		if (k3Settings.subtitleTextFontFamily != null) widget.setDynamicProperty("fontFamily", (k3Settings.subtitleTextFontFamily));
 		widget.setDynamicProperty("fontSize", (k3Settings.subtitleTextSize));
 		
 		widgets.add(widget=WidgetFactory.createNew(WidgetType.InsertText.getDisplayName(),
@@ -184,8 +185,8 @@ public class K3ConvertProjectTask extends K3ImportTask
 		for (String id : new InsertText().getDynamicPropertyIds()) {
 			widget.setDynamicProperty(id, new InsertText().getDynamicProperty(id));
 		}
-		widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.insertTextColor));
-		widget.setDynamicProperty("fontFamily", (k3Settings.insertTextFontFamily));
+		if (k3Settings.insertTextColor != null) widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.insertTextColor));
+		if (k3Settings.insertTextFontFamily != null) widget.setDynamicProperty("fontFamily", (k3Settings.insertTextFontFamily));
 		widget.setDynamicProperty("fontSize", (k3Settings.insertTextSize));
 		
 		interf = InterfaceFactory.createNew("3-Link Interface", new ArrayList<IKeyword>(), widgets, 
@@ -230,8 +231,8 @@ public class K3ConvertProjectTask extends K3ImportTask
 		for (String id : new SnuAutoMultiLink().getDynamicPropertyIds()) {
 			widget.setDynamicProperty(id, new SnuAutoMultiLink().getDynamicProperty(id));
 		}
-		widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.previewTextColor));
-		widget.setDynamicProperty("fontFamily", (k3Settings.previewTextFontFamily));
+		if (k3Settings.previewTextColor != null) widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.previewTextColor));
+		if (k3Settings.previewTextFontFamily != null) widget.setDynamicProperty("fontFamily", (k3Settings.previewTextFontFamily));
 		widget.setDynamicProperty("fontSize", (k3Settings.previewTextSize));
 		widget.setDynamicProperty("previewTextMode", PreviewTextMode.MOUSEOVER.getId());
 		widget.setDynamicProperty("previewTextEffect", PreviewTextEffect.ANIMATE.getId());
@@ -247,8 +248,8 @@ public class K3ConvertProjectTask extends K3ImportTask
 		for (String id : new Subtitles().getDynamicPropertyIds()) {
 			widget.setDynamicProperty(id, new Subtitles().getDynamicProperty(id));
 		}
-		widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.subtitleTextColor));
-		widget.setDynamicProperty("fontFamily", (k3Settings.subtitleTextFontFamily));
+		if (k3Settings.subtitleTextColor != null) widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.subtitleTextColor));
+		if (k3Settings.subtitleTextFontFamily != null) widget.setDynamicProperty("fontFamily", (k3Settings.subtitleTextFontFamily));
 		widget.setDynamicProperty("fontSize", (k3Settings.subtitleTextSize));
 		
 		widgets.add(widget=WidgetFactory.createNew(WidgetType.InsertText.getDisplayName(),
@@ -262,8 +263,8 @@ public class K3ConvertProjectTask extends K3ImportTask
 		for (String id : new InsertText().getDynamicPropertyIds()) {
 			widget.setDynamicProperty(id, new InsertText().getDynamicProperty(id));
 		}
-		widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.insertTextColor));
-		widget.setDynamicProperty("fontFamily", (k3Settings.insertTextFontFamily));
+		if (k3Settings.insertTextColor != null) widget.setDynamicProperty("fontColor", convertK3Color(k3Settings.insertTextColor));
+		if (k3Settings.insertTextFontFamily != null) widget.setDynamicProperty("fontFamily", (k3Settings.insertTextFontFamily));
 		widget.setDynamicProperty("fontSize", (k3Settings.insertTextSize));
 		
 		interf = InterfaceFactory.createNew("Many-Link Interface", new ArrayList<IKeyword>(), widgets, 
@@ -294,38 +295,40 @@ public class K3ConvertProjectTask extends K3ImportTask
 		K3ProjectSettings k3Settings = k3Project.get().settings;
 
 		Collection<IWidget> widgets = interf.getWidgets();
+		WidgetModel model;
 		for (IWidget widget : widgets) {
 			switch (WidgetType.forId(widget.getWidgetId()))
 			{
 			case MainMedia:
-				for (String id : new MainMedia().getDynamicPropertyIds()) {
-					widget.setDynamicProperty(id, new MainMedia().getDynamicProperty(id));
+				model = new MainMedia();
+				for (String id : model.getDynamicPropertyIds()) {
+					widget.setDynamicProperty(id, model.getDynamicProperty(id));
 				}
 				break;
 			case InsertText:
-				for (String id : new InsertText().getDynamicPropertyIds()) {
-					widget.setDynamicProperty(id, new InsertText().getDynamicProperty(id));
+				model = new InsertText();
+				for (String id : model.getDynamicPropertyIds()) {
+					widget.setDynamicProperty(id, model.getDynamicProperty(id));
 				}
-				widget.setDynamicProperty("fontColor", k3Settings.insertTextColor);
-				widget.setDynamicProperty("fontFamily", k3Settings.insertTextFontFamily);
+				if (k3Settings.insertTextFontFamily != null) widget.setDynamicProperty("fontFamily", k3Settings.insertTextFontFamily);
 				widget.setDynamicProperty("fontSize", k3Settings.insertTextSize);
 				break;
 			case SnuAutoLink:
-				for (String id : new SnuAutoLink().getDynamicPropertyIds()) {
-					widget.setDynamicProperty(id, new SnuAutoLink().getDynamicProperty(id));
+				model = new SnuAutoLink();
+				for (String id : model.getDynamicPropertyIds()) {
+					widget.setDynamicProperty(id, model.getDynamicProperty(id));
 				}
-				widget.setDynamicProperty("fontColor", k3Settings.previewTextColor);
-				widget.setDynamicProperty("fontFamily", k3Settings.previewTextFontFamily);
+				if (k3Settings.previewTextFontFamily != null) widget.setDynamicProperty("fontFamily", k3Settings.previewTextFontFamily);
 				widget.setDynamicProperty("fontSize", k3Settings.previewTextSize);
 				widget.setDynamicProperty("previewTextMode", PreviewTextMode.MOUSEOVER.getId());
 				widget.setDynamicProperty("previewTextEffect", PreviewTextEffect.ANIMATE.getId());
 				break;
 			case Subtitles:
-				for (String id : new Subtitles().getDynamicPropertyIds()) {
-					widget.setDynamicProperty(id, new Subtitles().getDynamicProperty(id));
+				model = new Subtitles();
+				for (String id : model.getDynamicPropertyIds()) {
+					widget.setDynamicProperty(id, model.getDynamicProperty(id));
 				}
-				widget.setDynamicProperty("fontColor", k3Settings.subtitleTextColor);
-				widget.setDynamicProperty("fontFamily", k3Settings.subtitleTextFontFamily);
+				if (k3Settings.subtitleTextFontFamily != null) widget.setDynamicProperty("fontFamily", k3Settings.subtitleTextFontFamily);
 				widget.setDynamicProperty("fontSize", k3Settings.subtitleTextSize);
 				break;
 			}

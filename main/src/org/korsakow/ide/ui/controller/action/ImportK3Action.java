@@ -10,6 +10,10 @@ import javax.swing.JProgressBar;
 
 import org.apache.log4j.Logger;
 import org.dsrg.soenea.domain.MapperException;
+import org.korsakow.domain.CommandExecutor;
+import org.korsakow.domain.command.ImportK3Command;
+import org.korsakow.domain.command.Request;
+import org.korsakow.domain.command.Response;
 import org.korsakow.domain.interf.IProject;
 import org.korsakow.domain.k3.importer.K3ImportException;
 import org.korsakow.domain.k3.importer.K3ImportReport;
@@ -23,16 +27,15 @@ import org.korsakow.ide.DataRegistry;
 import org.korsakow.ide.controller.ApplicationAdapter;
 import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.ui.controller.ImportHelper;
-import org.korsakow.ide.ui.controller.ProjectLoader;
 import org.korsakow.ide.ui.controller.ProjectExplorerController.ProgressBarWorkerListener;
+import org.korsakow.ide.ui.controller.ProjectLoader;
 import org.korsakow.ide.ui.controller.action.helper.ProgressDialogStatusListener;
 import org.korsakow.ide.ui.dialogs.K3ImportDialog;
-import org.korsakow.ide.util.Command;
-import org.korsakow.ide.util.Pair;
 import org.korsakow.ide.util.UIUtil;
 
 public class ImportK3Action extends ApplicationAdapter implements ActionListener
 {
+	private static Logger logger = Logger.getLogger(ImportK3Action.class);
 
 	public void actionPerformed(ActionEvent event) 
 	{
@@ -93,14 +96,12 @@ public class ImportK3Action extends ApplicationAdapter implements ActionListener
 		UIUtil.centerOnFrame(progressDialog, Application.getInstance().getProjectExplorer());
 		progressDialog.setModal(true);
 		
-//		K3Importer k3Importer = new K3Importer();
-//		
-//		List<Task> importTasks = k3Importer.createImportTasks(file);
-//		
-//		UIWorker importWorker = new UIWorker(importTasks);
-		Pair<IWorker, K3Importer> pair = Command.importK3(file.getPath());
-		IWorker importWorker = pair.getFirst();
-		K3Importer k3Importer = pair.getSecond();
+//
+		Request request = new Request();
+		request.set("filename", file.getPath());
+		Response response = CommandExecutor.executeCommand(ImportK3Command.class, request);
+		IWorker importWorker = (IWorker)response.get("worker");
+		K3Importer k3Importer = (K3Importer)response.get("importer");
 		
 		if (!k3Importer.getDatabaseFile().exists()) {
 			app.showAlertDialog(LanguageBundle.getString("import.notak3project.window.title"), LanguageBundle.getString("import.notak3project.window.message", originalFile.getAbsolutePath()));
@@ -152,6 +153,7 @@ public class ImportK3Action extends ApplicationAdapter implements ActionListener
 				else
 					file = "";
 			}
+			
 			K3ImportDialog dialog = new K3ImportDialog(file, line,
 					LanguageBundle.getString("import.notak3project.window.message", details));
 			Application.getInstance().showAlertDialog(LanguageBundle.getString("import.notak3project.window.title"), dialog);
@@ -169,6 +171,7 @@ public class ImportK3Action extends ApplicationAdapter implements ActionListener
 		@Override
 		protected void handleException(Throwable e)
 		{
+			logger.warn("", e);
 			if (e instanceof K3ImportException)
 				handleImportException((K3ImportException)e);
 			else
