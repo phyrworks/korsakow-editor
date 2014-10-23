@@ -39,7 +39,7 @@ public class K5RuleParser2
 	}
 	public List<K5Lexeme> tokenize(String code) throws RuleParserException
 	{
-		List<K5Lexeme> tokens = new ArrayList<K5Lexeme>();
+		List<K5Lexeme> tokens = new ArrayList<>();
 		String[] parts = code.split(String.format("[%s\\s]", K5Symbol.DEFAULT_STATEMENT_SEPARATOR_STRING));
 		for (String part : parts) {
 			part = part.trim();

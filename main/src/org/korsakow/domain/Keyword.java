@@ -6,30 +6,34 @@ import java.util.LinkedHashSet;
 
 import org.korsakow.domain.interf.IKeyword;
 
-public class Keyword implements IKeyword
-{
-	public static Collection<IKeyword> fromStrings(Collection<String> values)
-	{
-		HashSet<IKeyword> keywords = new LinkedHashSet<IKeyword>();
-		for (String value : values)
-			keywords.add(new Keyword(value));
-		return keywords;
+public class Keyword implements IKeyword {
+
+	public static Collection<IKeyword> fromStrings(Collection<String> values) {
+	    HashSet<IKeyword> keywords = new LinkedHashSet<>();
+	    for (String value : values) {
+		keywords.add(new Keyword(value));
+	    }
+	    
+	    return keywords;
 	}
-	public static Collection<String> toStrings(Collection<IKeyword> keywords)
-	{
-		HashSet<String> values = new LinkedHashSet<String>();
-		for (IKeyword keyword : keywords)
-			values.add(keyword.getValue());
-		return values;
+
+	public static Collection<String> toStrings(Collection<IKeyword> keywords) {
+	    HashSet<String> values = new LinkedHashSet<>();
+	    for (IKeyword keyword : keywords) {
+		values.add(keyword.getValue());
+	    }
+
+	    return values;
 	}
+    
 	private String value;
 	private float weight;
 	
-	Keyword(String value)
+	public Keyword(String value)
 	{
 		this(value, 1);
 	}
-	Keyword(String value, float weight)
+	public Keyword(String value, float weight)
 	{
 		setValue(value);
 		setWeight(weight);
@@ -52,7 +56,7 @@ public class Keyword implements IKeyword
 	{
 		return weight;
 	}
-	
+
 	/**
 	 * Based solely on value, not weight.
 	 */
@@ -75,6 +79,7 @@ public class Keyword implements IKeyword
 	/**
 	 * By value, then weight.
 	 */
+	@Override
 	public int compareTo(IKeyword o) {
 		int c = value.compareTo(o.getValue());
 		if (c == 0)

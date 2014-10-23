@@ -12,10 +12,10 @@ import org.korsakow.ide.resources.ResourceType;
 
 public class Rule extends Resource implements IRule
 {
-	private final Hashtable<String, Object> abstractProperties = new Hashtable<String, Object>();
+	private final Hashtable<String, Object> abstractProperties = new Hashtable<>();
 	private String ruleType;
 	private Long triggerTime = 0L;
-	private List<IRule> rules = new ArrayList<IRule>();
+	private List<IRule> rules = new ArrayList<>();
 	Rule()
 	{
 		this(DataRegistry.getMaxId(), 0);

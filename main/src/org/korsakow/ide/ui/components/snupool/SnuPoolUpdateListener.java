@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.dsrg.soenea.domain.MapperException;
+import org.dsrg.soenea.domain.command.CommandException;
+import org.korsakow.domain.CommandExecutor;
+import org.korsakow.domain.command.Request;
 import org.korsakow.domain.interf.IKeyword;
 import org.korsakow.domain.interf.IProject;
 import org.korsakow.domain.interf.IResource;
@@ -26,6 +29,7 @@ public class SnuPoolUpdateListener extends ApplicationAdapter implements Runnabl
 	{
 		this.pool = pool;
 	}
+	@Override
 	public void run()
 	{
 		doUpdate();

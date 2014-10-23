@@ -35,6 +35,7 @@ public class ResourceManager
 				// in dist builds parentDir will be the Jar file; running from the IDE it will just be the path
 				if (!parentDir.isDirectory())
 					parentDir = parentDir.getParentFile();
+				
 			} catch (URISyntaxException e) {
 				throw new MissingResourceException(e.getMessage(), clazz.getCanonicalName(), name);
 			}

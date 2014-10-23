@@ -259,6 +259,7 @@ public class NewMediaPanel extends JPanel //  extends ResourcePanel<M>
 		if (mediaComponent != null && playable != null) {
 			// runLater: blarg, we have to wait for mediaPlaceHolder to have been layed out so its size is calculated. this is a lazy and not-the-best-way of doing it
 			UIUtil.runUITaskLater(new Runnable() {
+				@Override
 				public void run() {
 					try {
 						Dimension maxSize = mediaPlaceHolder.getSize();
@@ -306,6 +307,7 @@ public class NewMediaPanel extends JPanel //  extends ResourcePanel<M>
 	{
 		if (playable == null)
 			return;
+		
 		seekSliderDontUpdate = true;
 		long value = (long)Math.ceil(SLIDER_MAX*playable.getTime() / ((double)(duration!=0?duration:1)));
 		seekSlider.setValue((int)value);

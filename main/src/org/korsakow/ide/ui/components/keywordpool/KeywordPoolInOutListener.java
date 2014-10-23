@@ -22,17 +22,21 @@ public class KeywordPoolInOutListener implements ActionListener
 	{
 		this.pool = pool;
 	}
+	@Override
 	public void actionPerformed(ActionEvent event)
 	{
 		Object id = ((JComponent)event.getSource()).getClientProperty("poolid");
-		if (event.getActionCommand() == KeywordHeader.IN_ACTION)
-			inAction(id);
-		else
-		if (event.getActionCommand() == KeywordHeader.OUT_ACTION)
-			outAction(id);
-		else
-		if (event.getActionCommand() == KeywordHeader.ITEM_ACTION)
-			itemAction(id);
+	    switch (event.getActionCommand()) {
+	    	case KeywordHeader.IN_ACTION:
+		    inAction(id);
+		    break;
+	    	case KeywordHeader.OUT_ACTION:
+		    outAction(id);
+		    break;
+	    	case KeywordHeader.ITEM_ACTION:
+		    itemAction(id);
+		    break;
+	    }
 			
 	}
 	/**

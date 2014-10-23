@@ -12,12 +12,14 @@ public class KeywordEntry implements HeaderEntry
 	private Collection<Long> outSnus = null;
 	private final long inCount;
 	private final long outCount;
+	
 	public KeywordEntry(IKeyword keyword, long inCount, long outCount)
 	{
-		this.keyword = keyword;
-		this.inCount = inCount;
-		this.outCount = outCount;
+	    this.keyword = keyword;
+	    this.inCount = inCount;
+	    this.outCount = outCount;
 	}
+	
 	public IKeyword getKeyword()
 	{
 		return keyword;

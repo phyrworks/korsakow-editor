@@ -96,9 +96,7 @@ public class SaveSnuAction extends AbstractAction
 			id = ((ISnu)response.get(UpdateSnuCommand.SNU)).getId();
 			UoW.newCurrent();
 			DataRegistry.rollback();
-		} catch (CommandException e) {
-			Application.getInstance().showUnhandledErrorDialog(LanguageBundle.getString("general.errors.uncaughtexception.title"), e);
-		} catch (InterruptedException e) {
+		} catch (CommandException | InterruptedException e) {
 			Application.getInstance().showUnhandledErrorDialog(LanguageBundle.getString("general.errors.uncaughtexception.title"), e);
 		} finally {
 			((JFrame)view.getTopLevelAncestor()).dispose();
@@ -130,7 +128,7 @@ public class SaveSnuAction extends AbstractAction
 			Application.getInstance().notifyResourceAdded( snu );
 		} else
 		Application.getInstance().notifyResourceModified( snu );
-
+		
 		return response;
 	}
 }

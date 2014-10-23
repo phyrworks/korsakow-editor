@@ -30,11 +30,10 @@ import org.korsakow.ide.util.UIResourceManager;
 public class KeywordPool extends AbstractPool<KeywordEntry, SnuEntry> implements ListDataListener
 {
 	public static Icon inIcon = UIResourceManager.getIcon(UIResourceManager.ICON_SNU_IN);
-	public static Icon outIcon = UIResourceManager.getIcon(UIResourceManager.ICON_SNU_OUT);
-	
-	private final Collection<ActionListener> inListeners = new ArrayList<ActionListener>();
-	private final Collection<ActionListener> outListeners = new ArrayList<ActionListener>();
-	private final Collection<ActionListener> itemListeners = new ArrayList<ActionListener>();
+	public static Icon outIcon = UIResourceManager.getIcon(UIResourceManager.ICON_SNU_OUT);	
+	private final Collection<ActionListener> inListeners = new ArrayList<>();
+	private final Collection<ActionListener> outListeners = new ArrayList<>();
+	private final Collection<ActionListener> itemListeners = new ArrayList<>();
 	
 	private JLabel headerLabel;
 	
@@ -80,11 +79,11 @@ public class KeywordPool extends AbstractPool<KeywordEntry, SnuEntry> implements
 		header.setInText(""+entry.getInCount());
 		header.setOutText(""+entry.getOutSnus().size());
 		
-		Collection<Long> snuIds = new HashSet<Long>();
+		Collection<Long> snuIds = new HashSet<>();
 		snuIds.addAll(entry.getInSnus());
 		snuIds.addAll(entry.getOutSnus());
 
-		List<SnuEntry> snuEntries = new ArrayList<SnuEntry>();
+		List<SnuEntry> snuEntries = new ArrayList<>();
 		try {
 			for (Long snuId : snuIds)
 			{
@@ -122,6 +121,7 @@ public class KeywordPool extends AbstractPool<KeywordEntry, SnuEntry> implements
 		{
 			this.header = header;
 		}
+		@Override
 		public void actionPerformed(ActionEvent event)
 		{
 			// due to (my) shoddy impl the listeners want to pull a JComponent clientProperty off of the event source, so we edit the event
@@ -137,6 +137,7 @@ public class KeywordPool extends AbstractPool<KeywordEntry, SnuEntry> implements
 		{
 			this.header = header;
 		}
+		@Override
 		public void actionPerformed(ActionEvent event)
 		{
 			// due to (my) shoddy impl the listeners want to pull a JComponent clientProperty off of the event source, so we edit the event
@@ -152,6 +153,7 @@ public class KeywordPool extends AbstractPool<KeywordEntry, SnuEntry> implements
 		{
 			this.header = header;
 		}
+		@Override
 		public void actionPerformed(ActionEvent event)
 		{
 			// due to (my) shoddy impl the listeners want to pull a JComponent clientProperty off of the event source, so we edit the event

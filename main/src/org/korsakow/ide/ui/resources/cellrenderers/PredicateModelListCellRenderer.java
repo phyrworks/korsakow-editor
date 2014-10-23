@@ -12,7 +12,7 @@ import javax.swing.ListCellRenderer;
 import org.korsakow.ide.ui.model.PredicateModel;
 import org.korsakow.services.plugin.predicate.PredicateTypeInfoFactory;
 
-public class PredicateModelListCellRenderer extends DefaultListCellRenderer implements ListCellRenderer
+public class PredicateModelListCellRenderer extends DefaultListCellRenderer implements ListCellRenderer<Object>
 {
 	public Component getListCellRendererComponent(
 		       JList list,              // the list

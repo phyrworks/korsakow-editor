@@ -32,6 +32,16 @@ import java.util.Map;
  */
 public class UnsupportedResultSet implements ResultSet
 {
+
+    @Override
+    public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 	private static class NotImplementedException extends SQLException
 	{
 		public NotImplementedException()
@@ -39,15 +49,6 @@ public class UnsupportedResultSet implements ResultSet
 			super("NotImplemented");
 		}
 	}
-	
-    public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 	public boolean absolute(int row) throws SQLException {
 		throw new NotImplementedException();
 	}

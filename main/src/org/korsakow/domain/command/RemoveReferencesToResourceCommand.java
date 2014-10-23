@@ -35,6 +35,7 @@ public class RemoveReferencesToResourceCommand extends AbstractCommand{
 		super(request, response);
 		
 	}
+	@Override
 	public void execute()
 			throws CommandException {
 		try {
@@ -42,8 +43,8 @@ public class RemoveReferencesToResourceCommand extends AbstractCommand{
 			
 			IResource referent = ResourceInputMapper.map(request.getLong("id"));
 			
-			Set<IResource> dirty = new HashSet<IResource>();
-			Set<IResource> locked = new HashSet<IResource>();
+			Set<IResource> dirty = new HashSet<>();
+			Set<IResource> locked = new HashSet<>();
 
 			if (referent instanceof ISnu) {
 				ISnu snu = (ISnu) referent;
@@ -82,15 +83,7 @@ public class RemoveReferencesToResourceCommand extends AbstractCommand{
 
 			UoW.getCurrent().commit();
 			UoW.newCurrent();
-		} catch (MapperException e) {
-			throw new CommandException(e);
-		} catch (SQLException e) {
-			throw new CommandException(e);
-		} catch (KeyNotFoundException e) {
-			throw new CommandException(e);
-		} catch (CreationException e) {
-			throw new CommandException(e);
-		} catch (XPathExpressionException e) {
+		} catch (MapperException | SQLException | KeyNotFoundException | CreationException | XPathExpressionException e) {
 			throw new CommandException(e);
 		}
 	}
@@ -183,7 +176,7 @@ public class RemoveReferencesToResourceCommand extends AbstractCommand{
 	private boolean removeReferences(IDynamicProperties from, IResource to)
 	{
 		boolean dirty = false;
-		Collection<String> ids = new HashSet<String>(from.getDynamicPropertyIds()); // concurrent modification
+		Collection<String> ids = new HashSet<>(from.getDynamicPropertyIds()); // concurrent modification
 		for (String id : ids)
 		{
 			// TODO: this is a terrible way of checking but at the moment its the best we can do.

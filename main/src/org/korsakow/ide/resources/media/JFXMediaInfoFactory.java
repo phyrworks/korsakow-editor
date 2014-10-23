@@ -1,32 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package org.korsakow.ide.resources.media;
 
 import java.awt.Component;
 import java.io.File;
-
-
 /**
- * Depends on QTSession.open being called.
- * We -could- open/close it here, but for now I choose not to.
- * 
- * Originally (see SVN history) this was implemented via FFMPEG but a build that fixed
- * other issues subsequently failed to accurately report duration!!!
- * 
- * @author d
  *
+ * @author phoenix
  */
-public class QTMediaInfoFactory
-{
+public class JFXMediaInfoFactory {
 	public int width;
 	public int height;
 	public long duration;
 	
 	public static MediaInfo getInfo(File src)
 	{
-		QTVideo video = null;
+		JFXVideo video = null;
 		try {
 			MediaInfo info = new MediaInfo();
 			
-			video = new QTVideo(src.getPath());
+			video = new JFXVideo(src.getPath());
 			Component comp = video.getComponent();
 			info.width = comp.getWidth();
 			info.height = comp.getHeight();
@@ -36,4 +33,5 @@ public class QTMediaInfoFactory
 			try { if (video != null) video.dispose(); } catch (Throwable t) {}
 		}
 	}
+    
 }

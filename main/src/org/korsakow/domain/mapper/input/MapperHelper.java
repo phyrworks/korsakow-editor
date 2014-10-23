@@ -109,7 +109,7 @@ public class MapperHelper
 	}
 	public static Collection<IResource> findResourcesReferencing(long id) throws MapperException, XPathExpressionException, SQLException
 	{
-		Set<IResource> references = new HashSet<IResource>();
+		Set<IResource> references = new HashSet<>();
 		
 		//		// TODO: obviously maintaining this list is not the way to go
 //		// I would like to have it so the structure clearly differentiates between an ID declaration and

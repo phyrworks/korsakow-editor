@@ -140,13 +140,7 @@ public class UpdateSnuCommand extends AbstractCommand{
 			UoW.getCurrent().registerDirty(s);
 			UoW.getCurrent().commit();
 			UoW.newCurrent();
-		} catch (MapperException e) {
-			throw new CommandException(e);
-		} catch (SQLException e) {
-			throw new CommandException(e);
-		} catch (KeyNotFoundException e) {
-			throw new CommandException(e);
-		} catch (CreationException e) {
+		} catch (    MapperException | SQLException | KeyNotFoundException | CreationException e) {
 			throw new CommandException(e);
 		}
 	}

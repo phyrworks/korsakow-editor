@@ -44,14 +44,18 @@ public abstract class ResourceView extends KLayoutPanel
 	}
 	protected void createUIComponents()
 	{
-		IUIFactory uifac = UIFactory.getFactory();
-		//add(statusArea = uifac.createTextArea("statusArea"));
-		statusArea = uifac.createTextArea("statusArea");
-		add(nameLabel = uifac.createLabel("nameLabel"));
-		add(nameField = uifac.createTextField("nameField"));
-		add(tabbedPane = uifac.createTabbedPane("tabbedPane"));
-		add(inKeywordLabel = uifac.createLabel("inKeywordsLabel", LanguageBundle.getString("resourceview.inkeywords.label"), UIResourceManager.getIcon(UIResourceManager.ICON_SNU_IN)));
-		add(uifac.customComponent("inKeywords", (inKeywordBox = new TokenizerTextArea())));
+		/* Moved to SnuResourceView, because it is the only place that calls 
+			this method, and because we need a special version of TokenizerTextArea
+			that can process Map LOCs properly -- Phoenix
+		*/
+//		IUIFactory uifac = UIFactory.getFactory();
+//		//add(statusArea = uifac.createTextArea("statusArea"));
+//		statusArea = uifac.createTextArea("statusArea");
+//		add(nameLabel = uifac.createLabel("nameLabel"));
+//		add(nameField = uifac.createTextField("nameField"));
+//		add(tabbedPane = uifac.createTabbedPane("tabbedPane"));
+//		add(inKeywordLabel = uifac.createLabel("inKeywordsLabel", LanguageBundle.getString("resourceview.inkeywords.label"), UIResourceManager.getIcon(UIResourceManager.ICON_SNU_IN)));
+//		add(uifac.customComponent("inKeywords", (inKeywordBox = new TokenizerTextArea())));
 	}
 	protected void layoutUIComponents()
 	{
@@ -127,15 +131,15 @@ public abstract class ResourceView extends KLayoutPanel
 	}
 	public Collection<IKeyword> getKeywords()
 	{
-		Collection<IKeyword> keywords = new TreeSet<IKeyword>();
-		Collection<String> tokens = inKeywordBox.getTokens();
+		Collection<IKeyword> keywords = new TreeSet<>();
+		Collection<String> tokens = getKeywordTokens();
 		for (String token : tokens)
 			keywords.add(KeywordFactory.createNew(token));
 		return keywords;
 	}
 	public void setKeywords(Collection<IKeyword> keywords)
 	{
-		Collection<String> tokens = new TreeSet<String>();
+		Collection<String> tokens = new TreeSet<>();
 		for (IKeyword keyword : keywords)
 			tokens.add(keyword.getValue());
 		setKeywordTokens(tokens);
@@ -144,7 +148,7 @@ public abstract class ResourceView extends KLayoutPanel
 	{
 		inKeywordBox.setTokens(keywords);
 	}
-	public Collection<String> getKeywordTokens(Collection<String> tokens)
+	public Collection<String> getKeywordTokens()
 	{
 		return inKeywordBox.getTokens();
 	}

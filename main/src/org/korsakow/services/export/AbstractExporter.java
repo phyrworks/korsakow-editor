@@ -47,7 +47,7 @@ import org.korsakow.services.export.task.ThumbnailExportTask;
 import org.korsakow.services.export.task.VideoExportTask;
 
 public abstract class AbstractExporter implements Exporter {
-	
+
 	public static final String VIDEO_DIR = "video";
 	public static final String TEXT_DIR = "text";
 	public static final String IMAGE_DIR = "image";
@@ -70,22 +70,25 @@ public abstract class AbstractExporter implements Exporter {
 	protected ISettings settings;
 	protected IProject projectToExport;
 	protected String indexFilename;
-	protected Collection<ISnu> snusToExport = new HashSet<ISnu>();
-	protected Collection<ISound> soundsToExport = new HashSet<ISound>();
-	protected Collection<IImage> imagesToExport = new HashSet<IImage>();
-	protected Collection<IVideo> videosToExport = new HashSet<IVideo>();
-	protected Collection<IInterface> interfacesToExport = new HashSet<IInterface>();
-	protected Collection<IText> textsToExport = new HashSet<IText>();
+	protected Collection<ISnu> snusToExport = new HashSet<>();
+	protected Collection<ISound> soundsToExport = new HashSet<>();
+	protected Collection<IImage> imagesToExport = new HashSet<>();
+	protected Collection<IVideo> videosToExport = new HashSet<>();
+	protected Collection<IInterface> interfacesToExport = new HashSet<>();
+	protected Collection<IText> textsToExport = new HashSet<>();
 
 	public abstract String getStaticResourceRoot();
 	public abstract Collection<String> getStaticResources();
+	@Override
 	public abstract SoundFormat getSoundFormat();
+	@Override
 	public abstract VideoCodec getVideoFormat();
 	
 	/**
 	 * Calculates the largest dimension a video would play at. Currently this means the
 	 * largest size of any video playing widget.
 	 * 
+	 * @param projectToExport
 	 * @param interfacesToExport
 	 * @return
 	 */
@@ -151,32 +154,32 @@ public abstract class AbstractExporter implements Exporter {
 
 	@Override
 	public void setSnus(Collection<ISnu> snus) {
-		snusToExport = new HashSet<ISnu>(snus);
+		snusToExport = new HashSet<>(snus);
 	}
 
 	@Override
 	public void setSounds(Collection<ISound> sounds) {
-		soundsToExport = new HashSet<ISound>(sounds);
+		soundsToExport = new HashSet<>(sounds);
 	}
 
 	@Override
 	public void setImages(Collection<IImage> images) {
-		imagesToExport = new HashSet<IImage>(images);
+		imagesToExport = new HashSet<>(images);
 	}
 
 	@Override
 	public void setVideos(Collection<IVideo> videos) {
-		videosToExport = new HashSet<IVideo>(videos);
+		videosToExport = new HashSet<>(videos);
 	}
 
 	@Override
 	public void setInterfaces(Collection<IInterface> interfaces) {
-		interfacesToExport = new HashSet<IInterface>(interfaces);
+		interfacesToExport = new HashSet<>(interfaces);
 	}
 
 	@Override
 	public void setTexts(Collection<IText> texts) {
-		textsToExport = new HashSet<IText>(texts);
+		textsToExport = new HashSet<>(texts);
 	}
 	
 	@Override
@@ -227,7 +230,7 @@ public abstract class AbstractExporter implements Exporter {
 					throw ee;
 				}		
 				
-				List<ITask> exportTasks = new ArrayList<ITask>();
+				List<ITask> exportTasks = new ArrayList<>();
 				exportTasks.addAll(createTextExportTasks(exportOptions, dataDir, textsToExport));
 				if (settings.getBoolean(Settings.ExportImages))
 					exportTasks.addAll(createImageExportTasks(exportOptions, dataDir, imagesToExport));
@@ -249,6 +252,7 @@ public abstract class AbstractExporter implements Exporter {
 			
 				ExportData data = new ExportData(dataPath, project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport, dataDir, filenamemap);
 				exportTasks.addAll(createDataExportTasks(data));
+
 				
 				return exportTasks;
 			}
@@ -282,8 +286,8 @@ public abstract class AbstractExporter implements Exporter {
 
 	protected List<ITask> createVideoExportTasks(ExportOptions options, File rootDir,
 			IVideoEncodingProfile encodingProfile, Dimension maxVideoSize, Collection<IVideo> videosToExport) throws IOException, ExportException {
-				Set<String> alreadyTasked = new HashSet<String>();
-				List<ITask> tasks = new ArrayList<ITask>();
+				Set<String> alreadyTasked = new HashSet<>();
+				List<ITask> tasks = new ArrayList<>();
 				for (IVideo video : videosToExport)
 				{
 					String dest = getFilename(video.getAbsoluteFilename());
@@ -301,8 +305,8 @@ public abstract class AbstractExporter implements Exporter {
 
 	protected List<ITask> createSubtitleExportTasks(ExportOptions options, File rootDir,
 			Collection<IVideo> videosToExport) throws IOException, ExportException {
-				Set<String> alreadyTasked = new HashSet<String>();
-				List<ITask> tasks = new ArrayList<ITask>();
+				Set<String> alreadyTasked = new HashSet<>();
+				List<ITask> tasks = new ArrayList<>();
 				for (IVideo video : videosToExport)
 				{
 					if (video.getSubtitles() == null)
@@ -320,7 +324,7 @@ public abstract class AbstractExporter implements Exporter {
 
 	protected List<ITask> createThumbnailExportTasks(ExportOptions options, File rootDir,
 			Dimension maxVideoSize, Collection<ISnu> snusToExport) throws IOException, ExportException {
-			    List<ITask> tasks = new ArrayList<ITask>();
+			    List<ITask> tasks = new ArrayList<>();
 			    for (ISnu snu : snusToExport)
 			    {
 			            final IMedia mainMedia = snu.getMainMedia();
@@ -336,8 +340,8 @@ public abstract class AbstractExporter implements Exporter {
 			            
 			            // we do all the other work and check this setting here because of how hackish thumbs are
 			            // and we still want them to appear in the xml!
-			    		if (settings.getBoolean(Settings.ExportImages))
-			    			tasks.add(task);
+				    if (settings.getBoolean(Settings.ExportImages))
+			    		tasks.add(task);
 			            
 			            // hackish: temporarily setting the thumbnail this way
 			            if (filenamemap.containsKey(destFile.getAbsoluteFile()))
@@ -355,7 +359,7 @@ public abstract class AbstractExporter implements Exporter {
 
 	protected List<ITask> createTextExportTasks(ExportOptions options, File rootDir, Collection<IText> textsToExport)
 			throws IOException, ExportException {
-				List<ITask> tasks = new ArrayList<ITask>();
+				List<ITask> tasks = new ArrayList<>();
 				for (IText text : textsToExport)
 				{
 					String dest = getFilename(text.getAbsoluteFilename());
@@ -368,7 +372,7 @@ public abstract class AbstractExporter implements Exporter {
 
 	protected List<ITask> createImageExportTasks(ExportOptions options, File rootDir, Collection<IImage> imagesToExport)
 			throws IOException, ExportException {
-				List<ITask> tasks = new ArrayList<ITask>();
+				List<ITask> tasks = new ArrayList<>();
 				for (IImage image : imagesToExport)
 				{
 					String dest = getFilename(image.getAbsoluteFilename());
@@ -381,7 +385,7 @@ public abstract class AbstractExporter implements Exporter {
 
 	protected List<ITask> createSoundExportTasks(ExportOptions options, File rootDir, Collection<ISound> soundsToExport)
 			throws IOException, ExportException {
-				List<ITask> tasks = new ArrayList<ITask>();
+				List<ITask> tasks = new ArrayList<>();
 				for (ISound sound : soundsToExport)
 				{
 					String dest = getFilename(sound.getAbsoluteFilename());

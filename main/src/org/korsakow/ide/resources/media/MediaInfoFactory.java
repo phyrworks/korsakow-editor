@@ -11,7 +11,7 @@ public class MediaInfoFactory
 	{
 		// todo: do like MediaFactory and choose based on config file
 		try {
-			return QTMediaInfoFactory.getInfo(src);
+			return JFXMediaInfoFactory.getInfo(src);
 		} catch (MediaRuntimeException e) {
 			try {
 				return FFMpegMediaInfoFactory.getInfo(src);

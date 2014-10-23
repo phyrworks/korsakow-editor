@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.sql.SQLException;
+import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JOptionPane;
 import javax.swing.JWindow;
@@ -35,8 +36,8 @@ import org.korsakow.services.plugin.PluginRegistry;
 import org.korsakow.services.plugin.export.ExportPlugin;
 import org.korsakow.services.updater.Updater;
 
-import quicktime.QTException;
-import quicktime.QTSession;
+//import quicktime.QTException;
+//import quicktime.QTSession;
 
 //import com.apple.eawt.ApplicationEvent;
 //import com.apple.eawt.ApplicationListener;
@@ -116,6 +117,26 @@ public class Main {
 			getLogger().info("\t" + arg + "\n");
 		}
 		
+		
+		javafx.application.Platform.setImplicitExit(false);
+		/*
+		Since we need JavaFX for the web window, and since we don't want
+		the web window to have to be embedded in a Swing window (rendering 
+		of the Javafx WebView is slooooow when embedded in Swing), we
+		need to start up the JavaFX environment.  There are two ways
+		to do this: subclass the JavaFX Application class (which brings
+		in several complications that we don't want right now), or 
+		create a JFXPanel, which implicitly creates the environment.
+		So we create (and then immediately discard) a JFXPanel here.
+		*/
+		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+		    @Override
+		    public void run() {
+			final JFXPanel initPanel = new JFXPanel(); // initializes JavaFX environment;\
+		    }
+		});
+
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() {
 				UIUtil.setUpLAF();
@@ -207,16 +228,16 @@ public class Main {
 		// around if the shutdown isnt complete
 		// so we try our best to make sure each part of the shutdown is
 		// attempted
-		try {
-			QTSession.exitMovies();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
-		try {
-			QTSession.close();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
+//		try {
+//			QTSession.exitMovies();
+//		} catch (Exception e) {
+//			Logger.getLogger(Main.class).error("", e);
+//		}
+//		try {
+//			QTSession.close();
+//		} catch (Exception e) {
+//			Logger.getLogger(Main.class).error("", e);
+//		}
 	}
 
 	private void shutdown() throws Exception {
@@ -266,11 +287,11 @@ public class Main {
 		Application.getUUID(); // side effect causes the UUID to be persisted.
 		setupLogging();
 		setupPlatform();
-		UIUtil.runUITaskNow(new Runnable() { public void run() { try {
-			setupLibs();
-		} catch (QTException e) {
-			throw new RuntimeException(e);
-		} } }); 
+//		UIUtil.runUITaskNow(new Runnable() { public void run() { try {
+//			setupLibs();
+//		} catch (QTException e) {
+//			throw new RuntimeException(e);
+//		} } }); 
 	}
 
 	public static void setupLogging() {
@@ -308,21 +329,21 @@ public class Main {
 		ImageEncoderFactory.addEncoder(new JavaImageIOImageEncoder.JavaImageIOEncoderDescription());
 	}
 
-	private static void setupLibs() throws QTException {
-		try {
-			QTSession.open();
-		} catch (UnsatisfiedLinkError e) {
-			JOptionPane.showMessageDialog(null, 
-					"Korsakow requires quicktime to be installed in order to run.", 
-					"Quicktime was not found", 
-					JOptionPane.ERROR_MESSAGE);
-			throw e;
-		} catch (NoClassDefFoundError e) {
-			JOptionPane.showMessageDialog(null, 
-					"Korsakow requires quicktime to be installed in order to run.", 
-					"Quicktime was not found", 
-					JOptionPane.ERROR_MESSAGE);
-			throw e;
-		}
+	private static void setupLibs() /*throws QTException*/ {
+//		try {
+//			QTSession.open();
+//		} catch (UnsatisfiedLinkError e) {
+//			JOptionPane.showMessageDialog(null, 
+//					"Korsakow requires quicktime to be installed in order to run.", 
+//					"Quicktime was not found", 
+//					JOptionPane.ERROR_MESSAGE);
+//			throw e;
+//		} catch (NoClassDefFoundError e) {
+//			JOptionPane.showMessageDialog(null, 
+//					"Korsakow requires quicktime to be installed in order to run.", 
+//					"Quicktime was not found", 
+//					JOptionPane.ERROR_MESSAGE);
+//			throw e;
+//		}
 	}
 }

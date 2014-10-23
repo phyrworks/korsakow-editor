@@ -122,30 +122,50 @@ class SnuResourceViewExtractor implements SnuValueExtractor {
 		this.view = view;	
 	}
 
+	@Override
 	public String getName() { return view.getNameFieldText(); }
+	@Override
 	public Collection<IKeyword> getKeywords() { return view.getKeywords(); }
+	@Override
 	public boolean getStarter() { return view.getStarter(); }
+	@Override
 	public boolean getEnder() { return view.getEnder(); }
+	@Override
 	public Long getMaxLinks() { return view.getMaxLinks(); }
+	@Override
 	public boolean getLooping() { return view.getLooping(); }
+	@Override
 	public Long getMainMediaId() { return view.getMainMediaId(); }
+	@Override
 	public Long getMainMediaCustomDuration() { return view.getMainMediaCustomDuration(); }
+	@Override
 	public BackgroundSoundMode getBackgroundSoundMode() { return view.getBackgroundSoundMode(); }
+	@Override
 	public Long getBackgroundSoundId() { return view.getBackgroundSoundId(); }
+	@Override
 	public boolean getBackgroundSoundLooping() { return view.getBackgroundSoundLooping(); }
+	@Override
 	public Long getInterfaceId() { return view.getInterfaceId(); }
+	@Override
 	public List<IRule> getRules() { return getSearchRules(view); }
+	@Override
 	public Long getLives() { return view.getLives(); }
+	@Override
 	public Long getPreviewImageId() { return view.getPreviewImageId(); }
+	@Override
 	public Long getPreviewMediaId() { return view.getPreviewMediaId(); }
+	@Override
 	public String getPreviewText() { return view.getPreviewText(); }
+	@Override
 	public String getInsertText() { return view.getInsertText(); }
+	@Override
 	public float getRating() { return view.getRating(); }
+
 
 	public static List<IRule> getSearchRules(SnuResourceView resourceView)
 	{
 		K5RuleParser parser = new K5RuleParser();
-		List<IRule> rules = new ArrayList<IRule>();
+		List<IRule> rules = new ArrayList<>();
 		CodeTableModel codeModel = resourceView.getCodeTable().getModel();
 		boolean isFirstTime = true;
 		for (int i = 0; i < codeModel.getRowCount(); ++i)
@@ -196,6 +216,7 @@ class SnuResourceViewExtractor implements SnuValueExtractor {
 	}
 }
 
+	
 public class SnuHelper {
 	public static Request createRequest(ISnu snu) {
 		return createRequest(new SnuDomainObjectExtractor(snu), snu.getId());
@@ -243,7 +264,7 @@ public class SnuHelper {
 		
 		return request;
 	}
-	
+
 	public static void initView(SnuResourceView view, String name, IMedia mainMedia) throws MapperException
 	{
 		ISettings settings = SettingsInputMapper.find();
@@ -303,11 +324,11 @@ public class SnuHelper {
 		view.setInsertText(snu.getInsertText());
 
 
-		List<IRule> allRules = new ArrayList<IRule>(snu.getRules());
+		List<IRule> allRules = new ArrayList<>(snu.getRules());
 		List<IRule> searchRules = getSearchRules(allRules);
 		allRules.removeAll(searchRules);
 		setSearchRules(view, searchRules);
-		view.setCachedRules(new ArrayList<IRule>(allRules));
+		view.setCachedRules(new ArrayList<>(allRules));
 		
 		view.repaint();
 		view.revalidate();
@@ -318,7 +339,7 @@ public class SnuHelper {
 		TriggerModel model = new TriggerModel(triggerType);
 		for (String id : trigger.getDynamicPropertyIds())
 			model.addProperty(id, trigger.getDynamicProperty(id));
-		List<TriggerModel> children = new ArrayList<TriggerModel>();
+		List<TriggerModel> children = new ArrayList<>();
 		return model;
 	}
 	private static PredicateModel getPredicateModel(IPredicate predicate)
@@ -327,7 +348,7 @@ public class SnuHelper {
 		PredicateModel model = new PredicateModel(predicateType);
 		for (String id : predicate.getDynamicPropertyIds())
 			model.addProperty(id, predicate.getDynamicProperty(id));
-		List<PredicateModel> children = new ArrayList<PredicateModel>();
+		List<PredicateModel> children = new ArrayList<>();
 		for (IPredicate child : predicate.getPredicates())
 			children.add(getPredicateModel(child));
 		model.setPredicates(children);
@@ -339,7 +360,7 @@ public class SnuHelper {
 		RuleModel model = new RuleModel(ruleType);
 		for (String id : rule.getDynamicPropertyIds())
 			model.setProperty(id, rule.getDynamicProperty(id));
-		List<RuleModel> children = new ArrayList<RuleModel>();
+		List<RuleModel> children = new ArrayList<>();
 		for (IRule child : rule.getRules())
 			children.add(getRuleModel(child));
 		model.setRules(children);
@@ -347,7 +368,7 @@ public class SnuHelper {
 	}
 	private static Collection<EventModel> createEventModels(Collection<IEvent> events)
 	{
-		Collection<EventModel> eventModels = new ArrayList<EventModel>();
+		Collection<EventModel> eventModels = new ArrayList<>();
 		for (IEvent event : events) {
 			
 			TriggerModel triggerModel = getTriggerModel(event.getTrigger());
@@ -362,7 +383,7 @@ public class SnuHelper {
 	}
 	private static List<IRule> getSearchRules(List<IRule> snuRules)
 	{
-		List<IRule> searchRules = new ArrayList<IRule>();
+		List<IRule> searchRules = new ArrayList<>();
 		for (IRule rule : snuRules)
 			if (RuleType.Search.getId().equals(rule.getRuleType()))
 				searchRules.add(rule);

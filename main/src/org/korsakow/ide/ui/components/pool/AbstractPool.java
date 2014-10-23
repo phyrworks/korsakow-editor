@@ -3,10 +3,8 @@ package org.korsakow.ide.ui.components.pool;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListDataEvent;
@@ -30,7 +28,7 @@ public abstract class AbstractPool<HE extends HeaderEntry, CE extends ContentEnt
 	/**
 	 * Using a weak map so we can be lazy about cleaning up.
 	 */
-	private WeakReferenceMap<Object, KCollapsiblePane> paneMap = new WeakReferenceMap<Object, KCollapsiblePane>();
+	private WeakReferenceMap<Object, KCollapsiblePane> paneMap = new WeakReferenceMap<>();
 	
 	public AbstractPool()
 	{
@@ -62,6 +60,7 @@ public abstract class AbstractPool<HE extends HeaderEntry, CE extends ContentEnt
 	{
 		return this.model;
 	}
+	@Override
 	public void contentsChanged(ListDataEvent e) {
 		if (e.getIndex0() == -1)
 			rebuild();
@@ -97,8 +96,10 @@ public abstract class AbstractPool<HE extends HeaderEntry, CE extends ContentEnt
 	{
 		return this.headingPane;
 	}
+	@Override
 	public void intervalAdded(ListDataEvent e) {
 	}
+	@Override
 	public void intervalRemoved(ListDataEvent e) {
 	}
 	public void addActionListener(ActionListener listener)
@@ -150,6 +151,7 @@ public abstract class AbstractPool<HE extends HeaderEntry, CE extends ContentEnt
 		add(scrollPane, BorderLayout.CENTER);
 		paneActionListener = new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent event)
 			{
 				fireActionEvent(event.getSource(), ACTION_PANEL_EXPAND);
@@ -157,6 +159,7 @@ public abstract class AbstractPool<HE extends HeaderEntry, CE extends ContentEnt
 		};
 		paneSelectionListener = new ListSelectionListener()
 		{
+			@Override
 			public void valueChanged(ListSelectionEvent event)
 			{
 				fireListSelectionEvent(event);
