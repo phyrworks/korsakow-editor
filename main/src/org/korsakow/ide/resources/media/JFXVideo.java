@@ -1,30 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.korsakow.ide.resources.media;
-
-import org.korsakow.ide.exception.MediaRuntimeException;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
 import java.net.URI;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
-import javafx.application.Platform;
-
-import javafx.embed.swing.JFXPanel;
-import java.util.concurrent.atomic.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
+
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
@@ -32,8 +19,12 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
-import org.apache.commons.logging.LogConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogConfigurationException;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.korsakow.ide.exception.MediaRuntimeException;
 import org.korsakow.ide.util.JFXRunTask;
 
 /**
@@ -231,7 +222,7 @@ public final class JFXVideo extends AbstractPlayableVideo
 
     @Override
     public void setTime(long time) {
-	final Duration seekTime = new Duration((double)time);
+	final Duration seekTime = new Duration(time);
 	
 	Platform.runLater(new Runnable() {
 	    @Override

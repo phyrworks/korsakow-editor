@@ -441,7 +441,7 @@ public class Application
 	 */
 	public Collection<IResource> getOpenResources(ResourceType type) throws MapperException
 	{
-		Collection<IResource> resources = new ArrayList<IResource>();
+		Collection<IResource> resources = new ArrayList<>();
 		for (ResourceEditor editor : openEditors.values()) {
 			if (type == ResourceType.forId(getResourceForEditor(editor).getType()))
 				resources.add(getResourceForEditor(editor));
@@ -499,6 +499,75 @@ public class Application
 	{
 		return snuPool;
 	}
+	
+	/* MAPPING PLUGIN */
+	public void setMapPoolDialog(final JFrame dialog, final MapPool pool)
+	{
+	    mapPool = pool;
+	    
+	    pool.putClientProperty("dialog", dialog);
+	    
+	    dialog.addWindowListener(new WindowAdapter() {
+		@Override
+		public void windowClosed(WindowEvent event) {
+		    pool.putClientProperty("dialog", null);
+		    
+		    if (pool == mapPool) {
+			mapPool = null;
+		    }
+		}
+	    });
+	}
+	/* MAPPING PLUGIN */
+	public JFrame getMapPoolDialog()
+	{
+	    if (mapPool == null)
+		return null;
+	    
+	    return (JFrame)mapPool.getClientProperty("dialog");
+	}
+	/* MAPPING PLUGIN */
+	public MapPool getMapPool()
+	{
+	    return mapPool;
+	}
+
+	/* MAPPING PLUGIN */
+	public void setLOCPoolDialog(final JFrame dialog, final LOCPool pool)
+	{
+	    locPool = pool;
+	    
+	    pool.putClientProperty("dialog", dialog);
+	    
+	    dialog.addWindowListener(new WindowAdapter() {
+		@Override
+		public void windowClosed(WindowEvent event) {
+		    pool.putClientProperty("dialog", null);
+		    
+		    if (pool == locPool) {
+			locPool = null;
+		    }
+		}
+	    });
+	}
+	/* MAPPING PLUGIN */
+	public JFrame getLOCPoolDialog()
+	{
+	    if (locPool == null)
+		return null;
+	    
+	    return (JFrame)locPool.getClientProperty("dialog");
+	}
+	/* MAPPING PLUGIN */
+	public LOCPool getLOCPool()
+	{
+	    return locPool;
+	}
+
+	
+	
+	
+	
 	public void setLinkPoolDialog(final JFrame dialog, final LinkPool pool)
 	{
 		linkPool = pool;

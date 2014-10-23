@@ -12,18 +12,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.korsakow.ide.lang.LanguageBundle;
-import org.korsakow.ide.ui.components.KCollapsiblePane;
 import org.korsakow.ide.ui.components.pool.AbstractHeader;
 import org.korsakow.ide.ui.components.pool.ActionLabel;
 import org.korsakow.ide.ui.factory.IUIFactory;
 import org.korsakow.ide.ui.factory.UIFactory;
 
-public class KeywordHeader extends AbstractHeader
+public final class KeywordHeader extends AbstractHeader
 {
 	public static final String OUT_ACTION = "out";
 	public static final String IN_ACTION = "in";
@@ -31,7 +28,7 @@ public class KeywordHeader extends AbstractHeader
 	protected ActionLabel inLabel;
 	protected ActionLabel outLabel;
 	protected ActionLabel itemLabel;
-
+		
 	public KeywordHeader(String inText, String outText, String itemText) {
 		initUI(inText, outText, itemText);
 
@@ -45,12 +42,13 @@ public class KeywordHeader extends AbstractHeader
 		
 	}
 	public void initUI(String inText, String outText, String itemText)
-	{
+	{		
 		putClientProperty("roundedCorners", false);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		IUIFactory uifac = UIFactory.getFactory();
 		add(inLabel = uifac.customComponent("inLabel", new ActionLabel()));
 		add(outLabel = uifac.customComponent("outLabel", new ActionLabel()));
+				
 		add(Box.createHorizontalStrut(10));
 		add(itemLabel = uifac.customComponent("keywordLabel", new ActionLabel()));
 		Dimension squareSize = new Dimension(18, 18);
@@ -122,6 +120,7 @@ public class KeywordHeader extends AbstractHeader
 	{
 		return itemLabel.getText();
 	}
+	
 	public void addItemActionListener(ActionListener listener)
 	{
 		itemLabel.addActionListener(listener);
@@ -136,10 +135,12 @@ public class KeywordHeader extends AbstractHeader
 	}
 	private class Repainter extends MouseAdapter
 	{
+		@Override
 		public void mouseEntered(MouseEvent event)
 		{
 			repaint();
 		}
+		@Override
 		public void mouseExited(MouseEvent event)
 		{
 			repaint();

@@ -25,6 +25,7 @@ import org.korsakow.services.tdg.SnuTDG;
 
 public class ShowKeywordPoolWindowAction extends AbstractShowPoolWindowAction {
 
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		Application app = Application.getInstance();
 		if (app.getKeywordPoolDialog() != null) {
@@ -38,11 +39,12 @@ public class ShowKeywordPoolWindowAction extends AbstractShowPoolWindowAction {
 		pool.addInActionListener(inoutListener);
 		pool.addOutActionListener(inoutListener);
 		pool.addItemActionListener(inoutListener);
+		
 		Collection<IKeyword> keywords;
 		try {
 			keywords = KeywordInputMapper.findByObjectTypeRecursive( SnuTDG.NODE_NAME );
 		} catch (MapperException e) {
-			keywords = new ArrayList<IKeyword>();
+			keywords = new ArrayList<>();
 			Application.getInstance().showUnhandledErrorDialog( e );
 		}
 		

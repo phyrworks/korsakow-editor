@@ -6,6 +6,7 @@ import org.korsakow.ide.ui.components.tree.KTreeTableModel;
 
 public interface ResourceTreeTableModel extends KTreeTableModel
 {
+	@Override
 	FolderNode getRoot();
 	KNode remove(Long id);
 	KNode findResource(Long id);

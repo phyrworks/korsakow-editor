@@ -31,6 +31,7 @@ public class KeywordPoolUpdateListener extends ApplicationAdapter implements Run
 	{
 		this.pool = pool;
 	}
+	@Override
 	public void run()
 	{
 		doUpdate();
@@ -45,7 +46,7 @@ public class KeywordPoolUpdateListener extends ApplicationAdapter implements Run
 		try {
 			keywords = KeywordInputMapper.findByObjectTypeRecursive( SnuTDG.NODE_NAME );
 		} catch (MapperException e) {
-			keywords = new ArrayList<IKeyword>();
+			keywords = new ArrayList<>();
 			Application.getInstance().showUnhandledErrorDialog( e );
 		}
 		final KeywordPoolModel model = new KeywordPoolModel();

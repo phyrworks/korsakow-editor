@@ -59,6 +59,7 @@ public class ContentUpdater implements ActionListener, ListSelectionListener
 					entry.setOutSnus(outSnus);
 					update = true;
 				}
+				
 				if (update)
 					pool.getModel().updateEntry(entry);
 			}

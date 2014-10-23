@@ -19,7 +19,7 @@ public class TokenizerTextArea extends JTextField
 	private final Color defaultBackgroundColor;
 	private final Color defaultForegroundColor;
 	
-	private String canonicalDelimiter = ", ";
+	protected String canonicalDelimiter = ", ";
 	
 	public TokenizerTextArea()
 	{
@@ -45,13 +45,8 @@ public class TokenizerTextArea extends JTextField
 					setCaretColor(focusForegroundColor);
 				}
 				
-				StringBuilder builder = new StringBuilder();
 				Collection<String> tokens = getTokens();
-				for (String token : tokens) {
-					builder.append(token)
-						.append(canonicalDelimiter);
-				}
-				String text = builder.toString();
+				String text = buildTokenString(tokens);
 				// this check avoids unnecessary dispatches of change events
 				// which can wreak havock
 				if (!text.equals(getText()))
@@ -63,17 +58,26 @@ public class TokenizerTextArea extends JTextField
 	{
 		canonicalDelimiter = deliminter;
 	}
-	public void setTokens(Collection<String> tokens)
+	
+	protected String buildTokenString(Collection<String> tokens)
 	{
 		StringBuilder builder = new StringBuilder();
 		for (String token : tokens)
 			builder.append(token)
 				.append(canonicalDelimiter);
-		super.setText(builder.toString());
+	    
+		return builder.toString();
+	}
+	
+	public void setTokens(Collection<String> tokens)
+	{
+		String tokenString = buildTokenString(tokens);
+		
+		super.setText(tokenString);
 	}
 	public Collection<String> getTokens()
 	{
-		TreeSet<String> set = new TreeSet<String>();
+		TreeSet<String> set = new TreeSet<>();
 		StringTokenizer tokenizer = new StringTokenizer(getText(), " \t\r\n,");
 		while (tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();

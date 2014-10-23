@@ -24,9 +24,9 @@ import org.korsakow.ide.util.UIResourceManager;
 
 public class KeywordCellRenderer extends JPanel implements ListCellRenderer
 {
-	private JLabel inLabel;
-	private JLabel outLabel;
-	private JLabel itemLabel;
+	private final JLabel inLabel;
+	private final JLabel outLabel;
+	private final JLabel itemLabel;
 	
 	public static Icon blankIcon = UIResourceManager.getIcon(UIResourceManager.ICON_BLANK_SM);
 	
@@ -56,6 +56,7 @@ public class KeywordCellRenderer extends JPanel implements ListCellRenderer
 //		outLabel.setOpaque(true);
 		setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 9));
 	}
+	@Override
 	public Component getListCellRendererComponent(
 		       JList list,              // the list
 		       Object value,            // value to display

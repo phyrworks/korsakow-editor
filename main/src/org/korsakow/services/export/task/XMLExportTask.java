@@ -78,13 +78,16 @@ public class XMLExportTask extends AbstractTask
 			this.id = id;
 			this.value = value;
 		}
+		@Override
 		public Object getDynamicProperty(String id) {
 			return value;
 		}
+		@Override
 		public Collection<String> getDynamicPropertyIds() {
 			if (id == null) return Collections.emptyList();
 			return Arrays.asList(id);
 		}
+		@Override
 		public void setDynamicProperty(String id, Object value) {
 			throw new IllegalStateException();
 		}
@@ -102,7 +105,7 @@ public class XMLExportTask extends AbstractTask
 	public XMLExportTask(String dataPath, IProject project, Collection<ISnu> snusToExport, Collection<IText> textsToExport, Collection<IImage> imagesToExport, Collection<ISound> soundsToExport, Collection<IVideo> videosToExport, Collection<IInterface> interfacesToExport, File rootDir, Map<String, String> filenamemap)
 //	public XMLExportTask(IProject project, Collection<ISnu> snusToExport, Collection<IInterface> interfacesToExport, File rootDir)
 	{
-		List<IImage> adjustedImages = new ArrayList<IImage>(imagesToExport);
+		List<IImage> adjustedImages = new ArrayList<>(imagesToExport);
 		for (ISnu snu : snusToExport) {
 			if (snu.getThumbnail() != null) {
 				adjustedImages.add(snu.getThumbnail());
@@ -133,21 +136,13 @@ public class XMLExportTask extends AbstractTask
 		try {
 			doc = projectToDOM(project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport);
 			DomUtil.writeDomXML(doc, new File(rootDir, dataPath));
-		} catch (ExportException e) {
-			throw new TaskException(e);
-		} catch (IOException e) {
-			throw new TaskException(e);
-		} catch (TransformerException e) {
-			throw new TaskException(e);
-		} catch (DOMException e) {
-			throw new TaskException(e);
-		} catch (MapperException e) {
+		} catch (ExportException | IOException | TransformerException | DOMException | MapperException e) {
 			throw new TaskException(e);
 		}
 	}
 	private static Element keywordsToDom(Document doc, Collection<IKeyword> keywords, String extraKeyword)
 	{
-		TreeSet<IKeyword> set = new TreeSet<IKeyword>(keywords); // treeset sorts them "naturally"
+		TreeSet<IKeyword> set = new TreeSet<>(keywords); // treeset sorts them "naturally"
 		Element elm = doc.createElement("keywords");
 		if (extraKeyword != null)
 			set.add(KeywordFactory.createNew(extraKeyword));
@@ -452,7 +447,7 @@ public class XMLExportTask extends AbstractTask
         DomUtil.appendBooleanNode(doc, projNode, "keepLinksOnEmptySearch", project.getKeepLinksOnEmptySearch());
         DomUtil.appendNumberNode(doc, projNode, "maxLinks", project.getMaxLinks(), "NaN");
         
-		List<IEvent> events = new ArrayList<IEvent>();
+		List<IEvent> events = new ArrayList<>();
 		if (project.getBackgroundImage() != null) {
         	DomUtil.appendTextNode(doc, projNode, "backgroundImageId", project.getBackgroundImage().getId());
         	
@@ -576,6 +571,7 @@ public class XMLExportTask extends AbstractTask
 	 * 
 	 * This is sometimes necessary for being able to view files on the hard drive in the browser
 	 * @throws UnsupportedEncodingException 
+	 * 
 	 */
 	public static String formatExportUrl(String filename) throws UnsupportedEncodingException
 	{

@@ -125,9 +125,7 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			List<ITask> exportTasks;
 			try {
 				exportTasks = exporter.createExportTasks(exportDir);
-			} catch (IOException e) {
-				throw new TaskException(e);
-			} catch (ExportException e) {
+			} catch (IOException | ExportException e) {
 				throw new TaskException(e);
 			}
 			uiWorker.addTasks(exportTasks);
@@ -144,6 +142,7 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 		super(request, response);
 	}
 
+	@Override
 	public void execute() throws CommandException {
 	
 		try {
@@ -173,7 +172,7 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			response.set(WORKER, exportWorker);
 			response.set(EXPORTER, exporter);
 			
-		} catch (Exception e) {
+		} catch (NumberFormatException | MapperException e) {
 			throw new CommandException(e);
 		}
 	

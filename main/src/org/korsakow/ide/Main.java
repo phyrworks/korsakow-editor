@@ -134,6 +134,26 @@ public class Main {
 		    }
 		});
 		
+		
+		javafx.application.Platform.setImplicitExit(false);
+		/*
+		Since we need JavaFX for the web window, and since we don't want
+		the web window to have to be embedded in a Swing window (rendering 
+		of the Javafx WebView is slooooow when embedded in Swing), we
+		need to start up the JavaFX environment.  There are two ways
+		to do this: subclass the JavaFX Application class (which brings
+		in several complications that we don't want right now), or 
+		create a JFXPanel, which implicitly creates the environment.
+		So we create (and then immediately discard) a JFXPanel here.
+		*/
+		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+		    @Override
+		    public void run() {
+			final JFXPanel initPanel = new JFXPanel(); // initializes JavaFX environment;\
+		    }
+		});
+
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() {
 				UIUtil.setUpLAF();

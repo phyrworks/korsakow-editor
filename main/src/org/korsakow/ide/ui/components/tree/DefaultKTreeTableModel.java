@@ -14,8 +14,8 @@ import com.sun.swingx.treetable.TreeTableNode;
 public class DefaultKTreeTableModel extends DefaultTreeTableModel implements KTreeTableModel
 {
 	protected long idSeed = 0;
-	protected WeakReferenceMap<Long, KNode> idMap = new WeakReferenceMap<Long, KNode>();
-	protected WeakHashMap<KNode, Long> reverseIdMap = new WeakHashMap<KNode, Long>();
+	protected WeakReferenceMap<Long, KNode> idMap = new WeakReferenceMap<>();
+	protected WeakHashMap<KNode, Long> reverseIdMap = new WeakHashMap<>();
 	protected boolean isBatchUpdating = false;
 	public DefaultKTreeTableModel(KNode root)
 	{
