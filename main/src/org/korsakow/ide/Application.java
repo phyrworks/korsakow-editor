@@ -117,16 +117,16 @@ public class Application
 	}
 	
 
-	private final Hashtable<Long, ResourceEditor> openEditors = new Hashtable<Long, ResourceEditor>();
-	private final Hashtable<ResourceEditor, Long> openEditors2 = new Hashtable<ResourceEditor, Long>();
-	private final Hashtable<ResourceType, ResourceEditAction> resourceEditActions = new Hashtable<ResourceType, ResourceEditAction>();
+	private final Hashtable<Long, ResourceEditor> openEditors = new Hashtable<>();
+	private final Hashtable<ResourceEditor, Long> openEditors2 = new Hashtable<>();
+	private final Hashtable<ResourceType, ResourceEditAction> resourceEditActions = new Hashtable<>();
 	private ProjectExplorer projectExplorer;
 	private ProjectExplorerController projectExplorerController;
 	private SnuPool snuPool;
 	private KeywordPool keywordPool;
 	private LinkPool linkPool;
 	private ResourceTreeTable possiblePool;
-	private final List<ResourceEditor> mostRecentFocusedEditors = new ArrayList<ResourceEditor>();
+	private final List<ResourceEditor> mostRecentFocusedEditors = new ArrayList<>();
 	private final CommonTaskScheduler commonTaskScheduler = new CommonTaskScheduler();
 	/**
 	 * Application is global. This means any listeners on it would otherwise have application-lifetime!
@@ -499,75 +499,7 @@ public class Application
 	{
 		return snuPool;
 	}
-	
-	/* MAPPING PLUGIN */
-	public void setMapPoolDialog(final JFrame dialog, final MapPool pool)
-	{
-	    mapPool = pool;
-	    
-	    pool.putClientProperty("dialog", dialog);
-	    
-	    dialog.addWindowListener(new WindowAdapter() {
-		@Override
-		public void windowClosed(WindowEvent event) {
-		    pool.putClientProperty("dialog", null);
-		    
-		    if (pool == mapPool) {
-			mapPool = null;
-		    }
-		}
-	    });
-	}
-	/* MAPPING PLUGIN */
-	public JFrame getMapPoolDialog()
-	{
-	    if (mapPool == null)
-		return null;
-	    
-	    return (JFrame)mapPool.getClientProperty("dialog");
-	}
-	/* MAPPING PLUGIN */
-	public MapPool getMapPool()
-	{
-	    return mapPool;
-	}
 
-	/* MAPPING PLUGIN */
-	public void setLOCPoolDialog(final JFrame dialog, final LOCPool pool)
-	{
-	    locPool = pool;
-	    
-	    pool.putClientProperty("dialog", dialog);
-	    
-	    dialog.addWindowListener(new WindowAdapter() {
-		@Override
-		public void windowClosed(WindowEvent event) {
-		    pool.putClientProperty("dialog", null);
-		    
-		    if (pool == locPool) {
-			locPool = null;
-		    }
-		}
-	    });
-	}
-	/* MAPPING PLUGIN */
-	public JFrame getLOCPoolDialog()
-	{
-	    if (locPool == null)
-		return null;
-	    
-	    return (JFrame)locPool.getClientProperty("dialog");
-	}
-	/* MAPPING PLUGIN */
-	public LOCPool getLOCPool()
-	{
-	    return locPool;
-	}
-
-	
-	
-	
-	
 	public void setLinkPoolDialog(final JFrame dialog, final LinkPool pool)
 	{
 		linkPool = pool;

@@ -13,8 +13,6 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.korsakow.ide.Application;
-import org.korsakow.mappingplugin.IMap;
-import org.korsakow.mappingplugin.MapUtils;
 
 /**
  *
@@ -29,28 +27,13 @@ public class SnuTokenizerTextArea extends TokenizerTextArea {
     @Override
     protected String buildTokenString(Collection<String> tokens) {
 	
-	/* MAPPING PLUGIN */
-	List<IMap> maps = new ArrayList<>();
-	
 	StringBuilder builder = new StringBuilder();
 	for (String token : tokens){
-	    try {
-		String newToken =  MapUtils.processLOC(token, maps); /* MAPPING PLUGIN */
-		
-		//if the newToken length is 0, then it is a LOC that doesn't exist
-		//in the map.  So we remove it.
-		if (newToken.length() == 0)
-		    continue;
-		
-		builder.append(newToken)
-			.append(canonicalDelimiter);
-	    } catch (CommandException e) {
-		Application.getInstance().showUnhandledErrorDialog(e);
-	    }
+	    builder.append(token)
+		    .append(canonicalDelimiter);
 	}
 
 	return builder.toString();
-
     }
         
     @Override
@@ -58,18 +41,8 @@ public class SnuTokenizerTextArea extends TokenizerTextArea {
 	TreeSet<String> set = new TreeSet<>();
 	StringTokenizer tokenizer = new StringTokenizer(getText(), " \t\r\n,");
 	while (tokenizer.hasMoreTokens()) {
-	    try {
-		String token =  MapUtils.unprocessLOC(tokenizer.nextToken()); /* MAPPING PLUGIN */
-		
-		//if the newToken length is 0, then it is a LOC that doesn't exist
-		//in the map.  So we remove it.
-		if (token.length() == 0)
-		    continue;
-		
-		set.add(token);
-	    } catch (CommandException e) {
-		Application.getInstance().showUnhandledErrorDialog(e);
-	    }
+	    String token =  tokenizer.nextToken();
+	    set.add(token);
 	}
 	return set;
     }   
