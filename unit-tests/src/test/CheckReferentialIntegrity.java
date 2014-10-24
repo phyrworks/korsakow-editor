@@ -1,19 +1,5 @@
 package test;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Test;
-import org.korsakow.domain.mapper.input.MapperHelper;
-import org.korsakow.ide.XPathHelper;
-import org.korsakow.ide.util.DomUtil;
-import org.korsakow.ide.util.Util;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 public class CheckReferentialIntegrity
 {
 	static class Meta {

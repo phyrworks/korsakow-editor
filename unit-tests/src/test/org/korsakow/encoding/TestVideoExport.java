@@ -12,8 +12,7 @@ import org.junit.Test;
 import org.korsakow.ide.Main;
 import org.korsakow.ide.resources.media.FFMpegMediaInfoFactory;
 import org.korsakow.ide.resources.media.MediaInfo;
-import org.korsakow.ide.resources.media.QTMediaInfoFactory;
-import org.korsakow.ide.util.ExternalsResourceManager;
+//import org.korsakow.ide.resources.media.QTMediaInfoFactory;
 import org.korsakow.ide.util.FileUtil;
 import org.korsakow.ide.util.Platform;
 import org.korsakow.ide.util.ResourceManager;
@@ -24,7 +23,7 @@ import org.korsakow.services.export.IVideoEncodingProfile;
 import org.korsakow.services.export.PropertiesVideoEncodingProfile;
 import org.korsakow.services.export.task.VideoExportTask;
 
-import quicktime.QTSession;
+//import quicktime.QTSession;
 import test.Warning;
 import test.util.BaseTestCase;
 
@@ -68,7 +67,7 @@ public class TestVideoExport extends BaseTestCase
 	@Before
 	public void setUp() throws Exception
 	{
-		QTSession.open();
+//		QTSession.open();
 		
 		parentDir = FileUtil.createTempDirectory("test", "");
 		parentDir.deleteOnExit();
@@ -82,7 +81,7 @@ public class TestVideoExport extends BaseTestCase
 		beforeInfoQT = null;
 		beforeInfoFFMpeg = null;
 		
-		QTSession.close();
+//		QTSession.close();
 	}
 	private void doPre(File src, File dest) throws Exception
 	{
@@ -90,7 +89,7 @@ public class TestVideoExport extends BaseTestCase
 		Assert.assertTrue("Can read source file", src.canRead());
 		Assert.assertTrue("Can write destination file", dest.canWrite());
 		try {
-			beforeInfoQT = QTMediaInfoFactory.getInfo(src);
+//			beforeInfoQT = QTMediaInfoFactory.getInfo(src);
 		} catch (Throwable t) {
 			beforeInfoQT = null;
 		}
@@ -105,7 +104,7 @@ public class TestVideoExport extends BaseTestCase
 		Assert.assertNotSame(dest.length(), 0);
 		MediaInfo afterInfoQT = null;
 		try {
-			afterInfoQT = QTMediaInfoFactory.getInfo(dest);
+//			afterInfoQT = QTMediaInfoFactory.getInfo(dest);
 		} catch (Throwable t) {
 		}
 		MediaInfo afterInfoFFMPeg = null;
