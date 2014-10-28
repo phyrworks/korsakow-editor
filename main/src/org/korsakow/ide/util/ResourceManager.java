@@ -40,7 +40,7 @@ public class ResourceManager
 				throw new MissingResourceException(e.getMessage(), clazz.getCanonicalName(), name);
 			}
 			// TODO: why do we prefix with ./ ?
-			File file = new File(parentDir, "." + File.separator  + RESOURCE_BASE_PATH + name);
+			File file = new File(parentDir, File.separator  + RESOURCE_BASE_PATH + name);
 			if (!file.exists())
 				throw new MissingResourceException(file.getAbsolutePath(), clazz.getCanonicalName(), name);
 			return file;
