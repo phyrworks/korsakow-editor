@@ -2,5 +2,5 @@
 #Build Number for ANT. Do not edit!
 #Mon Oct 20 22:35:49 EDT 2014
 build.number=345
-version.number=5.0.6.6
-release.number=26.09
+version.number=5.1.0.0
+release.number=27.00
