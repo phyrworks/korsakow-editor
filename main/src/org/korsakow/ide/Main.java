@@ -201,7 +201,7 @@ public class Main {
 		});
 	}
 
-	private void shutdownLibs() throws Exception {
+	private void shutdownLibs() {
 		getLogger().info("shutdown libs");
 		// QT is pretty quirky, and for example might keep processes hanging
 		// around if the shutdown isnt complete
@@ -209,13 +209,13 @@ public class Main {
 		// attempted
 		try {
 			QTSession.exitMovies();
-		} catch (Exception e) {
-			getLogger().error("", e);
+		} catch (Throwable e) {
+			try { getLogger().error("", e); } catch (Throwable ignored) { /* see comments setupLibs RE exeptions*/ }
 		}
 		try {
 			QTSession.close();
-		} catch (Exception e) {
-			getLogger().error("", e);
+		} catch (Throwable e) {
+			try { getLogger().error("", e); } catch (Throwable ignored) { /* see comments setupLibs RE exeptions*/ }
 		}
 	}
 
@@ -312,17 +312,19 @@ public class Main {
 		try {
 			QTSession.open();
 		} catch (UnsatisfiedLinkError e) {
-			JOptionPane.showMessageDialog(null, 
-					"Korsakow requires quicktime to be installed in order to run.", 
-					"Quicktime was not found", 
-					JOptionPane.ERROR_MESSAGE);
-			throw e;
+			try { getLogger().error("", e); } catch (Throwable ignored) { }
 		} catch (NoClassDefFoundError e) {
-			JOptionPane.showMessageDialog(null, 
-					"Korsakow requires quicktime to be installed in order to run.", 
-					"Quicktime was not found", 
-					JOptionPane.ERROR_MESSAGE);
-			throw e;
+			try { getLogger().error("", e); } catch (Throwable ignored) { }
+		} catch (ExceptionInInitializerError e) {
+			// under newer systems/JDK, when QT fails to init, there would be additional
+			// exceptions when trying to get stack traces because QTException tries
+			// to init QTSession in order to print out its message. So smart.
+			// so we just swallow anything it throws here.
+			try { getLogger().error("", e); } catch (Throwable ignored) { }
 		}
+		JOptionPane.showMessageDialog(null, 
+				"Korsakow works best with quicktime installed. You may experience reduced functionality.", 
+				"Quicktime was not found", 
+				JOptionPane.ERROR_MESSAGE);
 	}
 }
