@@ -27,11 +27,9 @@ import org.korsakow.ide.rules.RuleType;
 import org.korsakow.ide.task.Task;
 import org.korsakow.ide.task.UIWorker;
 import org.korsakow.ide.util.FileUtil;
-import org.korsakow.ide.util.ResourceManager;
 import org.w3c.dom.Document;
 
 import test.util.BaseTestCase;
-import test.util.TestResourceSource;
 
 /**
  * @author d
@@ -88,7 +86,7 @@ public class TestImportFeatures extends BaseTestCase
 		for (IWidget widget : interf.getWidgets()) {
 			if (widget.getWidgetId().equals(WidgetType.InsertText.getId())) {
 				found = true;
-				Assert.assertNull(widget.getDynamicProperty("fontColor"));
+				Assert.assertEquals("#ffffff", widget.getDynamicProperty("fontColor"));
 			}
 		}
 		Assert.assertTrue(found);
@@ -112,7 +110,7 @@ public class TestImportFeatures extends BaseTestCase
 		for (IWidget widget : interf.getWidgets()) {
 			if (widget.getWidgetId().equals(WidgetType.SnuAutoLink.getId())) {
 				found = true;
-				Assert.assertNull(widget.getDynamicProperty("fontFamily"));
+				Assert.assertEquals("Courier", widget.getDynamicProperty("fontFamily"));
 			}
 		}
 		Assert.assertTrue(found);
