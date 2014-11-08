@@ -35,12 +35,6 @@ import org.korsakow.services.plugin.PluginRegistry;
 import org.korsakow.services.plugin.export.ExportPlugin;
 import org.korsakow.services.updater.Updater;
 
-import quicktime.QTException;
-import quicktime.QTSession;
-
-//import com.apple.eawt.ApplicationEvent;
-//import com.apple.eawt.ApplicationListener;
-
 public class Main {
 	/**
 	 * Introduced because ApplicationShutdownListener is added as a weak reference
@@ -201,24 +195,6 @@ public class Main {
 		});
 	}
 
-	private void shutdownLibs() {
-		getLogger().info("shutdown libs");
-		// QT is pretty quirky, and for example might keep processes hanging
-		// around if the shutdown isnt complete
-		// so we try our best to make sure each part of the shutdown is
-		// attempted
-		try {
-			QTSession.exitMovies();
-		} catch (Throwable e) {
-			try { getLogger().error("", e); } catch (Throwable ignored) { /* see comments setupLibs RE exeptions*/ }
-		}
-		try {
-			QTSession.close();
-		} catch (Throwable e) {
-			try { getLogger().error("", e); } catch (Throwable ignored) { /* see comments setupLibs RE exeptions*/ }
-		}
-	}
-
 	private void shutdown() throws Exception {
 		getLogger().info("shutdown begin");
 		try {
@@ -231,12 +207,7 @@ public class Main {
 		} catch (Exception e) {
 			getLogger().error("", e);
 		}
-		;
-		try {
-			shutdownLibs();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
+
 		getLogger().info(
 				"shutdown complete (this should be the last item logged)");
 		System.exit(0);
@@ -266,11 +237,6 @@ public class Main {
 		Application.getUUID(); // side effect causes the UUID to be persisted.
 		setupLogging();
 		setupPlatform();
-		UIUtil.runUITaskNow(new Runnable() { public void run() { try {
-			setupLibs();
-		} catch (QTException e) {
-			throw new RuntimeException(e);
-		} } }); 
 	}
 
 	public static void setupLogging() {
@@ -306,25 +272,5 @@ public class Main {
 			break;
 		}
 		ImageEncoderFactory.addEncoder(new JavaImageIOImageEncoder.JavaImageIOEncoderDescription());
-	}
-
-	private static void setupLibs() throws QTException {
-		try {
-			QTSession.open();
-		} catch (UnsatisfiedLinkError e) {
-			try { getLogger().error("", e); } catch (Throwable ignored) { }
-		} catch (NoClassDefFoundError e) {
-			try { getLogger().error("", e); } catch (Throwable ignored) { }
-		} catch (ExceptionInInitializerError e) {
-			// under newer systems/JDK, when QT fails to init, there would be additional
-			// exceptions when trying to get stack traces because QTException tries
-			// to init QTSession in order to print out its message. So smart.
-			// so we just swallow anything it throws here.
-			try { getLogger().error("", e); } catch (Throwable ignored) { }
-		}
-		JOptionPane.showMessageDialog(null, 
-				"Korsakow works best with quicktime installed. You may experience reduced functionality.", 
-				"Quicktime was not found", 
-				JOptionPane.ERROR_MESSAGE);
 	}
 }

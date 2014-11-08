@@ -3,17 +3,13 @@ package test.org.korsakow.encoding;
 import java.io.File;
 import java.util.Properties;
 
-import org.junit.Assert;
-
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.korsakow.ide.Main;
 import org.korsakow.ide.resources.media.FFMpegMediaInfoFactory;
 import org.korsakow.ide.resources.media.MediaInfo;
-import org.korsakow.ide.resources.media.QTMediaInfoFactory;
-import org.korsakow.ide.util.ExternalsResourceManager;
 import org.korsakow.ide.util.FileUtil;
 import org.korsakow.ide.util.Platform;
 import org.korsakow.ide.util.ResourceManager;
@@ -24,7 +20,6 @@ import org.korsakow.services.export.IVideoEncodingProfile;
 import org.korsakow.services.export.PropertiesVideoEncodingProfile;
 import org.korsakow.services.export.task.VideoExportTask;
 
-import quicktime.QTSession;
 import test.Warning;
 import test.util.BaseTestCase;
 
@@ -41,7 +36,6 @@ public class TestVideoExport extends BaseTestCase
 	private static final long SIZE_TOLERANCE = 1002;
 	private File parentDir;
 	private File dest;
-	private MediaInfo beforeInfoQT;
 	private MediaInfo beforeInfoFFMpeg;
 
 	public TestVideoExport()
@@ -68,8 +62,6 @@ public class TestVideoExport extends BaseTestCase
 	@Before
 	public void setUp() throws Exception
 	{
-		QTSession.open();
-		
 		parentDir = FileUtil.createTempDirectory("test", "");
 		parentDir.deleteOnExit();
 	}
@@ -79,21 +71,13 @@ public class TestVideoExport extends BaseTestCase
 	{
 		parentDir = null;
 		dest = null;
-		beforeInfoQT = null;
 		beforeInfoFFMpeg = null;
-		
-		QTSession.close();
 	}
 	private void doPre(File src, File dest) throws Exception
 	{
 //		dest.deleteOnExit();
 		Assert.assertTrue("Can read source file", src.canRead());
 		Assert.assertTrue("Can write destination file", dest.canWrite());
-		try {
-			beforeInfoQT = QTMediaInfoFactory.getInfo(src);
-		} catch (Throwable t) {
-			beforeInfoQT = null;
-		}
 		try {
 			beforeInfoFFMpeg = FFMpegMediaInfoFactory.getInfo(src);
 		} catch (Throwable t) {
@@ -104,10 +88,6 @@ public class TestVideoExport extends BaseTestCase
 	{
 		Assert.assertNotSame(dest.length(), 0);
 		MediaInfo afterInfoQT = null;
-		try {
-			afterInfoQT = QTMediaInfoFactory.getInfo(dest);
-		} catch (Throwable t) {
-		}
 		MediaInfo afterInfoFFMPeg = null;
 		try {
 			afterInfoFFMPeg = FFMpegMediaInfoFactory.getInfo(dest);
@@ -119,10 +99,6 @@ public class TestVideoExport extends BaseTestCase
 			Warning.warnTrue(String.format("FFMPEG: Math.abs(%d - %d) = %d < %d", beforeInfoFFMpeg.duration, afterInfoFFMPeg.duration, Math.abs(beforeInfoFFMpeg.duration - afterInfoFFMPeg.duration), SIZE_TOLERANCE), Math.abs(beforeInfoFFMpeg.duration - afterInfoFFMPeg.duration) < SIZE_TOLERANCE);
 		else
 			Warning.warnTrue("No FFMpegInfo", false);
-		if (beforeInfoQT != null && afterInfoQT != null)
-			Warning.warnTrue(String.format("QT: Math.abs(%d - %d) = %d < %d", beforeInfoQT.duration, afterInfoQT.duration, Math.abs(beforeInfoQT.duration - afterInfoQT.duration), SIZE_TOLERANCE), Math.abs(beforeInfoQT.duration - afterInfoQT.duration) < SIZE_TOLERANCE);
-		else
-			Warning.warnTrue("No QTInfo", false);
 		
 //		ShellExec.revealInPlatformFilesystemBrowser(dest.getAbsolutePath());
 	}
