@@ -251,6 +251,7 @@ public class Main {
 		} catch (Exception e) {
 			getLogger().error("", e);
 		}
+
 		getLogger().info(
 				"shutdown complete (this should be the last item logged)");
 		System.exit(0);
