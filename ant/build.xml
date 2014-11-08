@@ -111,10 +111,10 @@
 			<fileset dir="${lib-dir}/osx/Korsakow.app" />
 		</copy>
 
-		<mkdir dir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/resources" />
+		<mkdir dir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/resources" />
 		<!--
 		Doesn't preserve unix file permissions (in particular the executable bit)
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/resources/">
+		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/resources/">
 			<fileset refid="resources-files" />
 		</copy>
 		-->
@@ -131,20 +131,20 @@
 			<arg value="--exclude=/resources/example/" />
 
 			<arg value="${resources-dir}" />
-			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/" />
+			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/" />
 		</exec>
 
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/example">
-			<fileset dir="${resources-dir}/example" />
+		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/resources/example">
+	    		<fileset refid="circle-of-life" />
 		</copy>
 
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java">
+		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java">
 			<fileset file="${lib-dir}/osx/OSXApplication.jar" />
 		</copy>
 
 		<!-- lame.. the executable perm isnt preserved... thankfully this is the only one -->
-		<chmod perm="ug+rx" file="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/MacOS/JavaApplicationStub" />
-		<jar jarfile="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-osx-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
+		<chmod perm="ug+rx" file="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/MacOS/JavaAppLauncher" />
+		<jar jarfile="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-osx-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
 
 		<exec executable="codesign" failonerror="true" logerror="true">
 			<arg value="-f" />

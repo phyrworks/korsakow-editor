@@ -10,6 +10,7 @@ import org.dsrg.soenea.service.Registry;
 import org.korsakow.ide.Application;
 import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.ui.controller.ProjectLoader;
+import org.korsakow.ide.util.ResourceManager;
 
 public class HelpExampleAction implements ActionListener {
 
@@ -29,6 +30,6 @@ public class HelpExampleAction implements ActionListener {
 
 	
 	public static File getExampleProject () throws Exception, URISyntaxException {
-		return new File(Registry.getProperty("exampleProject"));
+		return ResourceManager.getResourceFile(Registry.getProperty("exampleProject"));
 	}
 }

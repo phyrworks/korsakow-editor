@@ -37,11 +37,11 @@ public class LanguageBundle
 	private static synchronized ResourceBundle getBundle()
 	{
 		if (defaultBundle == null) {
-			defaultBundle = ResourceBundle.getBundle("resources/lang/strings", new Locale("EN"), source);
+			defaultBundle = ResourceBundle.getBundle("lang/strings", new Locale("EN"), source);
 		}
 		if (bundle == null) {
 			try {
-				bundle = ResourceBundle.getBundle("resources/lang/strings", getCurrentLocale(), source);
+				bundle = ResourceBundle.getBundle("lang/strings", getCurrentLocale(), source);
 			} catch (MissingResourceException e) {
 				Logger.getLogger(LanguageBundle.class).error("", e);
 				bundle = defaultBundle;
