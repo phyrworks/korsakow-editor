@@ -11,8 +11,9 @@ import javax.swing.ListCellRenderer;
 
 import org.korsakow.ide.resources.PredicateType;
 
-public class PredicateTypeListCellRenderer extends DefaultListCellRenderer implements ListCellRenderer
+public class PredicateTypeListCellRenderer extends DefaultListCellRenderer implements ListCellRenderer<Object>
 {
+	@Override
 	public Component getListCellRendererComponent(
 		       JList list,              // the list
 		       Object value,            // value to display

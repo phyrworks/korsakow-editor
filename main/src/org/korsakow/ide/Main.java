@@ -6,6 +6,8 @@ import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.sql.SQLException;
 
+import javafx.embed.swing.JFXPanel;
+
 import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 import javax.swing.Timer;
@@ -34,12 +36,6 @@ import org.korsakow.services.plugin.PluginHelper;
 import org.korsakow.services.plugin.PluginRegistry;
 import org.korsakow.services.plugin.export.ExportPlugin;
 import org.korsakow.services.updater.Updater;
-
-import quicktime.QTException;
-import quicktime.QTSession;
-
-//import com.apple.eawt.ApplicationEvent;
-//import com.apple.eawt.ApplicationListener;
 
 public class Main {
 	/**
@@ -115,6 +111,28 @@ public class Main {
 		for (String arg : args) {
 			getLogger().info("\t" + arg + "\n");
 		}
+
+		
+		/* without some amount of jfx initialization, strange unpredictable
+		 * failures happen when trying to load/display videos */
+		javafx.application.Platform.setImplicitExit(false);
+		/*
+		Since we need JavaFX for the web window, and since we don't want
+		the web window to have to be embedded in a Swing window (rendering 
+		of the Javafx WebView is slooooow when embedded in Swing), we
+		need to start up the JavaFX environment.  There are two ways
+		to do this: subclass the JavaFX Application class (which brings
+		in several complications that we don't want right now), or 
+		create a JFXPanel, which implicitly creates the environment.
+		So we create (and then immediately discard) a JFXPanel here.
+		*/
+		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+		    @Override
+		    public void run() {
+			final JFXPanel initPanel = new JFXPanel(); // initializes JavaFX environment;\
+		    }
+		});
 		
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() {
@@ -201,24 +219,6 @@ public class Main {
 		});
 	}
 
-	private void shutdownLibs() throws Exception {
-		getLogger().info("shutdown libs");
-		// QT is pretty quirky, and for example might keep processes hanging
-		// around if the shutdown isnt complete
-		// so we try our best to make sure each part of the shutdown is
-		// attempted
-		try {
-			QTSession.exitMovies();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
-		try {
-			QTSession.close();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
-	}
-
 	private void shutdown() throws Exception {
 		getLogger().info("shutdown begin");
 		try {
@@ -231,12 +231,7 @@ public class Main {
 		} catch (Exception e) {
 			getLogger().error("", e);
 		}
-		;
-		try {
-			shutdownLibs();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
+
 		getLogger().info(
 				"shutdown complete (this should be the last item logged)");
 		System.exit(0);
@@ -266,11 +261,6 @@ public class Main {
 		Application.getUUID(); // side effect causes the UUID to be persisted.
 		setupLogging();
 		setupPlatform();
-		UIUtil.runUITaskNow(new Runnable() { public void run() { try {
-			setupLibs();
-		} catch (QTException e) {
-			throw new RuntimeException(e);
-		} } }); 
 	}
 
 	public static void setupLogging() {
@@ -306,23 +296,5 @@ public class Main {
 			break;
 		}
 		ImageEncoderFactory.addEncoder(new JavaImageIOImageEncoder.JavaImageIOEncoderDescription());
-	}
-
-	private static void setupLibs() throws QTException {
-		try {
-			QTSession.open();
-		} catch (UnsatisfiedLinkError e) {
-			JOptionPane.showMessageDialog(null, 
-					"Korsakow requires quicktime to be installed in order to run.", 
-					"Quicktime was not found", 
-					JOptionPane.ERROR_MESSAGE);
-			throw e;
-		} catch (NoClassDefFoundError e) {
-			JOptionPane.showMessageDialog(null, 
-					"Korsakow requires quicktime to be installed in order to run.", 
-					"Quicktime was not found", 
-					JOptionPane.ERROR_MESSAGE);
-			throw e;
-		}
 	}
 }
