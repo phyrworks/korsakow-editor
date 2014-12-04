@@ -73,7 +73,7 @@ public class Updater extends Thread
 		params.put("release", ""+Build.getRelease());
 		if (PreferencesManager.getVersionIndependentPreferences().getBoolean("updater.include.usageData", true)) {
 			params.put("uuid", Application.getUUID());
-			params.put("platform.arch", Platform.getArch().getCanonicalName());
+			params.put("platform.arch", Platform.getArch());
 			params.put("platform.os", Platform.getOS().getCanonicalName());
 			params.put("platform.os.version", Platform.getOS().getVersion());
 			params.put("locale.country", LanguageBundle.getCurrentLocale().getCountry());

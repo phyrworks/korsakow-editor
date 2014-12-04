@@ -73,14 +73,12 @@ public class Main {
 	}
 
 	public Main(String[] args) throws Exception {
-		if (Platform.getOS() == Platform.OS.UNKNOWN ||
-			Platform.getArch() == Platform.Arch.UNKNOWN ||
-			Platform.getArch() == Platform.Arch.POWERPC)
+		if (Platform.getOS() == Platform.OS.UNKNOWN)
 		{
 			JOptionPane.showMessageDialog(null, 
 					LanguageBundle.getString("general.errors.unsupportedplatform.message", 
 							Platform.getOS().getCanonicalName(), 
-							Platform.getArch().getCanonicalName()), 
+							Platform.getArch()), 
 					LanguageBundle.getString("general.errors.unsupportedplatform.title"), 
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -287,7 +285,7 @@ public class Main {
 		System.setProperty("org.korsakow.log.filename", Application.getLogfilename());
 		getLogger().info(Build.getAboutString());
 		getLogger().info(String.format("Java: JVM %s, JRE %s, ", System.getProperty("java.version"), System.getProperty("java.class.version")));
-		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch().getCanonicalName()));
+		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch()));
 		getLogger().info(String.format("UUID: %s", Application.getUUID()));
 	}
 
