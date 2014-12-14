@@ -6,9 +6,21 @@
 	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"       
 	            uri="javafx:com.sun.javafx.tools.ant"
 	            classpath="${JDK_HOME}/lib/ant-javafx.jar"/>
-	<taskdef name="bundleapp"
-	         classname="com.oracle.appbundler.AppBundlerTask"
-	         classpath="lib/appbundler-1.0ea.jar" />
+	
+	<target name="dependencies-win32">
+		<fail unless="env.LAUNCH4J_HOME" message="LAUNCH4J_HOME must be set" />
+		<property name="LAUNCH4J_HOME" value="${env.LAUNCH4J_HOME}" />
+
+		<taskdef name="launch4j"
+		    classname="net.sf.launch4j.ant.Launch4jTask"
+		    classpath="${LAUNCH4J_HOME}/launch4j.jar:${LAUNCH4J_HOME}/lib/xstream.jar" />	
+	</target>
+	
+	<target name="dependencies-osx">
+		<taskdef name="bundleapp"
+		         classname="com.oracle.appbundler.AppBundlerTask"
+		         classpath="lib/appbundler-1.0ea.jar" />
+	</target>
 	
 	<!-- input -->
 	<target name="userInput1">
@@ -113,7 +125,7 @@
 		</copy>
 	</target>
 
-	<target name="dist-osx" depends="dist-common">
+	<target name="dist-osx" depends="dependencies-osx, dist-common">
 		<mkdir dir="${dist-dir}/${plaf-osx-dir}" />
 		<property name="osx-output" value="${dist-dir}/korsakow-${release-number}-${osx}.zip" />
 
@@ -219,14 +231,16 @@
         <zip level="9" compress="true" basedir="${dist-dir}/${plaf-win32-dir}/install" file="${win32-zip-output}" />
 	</target>
 
-	<target name="dist-win32" depends="dist-common">
+	<target name="dist-win32" depends="dist-common, dependencies-win32">
 		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
         <property name="win32-zip-output" value="${dist-dir}/korsakow-${release-number}-${win32}.zip" />
 			
 		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}" />
-		<copy todir="${dist-dir}/${plaf-win32-install-dir}/">
-			<fileset file="${lib-dir}/win32/Korsakow.exe" />
-		</copy>
+		
+		<launch4j configFile="${lib-dir}/win32/launch4j.xml"
+			outfile="${dist-dir}/${plaf-win32-install-dir}/Korsakow.exe"
+			>
+		</launch4j>
 		<jar jarfile="${dist-dir}/${plaf-win32-install-dir}/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-win32-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
 		<copy 
 			todir="${dist-dir}/${plaf-win32-install-dir}/resources"
