@@ -52,7 +52,7 @@ public class FlashExporter extends AbstractExporter
 	@Override
 	protected List<ITask> createDataExportTasks(ExportData data)
 			throws IOException {
-				List<ITask> tasks = new ArrayList<ITask>();
+				List<ITask> tasks = new ArrayList<>();
 				XMLExportTask task = new XMLExportTask(data.dataPath, data.project, data.snusToExport, data.textsToExport, data.imagesToExport, data.soundsToExport, data.videosToExport, data.interfacesToExport, data.rootDir, data.filenamemap);
 				tasks.add(task);
 				return Util.list(ITask.class, new DelegateTask(LanguageBundle.getString("export.task.processingproject"), tasks));

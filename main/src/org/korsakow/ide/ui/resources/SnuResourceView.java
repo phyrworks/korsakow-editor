@@ -44,6 +44,7 @@ import org.korsakow.ide.ui.components.DelayedMediaPanelLoader;
 import org.korsakow.ide.ui.components.KCollapsiblePane;
 import org.korsakow.ide.ui.components.KLayoutPanel;
 import org.korsakow.ide.ui.components.NewMediaPanel;
+import org.korsakow.ide.ui.components.SnuTokenizerTextArea;
 import org.korsakow.ide.ui.components.TokenizerTextArea;
 import org.korsakow.ide.ui.components.cell.ResourceDOComboBoxRenderer;
 import org.korsakow.ide.ui.components.code.CodeTable;
@@ -117,6 +118,22 @@ public class SnuResourceView extends ResourceView
 	{
 	}
 
+	protected void createBasicUIComponents()
+	{
+		/* Moved to SnuResourceView, because it is the only place that calls 
+			this method, and because we need a special version of TokenizerTextArea
+			that can process Map LOCs properly -- Phoenix
+		*/
+		IUIFactory uifac = UIFactory.getFactory();
+		//add(statusArea = uifac.createTextArea("statusArea"));
+		statusArea = uifac.createTextArea("statusArea");
+		add(nameLabel = uifac.createLabel("nameLabel"));
+		add(nameField = uifac.createTextField("nameField"));
+		add(tabbedPane = uifac.createTabbedPane("tabbedPane"));
+		add(inKeywordLabel = uifac.createLabel("inKeywordsLabel", LanguageBundle.getString("resourceview.inkeywords.label"), UIResourceManager.getIcon(UIResourceManager.ICON_SNU_IN)));
+		add(uifac.customComponent("inKeywords", (inKeywordBox = new SnuTokenizerTextArea())));
+	}
+	
 	@Override
 	protected void createUIComponents()
 	{
@@ -129,8 +146,9 @@ public class SnuResourceView extends ResourceView
 					((JFrame)getTopLevelAncestor()).getContentPane().setBackground(getBackground());
 			}
 		});
-		// /hack
-		super.createUIComponents();
+		
+		createBasicUIComponents();
+		
 		IUIFactory uifac = UIFactory.getFactory();
 //		setLayout(null);
 		removeAll();
@@ -242,11 +260,13 @@ public class SnuResourceView extends ResourceView
 					codeTable.getCellEditor().stopCellEditing();
 			}
 		});
-		
+
+
 		keywordPanel.add(uifac.createLabel("k3RulesLabel", LanguageBundle.getString("snuresourceview.outkeywords.label"), UIResourceManager.getIcon(UIResourceManager.ICON_SNU_OUT)));
 		keywordPanel.add(codeScroll);
 		keywordPanel.add(inKeywordLabel);
 		keywordPanel.add(inKeywordBox);
+		
 		inKeywordBox.setFocusBackgroundColor(new Color(0xee1b23));
 		inKeywordBox.setFocusForegroundColor(Color.white);
 		inKeywordBox.setBorder(new JTextField().getBorder());
@@ -255,9 +275,10 @@ public class SnuResourceView extends ResourceView
 		previewPanelSizer.setVisible(false);
 		previewPanel.add(previewPanelSizer);
 		
-		((JComponent)previewPanel.add(uifac.createLabel("previewImageLabel", LanguageBundle.getString("snuresourceview.previewimage.label"))))
-			.setToolTipText(LanguageBundle.getString("snuresourceview.previewimage.tooltip"));
+		((JComponent)previewPanel.add(uifac.createLabel("previewImageLabel", LanguageBundle.getString("snuresourceview.previewimage.label")))).setToolTipText(LanguageBundle.getString("snuresourceview.previewimage.tooltip"));
+
 		previewPanel.add(previewImageCombo = uifac.createComboBox("previewImageCombo", new ResourceComboBoxModel(true), new ResourceDOComboBoxRenderer()));
+
 		previewImageCombo.setToolTipText(LanguageBundle.getString("snuresourceview.previewimage.tooltip"));
 
 		previewImageCombo.addActionListener(new ActionListener() {

@@ -90,7 +90,7 @@
 
 	<target name="compile" depends="init">
 		<mkdir dir="${main-compile-dir}" />
-		<javac srcdir="${main-src-dir}"  destdir="${main-compile-dir}" debug="true" debuglevel="lines,vars,source">
+		<javac target="1.8" srcdir="${main-src-dir}"  destdir="${main-compile-dir}" debug="true" debuglevel="lines,vars,source">
 			<classpath>
 				<fileset refid="lib-jars" />
 			</classpath>
@@ -228,17 +228,11 @@
 			<fileset file="${lib-dir}/win32/Korsakow.exe" />
 		</copy>
 		<jar jarfile="${dist-dir}/${plaf-win32-install-dir}/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-win32-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
-		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}/example" />
-		<copy todir="${dist-dir}/${plaf-win32-install-dir}/example/">
-			<fileset refid="circle-of-life" />
-		</copy>
 		<copy 
 			todir="${dist-dir}/${plaf-win32-install-dir}/resources"
 			includeemptydirs="false"
 			>
 			<fileset dir="${resources-dir}">
-				<exclude name="${resources-dir}/example/**" />
-				<exclude name="example/**" />
 				<exclude name="*/osx/*" />
 			    			</fileset>
 		</copy>

@@ -19,6 +19,31 @@ import org.dsrg.soenea.service.SoenEAConnection;
 
 public class DomSessionConnection extends SoenEAConnection implements Connection
 {
+
+    @Override
+    public void setSchema(String schema) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSchema() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getNetworkTimeout() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void abort(Executor executor) throws SQLException {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 	
 	public static class UnsupportedFeatureException extends SQLException
 	{
@@ -27,27 +52,6 @@ public class DomSessionConnection extends SoenEAConnection implements Connection
 			super("Unsupported Feature");
 		}
 	}
-	
-    public void setSchema(String schema) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String getSchema() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int getNetworkTimeout() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void abort(Executor executor) throws SQLException {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 	public DomSessionConnection()
 	{
 		super(new DummyConnection());
@@ -56,7 +60,7 @@ public class DomSessionConnection extends SoenEAConnection implements Connection
 	public void close() throws SQLException {
 		// sadly SOENEA has some threadlcal thing that closes the connection when the thread dies
 		// which fucks our shit up since we have these swingworker threads coming and going
-		// so we dont actually clean up ehre
+		// so we dont actually clean up here
 		// and depend on the GC
 //			System.out.println("closing: " + this);
 //			dom = null;
@@ -132,7 +136,6 @@ public class DomSessionConnection extends SoenEAConnection implements Connection
 			throws SQLClientInfoException
 	{
 	}
-	
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException
 	{

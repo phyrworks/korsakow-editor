@@ -15,7 +15,7 @@ import com.sun.swingx.treetable.TreeTableNode;
 
 public class DefaultResourceTreeTableModel extends DefaultKTreeTableModel implements ResourceTreeTableModel
 {
-	private final Map<Long, ResourceNode> idMap = new WeakReferenceMap<Long, ResourceNode>();
+	private final Map<Long, ResourceNode> idMap = new WeakReferenceMap<>();
 	public DefaultResourceTreeTableModel(FolderNode root)
 	{
 		super(root);
@@ -32,6 +32,7 @@ public class DefaultResourceTreeTableModel extends DefaultKTreeTableModel implem
 	{
 		return (FolderNode)super.getRoot();
 	}
+	@Override
 	public KNode remove(Long id)
 	{
 		ResourceNode node = findResource(id);
@@ -63,10 +64,12 @@ public class DefaultResourceTreeTableModel extends DefaultKTreeTableModel implem
 		if (UIUtil.isRooted(getRoot(), node))
 			super.removeNodeFromParent(node);
     }
+	@Override
 	public ResourceNode findResource(Long id)
 	{
 		return idMap.get(id);
 	}
+	@Override
 	public FolderNode findFolder(FolderNode parent, String name) {
 		for (KNode child : parent.getChildren()) {
 			if (child instanceof FolderNode == false)
@@ -77,10 +80,12 @@ public class DefaultResourceTreeTableModel extends DefaultKTreeTableModel implem
 		}
 		return null;
 	}
+	@Override
 	public void fireChanged()
 	{
         fireTreeStructureChanged(this, new TreePath(getPathToRoot(getRoot())));
 	}
+	@Override
 	public void fireChanged(KNode changed)
 	{
         fireTreeStructureChanged(this, new TreePath(getPathToRoot(changed)));

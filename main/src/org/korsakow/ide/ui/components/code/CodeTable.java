@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
 import org.korsakow.ide.code.k5.K5Code;
 import org.korsakow.ide.util.UIUtil;
 
-public class CodeTable extends JTable
+public final class CodeTable extends JTable
 {
 	public static String TIME_IDENTIFIER = "time";
 	public static String CODE_IDENTIFIER = "code";
@@ -44,7 +44,7 @@ public class CodeTable extends JTable
 	public boolean getAutoCreateColumnsFromModel() {
 		return false;
 	}
-    @Override
+	@Override
 	public void setModel(TableModel dataModel) {
     	setModel(((CodeTableModel)(dataModel)));
     }

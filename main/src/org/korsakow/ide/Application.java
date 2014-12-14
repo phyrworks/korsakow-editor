@@ -117,16 +117,16 @@ public class Application
 	}
 	
 
-	private final Hashtable<Long, ResourceEditor> openEditors = new Hashtable<Long, ResourceEditor>();
-	private final Hashtable<ResourceEditor, Long> openEditors2 = new Hashtable<ResourceEditor, Long>();
-	private final Hashtable<ResourceType, ResourceEditAction> resourceEditActions = new Hashtable<ResourceType, ResourceEditAction>();
+	private final Hashtable<Long, ResourceEditor> openEditors = new Hashtable<>();
+	private final Hashtable<ResourceEditor, Long> openEditors2 = new Hashtable<>();
+	private final Hashtable<ResourceType, ResourceEditAction> resourceEditActions = new Hashtable<>();
 	private ProjectExplorer projectExplorer;
 	private ProjectExplorerController projectExplorerController;
 	private SnuPool snuPool;
 	private KeywordPool keywordPool;
 	private LinkPool linkPool;
 	private ResourceTreeTable possiblePool;
-	private final List<ResourceEditor> mostRecentFocusedEditors = new ArrayList<ResourceEditor>();
+	private final List<ResourceEditor> mostRecentFocusedEditors = new ArrayList<>();
 	private final CommonTaskScheduler commonTaskScheduler = new CommonTaskScheduler();
 	/**
 	 * Application is global. This means any listeners on it would otherwise have application-lifetime!
@@ -441,7 +441,7 @@ public class Application
 	 */
 	public Collection<IResource> getOpenResources(ResourceType type) throws MapperException
 	{
-		Collection<IResource> resources = new ArrayList<IResource>();
+		Collection<IResource> resources = new ArrayList<>();
 		for (ResourceEditor editor : openEditors.values()) {
 			if (type == ResourceType.forId(getResourceForEditor(editor).getType()))
 				resources.add(getResourceForEditor(editor));
@@ -499,6 +499,7 @@ public class Application
 	{
 		return snuPool;
 	}
+
 	public void setLinkPoolDialog(final JFrame dialog, final LinkPool pool)
 	{
 		linkPool = pool;

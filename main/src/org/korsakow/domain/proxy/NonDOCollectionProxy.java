@@ -7,7 +7,7 @@ import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.proxy.ProxyException;
 
 public abstract class NonDOCollectionProxy<TYPE> implements Collection<TYPE> {
-	private Collection<TYPE> innerList;
+	private Collection<TYPE> innerList = null;
 	
 	protected abstract Collection<TYPE> getActualCollection() throws MapperException;
 	

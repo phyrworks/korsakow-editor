@@ -74,24 +74,29 @@ public class SnuResourceEditorController
 	}
 	private class ValidateDocumentListener implements DocumentListener
 	{
+		@Override
 		public void changedUpdate(DocumentEvent e) {
 			validate();
 		}
+		@Override
 		public void insertUpdate(DocumentEvent e) {
 			validate();
 		}
+		@Override
 		public void removeUpdate(DocumentEvent e) {
 			validate();
 		}
 	}
 	private class ValidateActionListener implements ActionListener
 	{
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			validate();
 		}
 	}
 	private class UpdateCodeTimeFromMainMediaListener implements ChangeListener
 	{
+		@Override
 		public void stateChanged(ChangeEvent e) {
 			Playable media = resourceView.getMainMediaPanel().getPlayable();
 			if (media == null)
@@ -115,7 +120,7 @@ public class SnuResourceEditorController
 				return;
 //				modelRowIndex = codeTable.getModel().getEmptyRow();
 //			else
-				modelRowIndex = codeTable.convertRowIndexToModel(viewRowIndex);
+			modelRowIndex = codeTable.convertRowIndexToModel(viewRowIndex);
 			long time = media.getTime();
 			resourceView.getCodeTable().getModel().setTimeAt(time, modelRowIndex);
 		}
@@ -149,9 +154,11 @@ public class SnuResourceEditorController
 			}
 		}
 
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			update();
 		}
+		@Override
 		public void tableChanged(TableModelEvent e) {
 			final CodeTable codeTable = resourceView.getCodeTable();
 			if (e.getType()==TableModelEvent.UPDATE && e.getColumn() == codeTable.getColumnIndex(CodeTable.TIME_IDENTIFIER))
@@ -167,6 +174,7 @@ public class SnuResourceEditorController
 			this.codeTable = codeTable;
 			this.columnModel = columnModel;
 		}
+		@Override
 		public void tableChanged(TableModelEvent e) {
 			if (e.getType()==TableModelEvent.DELETE)
 				return;
@@ -199,6 +207,7 @@ public class SnuResourceEditorController
 				}
 			}
 			UIUtil.runUITaskLater(new Runnable() {
+				@Override
 				public void run() {
 					// remove empty rows
 					for (int i = 0; i < codeTable.getModel().getRowCount()-1; ++i) {
@@ -229,12 +238,13 @@ public class SnuResourceEditorController
 		}
 	}
 	/**
-	 * Reattaches listenrs to the model when it changes
+	 * Reattaches listeners to the model when it changes
 	 * @author d
 	 *
 	 */
 	private class CodeTableModelChangeListener implements PropertyChangeListener
 	{
+		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			TableModel newModel = (TableModel)event.getNewValue();
 			newModel.addTableModelListener(codeTableModelListener);
@@ -242,6 +252,7 @@ public class SnuResourceEditorController
 	}
 	private class BackgroundSoundChangeListener implements ActionListener
 	{
+		@Override
 		public void actionPerformed( ActionEvent event ) {
 			Long mediaId = resourceView.getMainMediaId();
 			if ( mediaId == null )
@@ -291,6 +302,7 @@ public class SnuResourceEditorController
 	private final SnuResourceView resourceView;
 	private CodeTableCanonicalFormListener codeTableModelListener;
 	/**
+	 * @param editor
 	 * @param resourceId null for inserts, non-null for updates
 	 */
 	public SnuResourceEditorController(ResourceEditor editor, Long resourceId)
@@ -328,7 +340,7 @@ public class SnuResourceEditorController
 					rawCode = generator.createKeepPreviousLinks() + K5Symbol.DEFAULT_STATEMENT_SEPARATOR_STRING + " " + rawCode;
 				
 				List<RuleModel> rules = parser.parse(rawCode);
-				
+								
 				boolean haveClearScores = false;
 				List<RuleModel> toRemove = new ArrayList<RuleModel>();
 				for (RuleModel rule : rules)
@@ -347,6 +359,7 @@ public class SnuResourceEditorController
 				}
 				code.setRawCode(canonicalRaw);
 				code.setValid(true);
+
 			} catch (RuleParserException e) {
 				e.printStackTrace();
 				valid = false;

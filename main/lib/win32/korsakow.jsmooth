@@ -16,7 +16,7 @@
 <mainClassName>org.korsakow.ide.Main</mainClassName>
 <maximumMemoryHeap>1073741824</maximumMemoryHeap>
 <maximumVersion></maximumVersion>
-<minimumVersion>1.6</minimumVersion>
+<minimumVersion>1.8</minimumVersion>
 <skeletonName>Windowed Wrapper</skeletonName>
 <skeletonProperties>
 <key>Message</key>

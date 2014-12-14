@@ -84,11 +84,7 @@ public enum WidgetType
 	{
 		try {
 			return clazz.newInstance();
-		} catch (InstantiationException e) {
-			// should never happen
-        	Logger.getLogger(AudioInfo.class).fatal(e);
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
+		} catch (    InstantiationException | IllegalAccessException e) {
 			// should never happen
         	Logger.getLogger(AudioInfo.class).fatal(e);
 			throw new RuntimeException(e);

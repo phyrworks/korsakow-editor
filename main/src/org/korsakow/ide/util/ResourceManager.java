@@ -35,11 +35,12 @@ public class ResourceManager
 				// in dist builds parentDir will be the Jar file; running from the IDE it will just be the path
 				if (!parentDir.isDirectory())
 					parentDir = parentDir.getParentFile();
+				
 			} catch (URISyntaxException e) {
 				throw new MissingResourceException(e.getMessage(), clazz.getCanonicalName(), name);
 			}
 			// TODO: why do we prefix with ./ ?
-			File file = new File(parentDir, "." + File.separator  + RESOURCE_BASE_PATH + name);
+			File file = new File(parentDir, File.separator  + RESOURCE_BASE_PATH + name);
 			if (!file.exists())
 				throw new MissingResourceException(file.getAbsolutePath(), clazz.getCanonicalName(), name);
 			return file;

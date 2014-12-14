@@ -87,17 +87,7 @@ public class CommandExecutor {
 		try {
 			ICommand command = getCommand(clazz, request, response);
 			command.execute();
-		} catch (SecurityException e) {
-			throw new CommandException(e);
-		} catch (NoSuchMethodException e) {
-			throw new CommandException(e);
-		} catch (IllegalArgumentException e) {
-			throw new CommandException(e);
-		} catch (InstantiationException e) {
-			throw new CommandException(e);
-		} catch (IllegalAccessException e) {
-			throw new CommandException(e);
-		} catch (InvocationTargetException e) {
+		} catch (SecurityException | NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new CommandException(e);
 		}
 	}

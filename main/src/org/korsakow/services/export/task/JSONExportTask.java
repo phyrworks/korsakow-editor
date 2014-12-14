@@ -78,13 +78,16 @@ public class JSONExportTask extends AbstractTask
 			this.id = id;
 			this.value = value;
 		}
+		@Override
 		public Object getDynamicProperty(String id) {
 			return value;
 		}
+		@Override
 		public Collection<String> getDynamicPropertyIds() {
 			if (id == null) return Collections.emptyList();
 			return Arrays.asList(id);
 		}
+		@Override
 		public void setDynamicProperty(String id, Object value) {
 			throw new IllegalStateException();
 		}
@@ -99,7 +102,7 @@ public class JSONExportTask extends AbstractTask
 	private final File rootDir;
 	private final String dataPath;
 	private final Map<String, String> filenamemap;
-		
+
 	public JSONExportTask(ExportData data)
 	{
 		data.dataPath = FileUtil.setFileExtension(data.dataPath, "js");
@@ -121,7 +124,6 @@ public class JSONExportTask extends AbstractTask
 		project = data.project;
 		rootDir = data.rootDir;
 		filenamemap = data.filenamemap;
-		
 	}
 	
 	@Override
@@ -136,17 +138,13 @@ public class JSONExportTask extends AbstractTask
 		try {
 			doc = projectToDOM(project, snusToExport, textsToExport, imagesToExport, soundsToExport, videosToExport, interfacesToExport);
 			FileUtil.writeFileFromString(new File(rootDir, dataPath), doc.toString(4));
-		} catch (ExportException e) {
-			throw new TaskException(e);
-		} catch (IOException e) {
-			throw new TaskException(e);
-		} catch (MapperException e) {
+		} catch (ExportException | IOException | MapperException e) {
 			throw new TaskException(e);
 		}
 	}
 	private static JSONArray keywordsToDom(Collection<IKeyword> keywords, String extraKeyword)
 	{
-		TreeSet<IKeyword> set = new TreeSet<IKeyword>(keywords); // treeset sorts them "naturally"
+		TreeSet<IKeyword> set = new TreeSet<>(keywords); // treeset sorts them "naturally"
 		if (extraKeyword != null)
 			set.add(KeywordFactory.createNew(extraKeyword));
 		JSONArray array = new JSONArray();
@@ -159,6 +157,7 @@ public class JSONExportTask extends AbstractTask
 		}
 		return array;
 	}
+		
 	private static void dynamicPropertiesToDom(JSONObject obj, IDynamicProperties absprops)
 	{
 		for (String id : absprops.getDynamicPropertyIds())
@@ -441,7 +440,7 @@ public class JSONExportTask extends AbstractTask
         projObj.put("keepLinksOnEmptySearch", project.getKeepLinksOnEmptySearch());
         projObj.put("maxLinks", project.getMaxLinks());
         
-		List<IEvent> events = new ArrayList<IEvent>();
+		List<IEvent> events = new ArrayList<>();
 		if (project.getBackgroundImage() != null) {
         	projObj.put("backgroundImageId", project.getBackgroundImage().getId());
         	

@@ -75,9 +75,11 @@ public class SnuOutputMapper implements GenericOutputMapper<Long, Snu>{
 				forceProxy(rule);
 			}
 			RuleTDG.deleteByResource(a.getId());
-			for (IRule rule : a.getRules()) {
+			
+			for (IRule rule : a.getRules()) {		    
 				RuleOutputMapper.insert(a.getId(), rule);
 			}
+			
 			for (IEvent event : a.getEvents()) {
 				// icky implementation detail: event is a weak mapping. we're about to delete and recreate them
 				// so if any of the IEvent are Proxies we must first cause them to instantiate (read from datasource)
@@ -88,7 +90,7 @@ public class SnuOutputMapper implements GenericOutputMapper<Long, Snu>{
 			for (IEvent event : a.getEvents()) {
 				EventOutputMapper.insert(a.getId(), event);
 			}
-		} catch (XPathException e) {
+		} catch (XPathExpressionException e) {
 			throw new MapperException(e);
 		}
 	}

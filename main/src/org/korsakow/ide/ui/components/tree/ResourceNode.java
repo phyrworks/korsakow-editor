@@ -1,10 +1,16 @@
 package org.korsakow.ide.ui.components.tree;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import org.apache.log4j.Logger;
 
 import org.dsrg.soenea.domain.MapperException;
+import org.dsrg.soenea.domain.command.CommandException;
+import org.korsakow.domain.CommandExecutor;
+import org.korsakow.domain.command.Request;
 import org.korsakow.domain.interf.IInterface;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IProject;
@@ -14,6 +20,7 @@ import org.korsakow.domain.interf.ISnu;
 import org.korsakow.domain.interf.IWidget;
 import org.korsakow.domain.mapper.input.ResourceInputMapper;
 import org.korsakow.ide.resources.ResourceType;
+import org.korsakow.ide.util.Command;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

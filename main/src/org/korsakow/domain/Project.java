@@ -70,6 +70,7 @@ public class Project extends Resource implements IProject
 		this.settings = settings;
 		this.uuid = uuid;
 	}
+	@Override
 	public String getType()
 	{
 		return ResourceType.PROJECT.getTypeId();
@@ -84,53 +85,67 @@ public class Project extends Resource implements IProject
 	{
 		return name;
 	}
+	@Override
 	public void setMovieWidth(int width)
 	{
 		movieWidth = width;
 	}
+	@Override
 	public int getMovieWidth()
 	{
 		return movieWidth;
 	}
+	@Override
 	public void setMovieHeight(int height)
 	{
 		movieHeight = height;
 	}
+	@Override
 	public int getMovieHeight()
 	{
 		return movieHeight;
 	}
+	@Override
 	public void setBackgroundSound(ISound sound)
 	{
 		backgroundSound = sound;
 	}
+	@Override
 	public ISound getBackgroundSound()
 	{
 		return backgroundSound;
 	}
+	@Override
 	public void setClickSound(ISound sound)
 	{
 		clickSound = sound;
 	}
+	@Override
 	public ISound getClickSound()
 	{
 		return clickSound;
 	}
+	@Override
 	public float getBackgroundSoundVolume() {
 		return backgroundSoundVolume;
 	}
+	@Override
 	public float getClickSoundVolume() {
 		return clickSoundVolume;
 	}
+	@Override
 	public void setBackgroundSoundVolume(float backgroundSoundVolume) {
 		this.backgroundSoundVolume = backgroundSoundVolume;
 	}
+	@Override
 	public void setClickSoundVolume(float clickSoundVolume) {
 		this.clickSoundVolume = clickSoundVolume;
 	}
+	@Override
 	public void setBackgroundImage(IImage backgroundImage) {
 		this.backgroundImage = backgroundImage;
 	}
+	@Override
 	public Color getBackgroundColor()
 	{
 		return backgroundColor;
@@ -139,62 +154,79 @@ public class Project extends Resource implements IProject
 	{
 		this.backgroundColor = backgroundColor;
 	}
+	@Override
 	public IImage getBackgroundImage() {
 		return backgroundImage;
 	}
+	@Override
 	public void setSplashScreenMedia(IMedia splashScreenMedia)
 	{
 		this.splashScreenMedia = splashScreenMedia;
 	}
+	@Override
 	public IMedia getSplashScreenMedia()
 	{
 		return splashScreenMedia;
 	}
+	@Override
 	public void setRandomLinkMode(boolean randomLinkMode)
 	{
 		this.randomLinkMode = randomLinkMode;
 	}
+	@Override
 	public boolean getRandomLinkMode()
 	{
 		return randomLinkMode;
 	}
+	@Override
 	public void setKeepLinksOnEmptySearch(boolean keepLinks)
 	{
 		keepLinksOnEmptySearch = keepLinks;
 	}
+	@Override
 	public boolean getKeepLinksOnEmptySearch()
 	{
 		return keepLinksOnEmptySearch;
 	}
+	@Override
 	public void setMaxLinks(Long maxLinks)
 	{
 		this.maxLinks = maxLinks;
 	}
+	@Override
 	public Long getMaxLinks()
 	{
 		return maxLinks;
 	}
+	@Override
 	public List<IRule> getRules() {
 		return rules;
 	}
+	@Override
 	public void setRules(List<IRule> rules) {
 		this.rules = rules;
 	}
+	@Override
 	public void setSnus(Collection<ISnu> snus) {
 		this.snus = snus;
 	}
+	@Override
 	public Collection<ISnu> getSnus() {
 		return snus;
 	}
+	@Override
 	public void setInterfaces(Collection<IInterface> interfaces) {
 		this.interfaces = interfaces;
 	}
+	@Override
 	public Collection<IInterface> getInterfaces() {
 		return interfaces;
 	}
+	@Override
 	public void setMedia(Collection<IMedia> media) {
 		this.media = media;
 	}
+	@Override
 	public Collection<IMedia> getMedia() {
 		return media;
 	}
@@ -206,6 +238,7 @@ public class Project extends Resource implements IProject
 	{
 		return settings;
 	}
+	@Override
 	public String getUUID()
 	{
 		return uuid;
@@ -214,18 +247,22 @@ public class Project extends Resource implements IProject
 	{
 		this.uuid = uuid;
 	}
+	@Override
 	public boolean getBackgroundSoundLooping()
 	{
 		return backgroundSoundLooping;
 	}
+	@Override
 	public void setBackgroundSoundLooping(boolean backgroundSoundLooping)
 	{
 		this.backgroundSoundLooping = backgroundSoundLooping;
 	}
+	@Override
 	public IInterface getDefaultInterface()
 	{
 		return defaultInterface;
 	}
+	@Override
 	public void setDefaultInterface(IInterface defaultInterface)
 	{
 		this.defaultInterface = defaultInterface;
