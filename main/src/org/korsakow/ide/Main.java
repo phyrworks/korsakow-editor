@@ -109,8 +109,26 @@ public class Main {
 		for (String arg : args) {
 			getLogger().info("\t" + arg + "\n");
 		}
+
 		
-		
+		/* without some amount of jfx initialization, strange unpredictable
+		 * failures happen when trying to load/display videos 
+         *
+         *
+         * As a note: These are not strange, or unpredictable failures.
+         * As the comment below attempts to describe, the JavaFX environment
+         * must be started up before *any* JavaFX related systems are used
+         * (which includes video, web views, etc).  If the environment is not
+         * started, playback behavior is undefined - things may or may not work
+         * as expected.  So the following "...setImplicitExit(false)" line is
+         * required, as well as the call to below to create a JFXPanel().
+         * I would call this setup to be a bug in JavaFX - Oracle should really
+         * include a simple call to setup the environment that does not
+         * require us to use a call for it's side effects.  But this is the 
+         * way things are, and this is what Oracle says to do in their own
+         * documentation.  --Phoenix...
+         
+         */
 		javafx.application.Platform.setImplicitExit(false);
 		/*
 		Since we need JavaFX for the web window, and since we don't want
@@ -129,7 +147,7 @@ public class Main {
 			final JFXPanel initPanel = new JFXPanel(); // initializes JavaFX environment;\
 		    }
 		});
-
+		
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() {
 				UIUtil.setUpLAF();
