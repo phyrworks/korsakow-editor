@@ -37,7 +37,6 @@ public class ProjectExplorer extends JFrame
 		MenuFileImportMedia,
 		MenuFileExport,
 		MenuFileExportWeb,
-		MenuFileExportDraftWeb,
 		MenuFileExportInterface,
 		MenuFileSave,
 		MenuFileSaveAs,
@@ -130,9 +129,6 @@ public class ProjectExplorer extends JFrame
 				KeyStroke.getKeyStroke('E', UIUtil.getPlatformCommandKeyMask())));
 		addAccelerator(menus.get(Action.MenuFileExportWeb), 
 				KeyStroke.getKeyStroke('E', UIUtil.getPlatformCommandKeyMask() | InputEvent.SHIFT_MASK));
-		exportMenu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.export.draftweb.label"), 
-				Action.MenuFileExportDraftWeb, 
-				KeyEvent.VK_E));
 
 		exportMenu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.export.interface.label"), Action.MenuFileExportInterface, KeyEvent.VK_E));
 		menu.add(new JSeparator());

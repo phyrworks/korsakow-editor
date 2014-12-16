@@ -1,5 +1,27 @@
-<project name="Korsakow" basedir="../">
+<project name="Korsakow" basedir="../" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<property environment="env" />
+	<fail unless="env.JDK_HOME" message="JDK_HOME must be set" />
+	<property name="JDK_HOME" value="${env.JDK_HOME}" />
 
+	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"       
+	            uri="javafx:com.sun.javafx.tools.ant"
+	            classpath="${JDK_HOME}/lib/ant-javafx.jar"/>
+	
+	<target name="dependencies-win32">
+		<fail unless="env.LAUNCH4J_HOME" message="LAUNCH4J_HOME must be set" />
+		<property name="LAUNCH4J_HOME" value="${env.LAUNCH4J_HOME}" />
+
+		<taskdef name="launch4j"
+		    classname="net.sf.launch4j.ant.Launch4jTask"
+		    classpath="${LAUNCH4J_HOME}/launch4j.jar:${LAUNCH4J_HOME}/lib/xstream.jar" />	
+	</target>
+	
+	<target name="dependencies-osx">
+		<taskdef name="bundleapp"
+		         classname="com.oracle.appbundler.AppBundlerTask"
+		         classpath="lib/appbundler-1.0ea.jar" />
+	</target>
+	
 	<!-- input -->
 	<target name="userInput1">
 		<input
@@ -80,7 +102,7 @@
 
 	<target name="compile" depends="init">
 		<mkdir dir="${main-compile-dir}" />
-		<javac srcdir="${main-src-dir}"  destdir="${main-compile-dir}" debug="true" debuglevel="lines,vars,source">
+		<javac target="1.8" srcdir="${main-src-dir}"  destdir="${main-compile-dir}" debug="true" debuglevel="lines,vars,source">
 			<classpath>
 				<fileset refid="lib-jars" />
 			</classpath>
@@ -103,21 +125,29 @@
 		</copy>
 	</target>
 
-	<target name="dist-osx" depends="dist-common">
+	<target name="dist-osx" depends="dependencies-osx, dist-common">
 		<mkdir dir="${dist-dir}/${plaf-osx-dir}" />
 		<property name="osx-output" value="${dist-dir}/korsakow-${release-number}-${osx}.zip" />
-		<!-- setup OSX App -->
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app">
-			<fileset dir="${lib-dir}/osx/Korsakow.app" />
-		</copy>
 
-		<mkdir dir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/resources" />
-		<!--
-		Doesn't preserve unix file permissions (in particular the executable bit)
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/resources/">
-			<fileset refid="resources-files" />
-		</copy>
-		-->
+        <fx:jar destfile="${compile-dir}/${korsakow-filename}" verbose="true">
+          <fx:platform javafx="2.1+" j2se="8.0" />
+          <fx:application mainClass="org.korsakow.ide.Main"/>
+          <fileset dir="${main-compile-dir}" />
+        </fx:jar>
+        
+        <bundleapp outputdirectory="${dist-dir}/${plaf-osx-dir}"
+            name="Korsakow"
+            displayname="Korsakow" 
+            identifier="Korsakow"
+        	copyright="Korsakow"
+        	icon="${lib-dir}/osx/korsakow.icns"
+        	shortversion="${release-number}"
+            mainclassname="org.korsakow.ide.Main">
+            <runtime dir="${JDK_HOME}" />
+            <classpath file="${lib-dir}/osx/OSXApplication.jar" />
+            <classpath file="${compile-dir}/${korsakow-filename}" />
+        </bundleapp>
+    
 		<exec executable="rsync" failonerror="true" logerror="true" >
 			<arg value="--recursive" />
 			<arg value="--times" />
@@ -125,34 +155,40 @@
 			<arg value="--executability" />
 			<arg value="--whole-file" />
 			<arg value="--prune-empty-dirs" />
-			<arg value="--exclude=*/.svn/" />
 			<arg value="--exclude=*/win32/*" />
 			<arg value="--exclude=*/win32" />
-			<arg value="--exclude=/resources/example/" />
-
 			<arg value="${resources-dir}" />
-			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/" />
+			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/" />
 		</exec>
 
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/example">
-			<fileset dir="${resources-dir}/example" />
-		</copy>
-
-		<copy todir="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java">
-			<fileset file="${lib-dir}/osx/OSXApplication.jar" />
-		</copy>
-
-		<!-- lame.. the executable perm isnt preserved... thankfully this is the only one -->
-		<chmod perm="ug+rx" file="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/MacOS/JavaApplicationStub" />
-		<jar jarfile="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Resources/Java/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-osx-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
-
 		<exec executable="codesign" failonerror="true" logerror="true">
-			<arg value="-f" />
+            <arg value="--deep" /> <!-- required to sign bundled jre -->
+            <arg value="-f" />
 			<arg value="-s" />
 			<arg value="Developer ID Application: David Reisch" />
 			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
 		</exec>
-
+		
+		<!-- fail the build if signing failed -->
+        <exec executable="spctl" failonerror="true" logerror="true">
+		    <arg value="--assess" />
+			<arg value="--type" />
+			<arg value="execute" />
+			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+		</exec>
+		
+        <exec executable="hdiutil" failonerror="true" logerror="true">
+            <arg value="create" />
+            <arg value="-volname" />
+            <arg value="Korsakow" />
+            <arg value="-srcfolder" />
+            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+            <arg value="-ov" />
+            <arg value="-format" />
+            <arg value="UDZO" />
+            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.dmg" />
+    	</exec>
+		
 		<zip level="9" compress="true" file="${osx-output}">
 			<zipfileset dir="${dist-dir}/${plaf-osx-dir}/" filemode="775" />
 		</zip>
@@ -195,29 +231,24 @@
         <zip level="9" compress="true" basedir="${dist-dir}/${plaf-win32-dir}/install" file="${win32-zip-output}" />
 	</target>
 
-	<target name="dist-win32" depends="dist-common">
+	<target name="dist-win32" depends="dist-common, dependencies-win32">
 		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
         <property name="win32-zip-output" value="${dist-dir}/korsakow-${release-number}-${win32}.zip" />
 			
 		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}" />
-		<copy todir="${dist-dir}/${plaf-win32-install-dir}/">
-			<fileset file="${lib-dir}/win32/Korsakow.exe" />
-		</copy>
+		
+		<launch4j configFile="${lib-dir}/win32/launch4j.xml"
+			outfile="${dist-dir}/${plaf-win32-install-dir}/Korsakow.exe"
+			>
+		</launch4j>
 		<jar jarfile="${dist-dir}/${plaf-win32-install-dir}/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-win32-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
-		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}/example" />
-		<copy todir="${dist-dir}/${plaf-win32-install-dir}/example/">
-			<fileset refid="circle-of-life" />
-		</copy>
 		<copy 
 			todir="${dist-dir}/${plaf-win32-install-dir}/resources"
 			includeemptydirs="false"
 			>
 			<fileset dir="${resources-dir}">
-				<exclude name="${resources-dir}/example/**" />
-				<exclude name="example/**" />
 				<exclude name="*/osx/*" />
-				<exclude name="*/.svn/*" />
-			</fileset>
+			    			</fileset>
 		</copy>
 
         <antcall target="build-win32-installer" />

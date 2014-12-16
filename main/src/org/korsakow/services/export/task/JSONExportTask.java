@@ -102,6 +102,7 @@ public class JSONExportTask extends AbstractTask
 	private final File rootDir;
 	private final String dataPath;
 	private final Map<String, String> filenamemap;
+
 	public JSONExportTask(ExportData data)
 	{
 		data.dataPath = FileUtil.setFileExtension(data.dataPath, "js");
@@ -113,16 +114,16 @@ public class JSONExportTask extends AbstractTask
 		}
 		data.imagesToExport = adjustedImages;
 		
-		this.dataPath = data.dataPath;
-		this.videosToExport = data.videosToExport;
-		this.soundsToExport = data.soundsToExport;
-		this.imagesToExport = data.imagesToExport;
-		this.textsToExport = data.textsToExport;
-		this.snusToExport = data.snusToExport;
-		this.interfacesToExport = data.interfacesToExport;
-		this.project = data.project;
-		this.rootDir = data.rootDir;
-		this.filenamemap = data.filenamemap;
+		dataPath = data.dataPath;
+		videosToExport = data.videosToExport;
+		soundsToExport = data.soundsToExport;
+		imagesToExport = data.imagesToExport;
+		textsToExport = data.textsToExport;
+		snusToExport = data.snusToExport;
+		interfacesToExport = data.interfacesToExport;
+		project = data.project;
+		rootDir = data.rootDir;
+		filenamemap = data.filenamemap;
 	}
 	
 	@Override

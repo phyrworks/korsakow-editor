@@ -14,6 +14,7 @@ import org.korsakow.services.plugin.predicate.PredicateTypeInfoFactory;
 
 public class PredicateModelListCellRenderer extends DefaultListCellRenderer implements ListCellRenderer<Object>
 {
+	@Override
 	public Component getListCellRendererComponent(
 		       JList list,              // the list
 		       Object value,            // value to display

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.sql.SQLException;
+
 import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JOptionPane;
@@ -35,12 +36,6 @@ import org.korsakow.services.plugin.PluginHelper;
 import org.korsakow.services.plugin.PluginRegistry;
 import org.korsakow.services.plugin.export.ExportPlugin;
 import org.korsakow.services.updater.Updater;
-
-//import quicktime.QTException;
-//import quicktime.QTSession;
-
-//import com.apple.eawt.ApplicationEvent;
-//import com.apple.eawt.ApplicationListener;
 
 public class Main {
 	/**
@@ -78,14 +73,12 @@ public class Main {
 	}
 
 	public Main(String[] args) throws Exception {
-		if (Platform.getOS() == Platform.OS.UNKNOWN ||
-			Platform.getArch() == Platform.Arch.UNKNOWN ||
-			Platform.getArch() == Platform.Arch.POWERPC)
+		if (Platform.getOS() == Platform.OS.UNKNOWN)
 		{
 			JOptionPane.showMessageDialog(null, 
 					LanguageBundle.getString("general.errors.unsupportedplatform.message", 
 							Platform.getOS().getCanonicalName(), 
-							Platform.getArch().getCanonicalName()), 
+							Platform.getArch()), 
 					LanguageBundle.getString("general.errors.unsupportedplatform.title"), 
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -222,24 +215,6 @@ public class Main {
 		});
 	}
 
-	private void shutdownLibs() throws Exception {
-		getLogger().info("shutdown libs");
-		// QT is pretty quirky, and for example might keep processes hanging
-		// around if the shutdown isnt complete
-		// so we try our best to make sure each part of the shutdown is
-		// attempted
-//		try {
-//			QTSession.exitMovies();
-//		} catch (Exception e) {
-//			Logger.getLogger(Main.class).error("", e);
-//		}
-//		try {
-//			QTSession.close();
-//		} catch (Exception e) {
-//			Logger.getLogger(Main.class).error("", e);
-//		}
-	}
-
 	private void shutdown() throws Exception {
 		getLogger().info("shutdown begin");
 		try {
@@ -252,12 +227,7 @@ public class Main {
 		} catch (Exception e) {
 			getLogger().error("", e);
 		}
-		;
-		try {
-			shutdownLibs();
-		} catch (Exception e) {
-			getLogger().error("", e);
-		}
+
 		getLogger().info(
 				"shutdown complete (this should be the last item logged)");
 		System.exit(0);
@@ -287,18 +257,13 @@ public class Main {
 		Application.getUUID(); // side effect causes the UUID to be persisted.
 		setupLogging();
 		setupPlatform();
-//		UIUtil.runUITaskNow(new Runnable() { public void run() { try {
-//			setupLibs();
-//		} catch (QTException e) {
-//			throw new RuntimeException(e);
-//		} } }); 
 	}
 
 	public static void setupLogging() {
 		System.setProperty("org.korsakow.log.filename", Application.getLogfilename());
 		getLogger().info(Build.getAboutString());
 		getLogger().info(String.format("Java: JVM %s, JRE %s, ", System.getProperty("java.version"), System.getProperty("java.class.version")));
-		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch().getCanonicalName()));
+		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch()));
 		getLogger().info(String.format("UUID: %s", Application.getUUID()));
 	}
 
@@ -327,23 +292,5 @@ public class Main {
 			break;
 		}
 		ImageEncoderFactory.addEncoder(new JavaImageIOImageEncoder.JavaImageIOEncoderDescription());
-	}
-
-	private static void setupLibs() /*throws QTException*/ {
-//		try {
-//			QTSession.open();
-//		} catch (UnsatisfiedLinkError e) {
-//			JOptionPane.showMessageDialog(null, 
-//					"Korsakow requires quicktime to be installed in order to run.", 
-//					"Quicktime was not found", 
-//					JOptionPane.ERROR_MESSAGE);
-//			throw e;
-//		} catch (NoClassDefFoundError e) {
-//			JOptionPane.showMessageDialog(null, 
-//					"Korsakow requires quicktime to be installed in order to run.", 
-//					"Quicktime was not found", 
-//					JOptionPane.ERROR_MESSAGE);
-//			throw e;
-//		}
 	}
 }

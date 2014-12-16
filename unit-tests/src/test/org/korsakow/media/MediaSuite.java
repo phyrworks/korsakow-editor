@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @SuiteClasses({
-	TestQTMemory.class,
 })
 @RunWith(Suite.class)
 public class MediaSuite {

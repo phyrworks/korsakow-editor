@@ -12,8 +12,8 @@
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.korsakow.ide.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="korsakow-editor"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-d32"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:korsakow-editor}/bin/resources"/>
 </launchConfiguration>
