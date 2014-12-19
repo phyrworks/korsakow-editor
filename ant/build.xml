@@ -219,6 +219,7 @@
 			directoryRef="INSTALLDIR"
 			sourcePath="${dist-dir}/${plaf-win32-install-dir}"
 			outputFile="${dist-dir}/${plaf-win32-dir}/wix/Files.wxs"
+			is64Bit="true"
 			/>
 		
 		<wix
