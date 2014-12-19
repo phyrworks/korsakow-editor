@@ -1,6 +1,6 @@
 <project name="Korsakow" basedir="../" xmlns:fx="javafx:com.sun.javafx.tools.ant">
 	<property environment="env" />
-	<fail unless="env.JDK_HOME" message="JDK_HOME must be set" />
+	<fail unless="env.JDK_HOME" message="JDK_HOME must be set: used by javafx task and to bundle on OSX" />
 	<property name="JDK_HOME" value="${env.JDK_HOME}" />
 
 	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"       
@@ -262,6 +262,14 @@
 			<fileset dir="${JRE_HOME}">
 			</fileset>
 		</copy>
+
+        <copy 
+            todir="${dist-dir}/${plaf-win32-install-dir}/jre"
+            includeemptydirs="false"
+            >
+            <fileset dir="${JRE_HOME}">
+            </fileset>
+        </copy>
 
         <antcall target="build-win32-installer" />
         <antcall target="build-win32-zip" />
