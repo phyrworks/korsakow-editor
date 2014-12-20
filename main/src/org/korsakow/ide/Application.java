@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -228,19 +229,40 @@ public class Application
 	}
 	/**
 	 * TOOD: refactor this, perhaps into the Platform class
-	 * @return
 	 */
 	public static String getUserHome()
 	{
 		return System.getProperty("user.home");
 	}
+	
 	/**
 	 * TODO: refactor this, perhaps into the Platform class, or maybe into Application
-	 * @return
 	 */
 	public static String getKorsakowHome()
 	{
-		return getUserHome() + File.separatorChar + ".korsakow";
+		final String home;
+		switch (Platform.getOS()) {
+		case MAC:
+			home = Util.join(Arrays.asList(Application.getUserHome(),
+				"Library",
+				"Application Support",
+				"Korsakow"
+			), File.separator);
+			break;
+		case WIN:
+			home = Util.join(Arrays.asList(System.getenv("AppData"),
+					"Korsakow"
+				), File.separator);
+			break;
+		
+		default:
+		case NIX:
+			home = Util.join(Arrays.asList(getUserHome(),
+					".korsakow"
+				), File.separator);
+			break;
+		}
+		return home;
 	}
 	
 	public static String getLogfilename()

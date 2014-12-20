@@ -267,6 +267,7 @@ public class Main {
 		getLogger().info(String.format("Java: JVM %s, JRE %s, ", System.getProperty("java.version"), System.getProperty("java.class.version")));
 		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch()));
 		getLogger().info(String.format("UUID: %s", Application.getUUID()));
+		getLogger().info(String.format("Korsakow Home set to: %s", Application.getKorsakowHome()));
 	}
 
 	private static void setupPlatform() {

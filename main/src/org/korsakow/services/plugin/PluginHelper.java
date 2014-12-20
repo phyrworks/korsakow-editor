@@ -13,8 +13,8 @@ import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.util.PluginManagerUtil;
 
 import org.apache.log4j.Logger;
+import org.korsakow.ide.Application;
 import org.korsakow.ide.util.FileUtil;
-import org.korsakow.ide.util.ResourceManager;
 import org.korsakow.services.plugin.export.ExportPlugin;
 
 public class PluginHelper
@@ -28,10 +28,13 @@ public class PluginHelper
 		URL url = src.getLocation();
 		return new File(url.toURI());
 	}
+
+	private static String getPluginsDir() {
+		return Application.getKorsakowHome() + File.separator + "plugins";
+	}
 	
 	public static File ensurePluginsDir() throws IOException {
-		File resourceDir = ResourceManager.getResourceFile(".");
-		File dir = new File(resourceDir, "plugins");
+		File dir = new File(getPluginsDir());
 		FileUtil.mkdirs(dir);
 		return dir;
 	}
