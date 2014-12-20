@@ -201,10 +201,6 @@
             <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.dmg" />
     	</exec>
 		
-		<zip level="9" compress="true" file="${osx-output}">
-			<zipfileset dir="${dist-dir}/${plaf-osx-dir}/" filemode="775" />
-		</zip>
-
 	</target>
 
 	<target name="build-wix-task">
