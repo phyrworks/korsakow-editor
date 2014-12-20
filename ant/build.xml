@@ -7,6 +7,8 @@
 	            uri="javafx:com.sun.javafx.tools.ant"
 	            classpath="${JDK_HOME}/lib/ant-javafx.jar"/>
 	
+    <property name="signed" value="${env.KORSAKOW_BUILD_SIGNED}" />
+
 	<target name="dependencies-win32">
 		<fail unless="env.JRE_HOME" message="JRE_HOME must be set. Is bundled in the installer." />
 		<property name="JRE_HOME" value="${env.JRE_HOME}" />
@@ -26,14 +28,13 @@
 	</target>
 	
 	<!-- input -->
-	<target name="userInput1">
+	<target name="userInput">
 		<input
 		    message="Milestone Version (eg: 8.0):"
 		    addproperty="release-number"
 			defaultvalue="x"
 		/>
-	</target>
-	<target name="userInput2">
+
 		<input 
 		    message="(optional) SSH username:"
 		    addproperty="ssh.user"
@@ -43,9 +44,7 @@
 		    addproperty="ssh.pass"
 		/>
 	</target>
-	<target name="userInput" depends="userInput1, userInput2">
-		<property name="release-number" value="0.0" />
-	</target>
+
 	<!-- /input -->
 
 	<!-- config -->
@@ -95,6 +94,7 @@
 	</target>
 
 	<target name="init">
+        <property name="release-number" value="999.999" />
 		<tstamp />
 		<echo message="Build ${release-number}" />
 		<buildnumber file="${resources-dir}/build"/>
@@ -126,6 +126,24 @@
 		<copy todir="${main-compile-dir}">
 			<fileset refid="src-non-java-files" />
 		</copy>
+	</target>
+	
+	<target name="sign-osx" if="signed">
+        <exec executable="codesign" failonerror="true" logerror="true">
+            <arg value="--deep" /> <!-- required to sign bundled jre -->
+            <arg value="-f" />
+            <arg value="-s" />
+            <arg value="Developer ID Application: David Reisch" />
+            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+        </exec>
+        
+        <!-- fail the build if signing failed -->
+        <exec executable="spctl" failonerror="true" logerror="true">
+            <arg value="--assess" />
+            <arg value="--type" />
+            <arg value="execute" />
+            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+        </exec>
 	</target>
 
 	<target name="dist-osx" depends="dependencies-osx, dist-common">
@@ -164,21 +182,7 @@
 			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/" />
 		</exec>
 
-		<exec executable="codesign" failonerror="true" logerror="true">
-            <arg value="--deep" /> <!-- required to sign bundled jre -->
-            <arg value="-f" />
-			<arg value="-s" />
-			<arg value="Developer ID Application: David Reisch" />
-			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
-		</exec>
-		
-		<!-- fail the build if signing failed -->
-        <exec executable="spctl" failonerror="true" logerror="true">
-		    <arg value="--assess" />
-			<arg value="--type" />
-			<arg value="execute" />
-			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
-		</exec>
+		<antcall target="sign-osx" />
 		
         <exec executable="hdiutil" failonerror="true" logerror="true">
             <arg value="create" />
@@ -281,7 +285,7 @@
 
 	<!-- /targets -->
 
-    <target name="upload-win" depends="userInput, clean, dist-win32">
+    <target name="upload-win" depends="userInput, dist-win32">
 		<property name="ssh.host" value="korsakow.net" />
 		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
             <fileset file="${win32-installer-output}" />
@@ -289,7 +293,7 @@
 		</scp>
     </target>
 
-    <target name="upload-osx" depends="userInput, clean, dist-osx">
+    <target name="upload-osx" depends="userInput, dist-osx">
 		<property name="ssh.host" value="korsakow.net" />
 		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
 			<fileset file="${osx-output}" />
