@@ -8,6 +8,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 class WixFactory {
+	private static boolean win64Bit = true;
+	
+	private static String yesno(boolean b) {
+		return b ? "yes" : "no";
+	}
+	
 	public static Element file(Document doc, File file, String id) throws DOMException, IOException {
 		Element fileElem = doc.createElement("File");
 		fileElem.setAttribute("Id", id);
@@ -55,6 +61,7 @@ class WixFactory {
 	public static Element component(final Document doc, String id) {
 		final Element component = doc.createElement("Component");
 		component.setAttribute("Id", id);
+		component.setAttribute("Win64", yesno(win64Bit));
 		return component;
 	}
 

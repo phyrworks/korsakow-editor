@@ -69,7 +69,8 @@ public class WixFilesGenerator {
 				}
 			}
 			public void file(File file) throws IOException {
-				String id = WixUtil.sanitizeId(file.getName());
+				String path = WixUtil.relative(sourceDir, file);
+				String id = WixUtil.sanitizeId(path);
 				
 				Element fileElem = WixFactory.file(doc, file, id);
 
