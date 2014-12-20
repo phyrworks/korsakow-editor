@@ -8,6 +8,9 @@
 	            classpath="${JDK_HOME}/lib/ant-javafx.jar"/>
 	
 	<target name="dependencies-win32">
+		<fail unless="env.JRE_HOME" message="JRE_HOME must be set. Is bundled in the installer." />
+		<property name="JRE_HOME" value="${env.JRE_HOME}" />
+		
 		<fail unless="env.LAUNCH4J_HOME" message="LAUNCH4J_HOME must be set" />
 		<property name="LAUNCH4J_HOME" value="${env.LAUNCH4J_HOME}" />
 
@@ -248,7 +251,15 @@
 			>
 			<fileset dir="${resources-dir}">
 				<exclude name="*/osx/*" />
-			    			</fileset>
+			</fileset>
+		</copy>
+
+		<copy 
+			todir="${dist-dir}/${plaf-win32-install-dir}/jre"
+			includeemptydirs="false"
+			>
+			<fileset dir="${JRE_HOME}">
+			</fileset>
 		</copy>
 
         <antcall target="build-win32-installer" />

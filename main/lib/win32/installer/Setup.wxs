@@ -8,6 +8,7 @@
 		<Package Description="#Description"
 			Comments="Windows Installer"
 			InstallerVersion="200"
+			Platform="x64"
 			Compressed="yes"/>
 		<!--
 			Source media for the installation. 
