@@ -17,23 +17,25 @@ import org.xml.sax.SAXException;
  */
 public class WixFilesGenerator {
 	
+	private final WixFactory wixFactory = new WixFactory();
 	private final Document doc;
 	
-	public WixFilesGenerator() throws ParserConfigurationException, SAXException {
+	public WixFilesGenerator(boolean is64Bit) throws ParserConfigurationException, SAXException {
 		doc = DomUtil.createDocument();
+		wixFactory.set64Bit(is64Bit);
 	}
 	public Document generateFilesFragment(String sourcePath, String featureRefId, String directoryRefId) throws IOException {
 		
-		Element wix = WixFactory.wix(doc);
+		Element wix = wixFactory.wix(doc);
 		doc.appendChild(wix);
 		
-		Element fragment = WixFactory.fragment(doc);
+		Element fragment = wixFactory.fragment(doc);
 		wix.appendChild(fragment);
 		
-		final Element featureRef = WixFactory.featureRef(doc, featureRefId);
+		final Element featureRef = wixFactory.featureRef(doc, featureRefId);
 		fragment.appendChild(featureRef);
 		
-		final Element rootDirectoryRef = WixFactory.directoryRef(doc, directoryRefId);
+		final Element rootDirectoryRef = wixFactory.directoryRef(doc, directoryRefId);
 		fragment.appendChild(rootDirectoryRef);
 		
 		generateFilesFragment(rootDirectoryRef, rootDirectoryRef, featureRef, new File(sourcePath));
@@ -50,7 +52,7 @@ public class WixFilesGenerator {
 			
 				String path = WixUtil.relative(sourceDir, dir);
 	
-				Element dirElem = WixFactory.directory(doc, WixUtil.sanitizeId(path), dir.getName());
+				Element dirElem = wixFactory.directory(doc, WixUtil.sanitizeId(path), dir.getName());
 				
 				if (stack.isEmpty())
 					rootDirectoryRef.appendChild(dirElem);
@@ -72,13 +74,13 @@ public class WixFilesGenerator {
 				String path = WixUtil.relative(sourceDir, file);
 				String id = WixUtil.sanitizeId(path);
 				
-				Element fileElem = WixFactory.file(doc, file, id);
+				Element fileElem = wixFactory.file(doc, file, id);
 
 				Element child;
-				Element component = WixFactory.component(doc, id);
+				Element component = wixFactory.component(doc, id);
 				component.appendChild(fileElem);
 				child = component;
-				featureRef.appendChild(WixFactory.componentRef(doc, id));
+				featureRef.appendChild(wixFactory.componentRef(doc, id));
 
 				if (stack.isEmpty())
 					rootComponent.appendChild(child);

@@ -18,6 +18,7 @@ public class WixFilesTask extends Task {
 	private String featureRef;
 	private String sourcePath;
 	private String outputFile;
+	private boolean is64Bit = true;
 	
 	/**
 	 * The feature (ref) which the files will be a part of.
@@ -44,11 +45,15 @@ public class WixFilesTask extends Task {
 		this.outputFile = outputFile;
 	}
 	
+	public void setIs64Bit(boolean is64Bit) {
+		this.is64Bit = is64Bit;
+	}
+	
 	@Override
 	public void execute() throws BuildException {
 		try {
 			log(String.format("Creating Wix file list from '%s' for feature '%s' in '%s'", sourcePath, featureRef, outputFile));
-			WixFilesGenerator wix = new WixFilesGenerator();
+			WixFilesGenerator wix = new WixFilesGenerator(is64Bit);
 			Document doc = wix.generateFilesFragment(sourcePath, featureRef, directoryRef);
 
 			TransformerFactory tranFactory = TransformerFactory.newInstance();
