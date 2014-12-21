@@ -153,7 +153,7 @@
 
 	<target name="dist-osx" depends="dependencies-osx, dist-common">
 		<mkdir dir="${dist-dir}/${plaf-osx-dir}" />
-		<property name="osx-output" value="${dist-dir}/korsakow-${release-number}-${osx}.zip" />
+		<property name="osx-output" value="${dist-dir}/korsakow-${release-number}.dmg" />
 
         <fx:jar destfile="${compile-dir}/${korsakow-filename}" verbose="true">
           <fx:platform javafx="2.1+" j2se="8.0" />
@@ -237,8 +237,7 @@
 	</target>
 
 	<target name="dist-win32" depends="dependencies-win32, dist-common">
-		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
-        <property name="win32-zip-output" value="${dist-dir}/korsakow-${release-number}-${win32}.zip" />
+		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}.msi" />
 			
 		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}" />
 		
@@ -288,7 +287,6 @@
 		<property name="ssh.host" value="korsakow.net" />
 		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
             <fileset file="${win32-installer-output}" />
-            <fileset file="${win32-zip-output}" />
 		</scp>
     </target>
 
