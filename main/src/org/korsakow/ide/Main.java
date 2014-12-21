@@ -111,6 +111,35 @@ public class Main {
 		}
 
 		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+			public void run() {
+				UIUtil.setUpLAF();
+			}
+		});
+
+		final JWindow splashDialog = new JWindow();
+
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+			public void run() {
+				
+				splashDialog.setAlwaysOnTop(true);
+				SplashPage page = new SplashPage();
+				page.setUUIDVisible(false);
+				splashDialog.add(page);
+				splashDialog.pack();
+
+				UIUtil.centerOnScreen(splashDialog);
+				splashDialog.setVisible(true);
+			}
+		});
+		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow(){
+			public void run() throws Throwable {
+				// doing this separately avoids an issue where the splash shows up unpainted for a second
+				splashDialog.toFront();
+			}
+		});
+
 		/* without some amount of jfx initialization, strange unpredictable
 		 * failures happen when trying to load/display videos */
 		javafx.application.Platform.setImplicitExit(false);
@@ -132,34 +161,6 @@ public class Main {
 		    }
 		});
 		
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
-			public void run() {
-				UIUtil.setUpLAF();
-			}
-		});
-
-		final JWindow splashDialog = new JWindow();
-
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
-			public void run() {
-				
-				splashDialog.setAlwaysOnTop(true);
-				SplashPage page = new SplashPage();
-				page.setUUIDVisible(false);
-				splashDialog.add(page);
-				splashDialog.pack();
-
-				UIUtil.centerOnScreen(splashDialog);
-			}
-		});
-		
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow(){
-			public void run() throws Throwable {
-				// doing this separately avoids an issue where the splash shows up unpainted for a second
-//				splashDialog.setVisible(true);
-				splashDialog.toFront();
-			}
-		});
 
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() throws Throwable {
