@@ -148,16 +148,23 @@ public class VideoExportTask extends AbstractTask
 			int maxHeight)
 	{
 		Dimension d = null;
+		PlayableVideo playable = null;
 		try {
-			PlayableVideo playable = (PlayableVideo)MediaFactory.getMedia(srcFile.getAbsolutePath());
+			playable = (PlayableVideo)MediaFactory.getMedia(srcFile.getAbsolutePath());
 			Component comp = playable.getComponent();
 			Dimension pref = comp.getPreferredSize();
 			// don't enlarge.
 			if (maxWidth < pref.width && maxHeight < pref.height)
 				d = playable.getAspectRespectingDimension(new Dimension(maxWidth, maxHeight));
-			playable.dispose();
 		} catch (Exception e) {
 			Logger.getLogger(VideoExportTask.class).error("", e);
+		} finally {
+            if (playable != null) {
+                try { playable.dispose(); } catch (Exception e) {
+                    Logger.getLogger(VideoExportTask.class).error("", e);
+                }
+            }
+		    
 		}
 		return d;
 	}

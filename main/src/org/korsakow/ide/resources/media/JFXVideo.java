@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -42,6 +43,7 @@ public final class JFXVideo extends AbstractPlayableVideo
     private AtomicLong currentTime;
     private AtomicLong currentVolume;
     private AtomicLong duration;
+    private AtomicReference<MediaPlayer.Status> status;
     
     //The following values will not be valid until the movie is ready (pre-rolled)
     //We provide objects for locking the individual values, so that we can
@@ -63,6 +65,7 @@ public final class JFXVideo extends AbstractPlayableVideo
 	    currentTime = new AtomicLong(0);
 	    currentVolume = new AtomicLong(0);
 	    duration = new AtomicLong(0);
+        status = new AtomicReference<MediaPlayer.Status>(MediaPlayer.Status.UNKNOWN);
 	    
 	    readyTask = new JFXRunTask.SimpleGetterTask<>(false);
 	    
@@ -142,6 +145,14 @@ public final class JFXVideo extends AbstractPlayableVideo
             moviePlayer = new MediaPlayer(movie);
             movieView = new MediaView(moviePlayer);
             
+            moviePlayer.setOnError(new Runnable() {
+                public void run() {
+                    log.error("", moviePlayer.getError());
+                    readyTask.cancel(true);
+                    dispose();
+                }
+            });
+
             //our onReady handler
             moviePlayer.setOnReady(new Runnable() {
                 @Override
@@ -195,6 +206,13 @@ public final class JFXVideo extends AbstractPlayableVideo
             throw new MediaRuntimeException(e);
         }
         
+        moviePlayer.statusProperty().addListener(
+                new InvalidationListener() {
+                    @Override
+                    public void invalidated(Observable o) {
+                        status.set(moviePlayer.getStatus());
+                    }
+                });
     }
     
     @Override
@@ -278,12 +296,7 @@ public final class JFXVideo extends AbstractPlayableVideo
 
     @Override
     public boolean isPlaying() {
-	return JFXRunTask.get(new Callable<Boolean>() {
-
-	    @Override public Boolean call() throws Exception {
-		return moviePlayer.getStatus() == Status.PLAYING;
-	    }  
-	});	    
+        return status.get() == Status.PLAYING;
     }
     
     @Override
