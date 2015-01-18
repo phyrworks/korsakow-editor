@@ -7,8 +7,6 @@ public class SettingsFactory {
 	public static Settings createNew(long id, long version)
 	{
 		Settings settings = new Settings(id, version);
-		settings.setBoolean(Settings.EncodeVideoOnExport, true);
-		settings.setString(Settings.VideoEncodingProfile, "flv_high");
 		settings.setString(Settings.AdjustFilenamesOnSave, Settings.AdjustFilenames.Smart.getId());
 		settings.setBoolean(Settings.PutSimilarResourcesAtTop, true);
 		settings.setBoolean(Settings.ShowBackgroundPreview, true);
@@ -30,8 +28,6 @@ public class SettingsFactory {
 	public static Settings createClean(long id, long version)
 	{
 		Settings settings = new Settings(id, version);
-		settings.setBoolean(Settings.EncodeVideoOnExport, true);
-		settings.setString(Settings.VideoEncodingProfile, "flv_high");
 		settings.setString(Settings.AdjustFilenamesOnSave, Settings.AdjustFilenames.Smart.getId());
 		settings.setBoolean(Settings.PutSimilarResourcesAtTop, true);
 		settings.setBoolean(Settings.ShowBackgroundPreview, true);

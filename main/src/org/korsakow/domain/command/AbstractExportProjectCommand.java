@@ -41,7 +41,6 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 	public static final String EXPORT_DIR = "export_dir";
 	public static final String INDEX_FILENAME = "index_filename";
 	public static final String OVERWRITE_EXISTING = "overwrite_existing";
-	public static final String VIDEO_ENCODING_ENABLED = "video_encoding_enabled";
 
 	public static class SetupExporterTask extends AbstractTask
 	{
@@ -159,7 +158,6 @@ public abstract class AbstractExportProjectCommand extends AbstractCommand {
 			Exporter exporter = createExporter();
 			if (request.has(OVERWRITE_EXISTING))
 				exporter.setOverwriteExistingFiles(request.getBoolean(OVERWRITE_EXISTING));
-			exporter.setVideoEncodingEnabled(request.getBoolean(VIDEO_ENCODING_ENABLED));
 			
 			IWorker exportWorker = new UIWorker();
 			

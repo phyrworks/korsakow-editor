@@ -26,7 +26,7 @@ public class ExportDraftWebAction extends AbstractExportWebAction {
 
 	@Override protected IWorker createExportWorker(File mainFile,
 			JDialog progressDialog,
-			boolean forceSkipOverwrite, boolean encodeVideo, File parentFile)
+			boolean forceSkipOverwrite, File parentFile)
 			throws MapperException, CommandException {
 		IProject project = ProjectInputMapper.find();
 		Helper request = new Request();
@@ -36,7 +36,6 @@ public class ExportDraftWebAction extends AbstractExportWebAction {
 		request.set(AbstractExportProjectCommand.INDEX_FILENAME, mainFile.getName());
 		if (forceSkipOverwrite)
 			request.set(AbstractExportProjectCommand.OVERWRITE_EXISTING, forceSkipOverwrite);
-		request.set(AbstractExportProjectCommand.VIDEO_ENCODING_ENABLED, encodeVideo);
 		CommandExecutor.executeCommand(ExportFlashProjectCommand.class, request, response);
 		IWorker exportWorker = (IWorker)response.get(AbstractExportProjectCommand.WORKER);
 		exportWorker.addPropertyChangeListener(IWorker.PROPERTY_STATE, new DraftExportDoneWorkerListener(progressDialog, mainFile));

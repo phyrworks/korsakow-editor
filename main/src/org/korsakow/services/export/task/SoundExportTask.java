@@ -14,23 +14,17 @@ import org.korsakow.ide.DialogOptions;
 import org.korsakow.ide.task.AbstractTask;
 import org.korsakow.ide.task.TaskException;
 import org.korsakow.ide.util.FileUtil;
-import org.korsakow.services.encoders.EncoderException;
-import org.korsakow.services.encoders.sound.SoundEncoder;
-import org.korsakow.services.encoders.sound.SoundEncoderFactory;
-import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.export.ExportOptions;
 
 public class SoundExportTask extends AbstractTask
 {
-	private final SoundFormat format;
 	private final ISound sound;
 	private final File subtitleFile;
 	private final File srcFile;
 	private final File destFile;
-	public SoundExportTask(ExportOptions options, SoundFormat format, ISound sound, File destFile, File subtitleFile) throws FileNotFoundException
+	public SoundExportTask(ExportOptions options, ISound sound, File destFile, File subtitleFile) throws FileNotFoundException
 	{
 		super(options);
-		this.format = format;
 		this.sound = sound;
 		this.subtitleFile = subtitleFile;
 		this.destFile = destFile;
@@ -85,23 +79,12 @@ public class SoundExportTask extends AbstractTask
 		
 		destFile.getParentFile().mkdirs();
 		
-		if ("mp3".equals(FileUtil.getFileExtension(srcFile.getName()).toLowerCase()))
-			try {
-				FileUtil.copyFile(sound.getAbsoluteFilename(), destFile.getAbsolutePath());
-			} catch (FileNotFoundException e) {
-				throw new TaskException(e);
-			} catch (IOException e) {
-				throw new TaskException(e);
-			}
-		else
-			SoundEncoderFactory.getDefaultFactory().addRequiredInputFormat(SoundFormat.WAV);
-			SoundEncoderFactory.getDefaultFactory().addRequiredOutputFormat(SoundFormat.MP3);
-			System.out.println(srcFile.getPath() + "->" + destFile.getPath());
-			try {
-				SoundEncoder soundEncoder = SoundEncoderFactory.getDefaultFactory().createSoundEncoder();
-				soundEncoder.encode(format, srcFile, destFile);
-			} catch (EncoderException e) {
-				throw new TaskException(e);
-			}
+		try {
+			FileUtil.copyFile(sound.getAbsoluteFilename(), destFile.getAbsolutePath());
+		} catch (FileNotFoundException e) {
+			throw new TaskException(e);
+		} catch (IOException e) {
+			throw new TaskException(e);
+		}
 	}
 }

@@ -26,9 +26,6 @@ import org.korsakow.ide.util.Platform;
 import org.korsakow.ide.util.UIUtil;
 import org.korsakow.services.encoders.image.ImageEncoderFactory;
 import org.korsakow.services.encoders.image.JavaImageIOImageEncoder;
-import org.korsakow.services.encoders.sound.SoundEncoderFactory;
-import org.korsakow.services.encoders.sound.lame.plaf.LameEncoderOSX;
-import org.korsakow.services.encoders.sound.lame.plaf.LameEncoderWin32;
 import org.korsakow.services.encoders.video.VideoEncoderFactory;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderOSX;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderWin32;
@@ -277,16 +274,10 @@ public class Main {
 	public static void setupPlatformEncoders() {
 		switch (Platform.getOS()) {
 		case MAC:
-			SoundEncoderFactory.getDefaultFactory().addEncoder(
-					new LameEncoderOSX.LameEncoderOSXDescription());
 			VideoEncoderFactory.addEncoder(
 					new FFMpegEncoderOSX.FFMpegEncoderOSXDescription());
 			break;
 		case WIN:
-			// FontEncoderFactory.getDefaultFactory().addEncoder(new
-			// SwfMillEncoderOSX.SwfMillEncoderWin32XDescription());
-			SoundEncoderFactory.getDefaultFactory().addEncoder(
-					new LameEncoderWin32.LameEncoderWin32Description());
 			VideoEncoderFactory.addEncoder(
 					new FFMpegEncoderWin32.FFMpegEncoderWin32Description());
 			break;

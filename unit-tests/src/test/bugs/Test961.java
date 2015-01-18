@@ -20,7 +20,6 @@ import org.korsakow.ide.DataRegistry;
 import org.korsakow.ide.Main;
 import org.korsakow.ide.ui.controller.ProjectLoader;
 import org.korsakow.ide.ui.controller.action.HelpExampleAction;
-import org.korsakow.ide.util.ResourceManager;
 import org.korsakow.ide.util.UIUtil;
 
 import test.util.BaseTestCase;
@@ -55,7 +54,7 @@ public class Test961 extends BaseTestCase {
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			@Override
 			public void run() throws Throwable {
-				ProjectLoader.loadProject(ResourceManager.getResourceFile(HelpExampleAction.getExampleProject().getPath()));
+				ProjectLoader.loadProject(new File(HelpExampleAction.getExampleProject().getPath()));
 			}
 		});
 		ISettings settings = SettingsInputMapper.find();

@@ -11,14 +11,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.dsrg.soenea.service.Registry;
 import org.korsakow.domain.Image;
 import org.korsakow.domain.ImageFactory;
 import org.korsakow.domain.InterfaceFactory;
 import org.korsakow.domain.KeywordFactory;
 import org.korsakow.domain.ProjectFactory;
 import org.korsakow.domain.RuleFactory;
-import org.korsakow.domain.Settings;
 import org.korsakow.domain.SettingsFactory;
 import org.korsakow.domain.SnuFactory;
 import org.korsakow.domain.Sound;
@@ -350,11 +348,6 @@ public class K3ConvertProjectTask extends K3ImportTask
 		k5Project.setName("Korsakow v3 Project");
 		
 		ISettings k5Settings = SettingsFactory.createNew();
-		try {
-			k5Settings.setString(Settings.VideoEncodingProfile, Registry.getProperty("defaultEncodingProfile"));
-		} catch (Exception e) {
-			throw new K3ImportException(e, getDatabaseFile(), getInterfaceFile());
-		}
 
 		k5Project.setRandomLinkMode(k3Project.settings.randomLinkMode);
 		k5Project.setKeepLinksOnEmptySearch(k3Project.settings.keepOldLinksIfNoNewLinks);
