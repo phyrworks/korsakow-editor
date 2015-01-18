@@ -125,7 +125,7 @@ public abstract class AbstractExportWebAction implements ActionListener {
 				Application.getInstance().showAlertDialog("Invalid Path", LanguageBundle.getString("general.errors.pathcontainsinvalidcharacters"));
 			}
 			
-			export(file, isModifierDown, settings.getBoolean(Settings.EncodeVideoOnExport));
+			export(file, isModifierDown);
 			
 		} catch (IOException e) {
 			Application.getInstance().showUnhandledErrorDialog(LanguageBundle.getString("general.errors.cantexport.title"), e);
@@ -135,7 +135,7 @@ public abstract class AbstractExportWebAction implements ActionListener {
 	}
 
 
-	protected void export(File mainFile, boolean forceSkipOverwrite, boolean encodeVideo) throws IOException, CommandException, MapperException
+	protected void export(File mainFile, boolean forceSkipOverwrite) throws IOException, CommandException, MapperException
 	{
 		Logger.getLogger(ExportWebAction.class).info("ExportWebAction: " + mainFile.getAbsolutePath());
 		System.gc();
@@ -161,7 +161,7 @@ public abstract class AbstractExportWebAction implements ActionListener {
 		IWorker exportWorker = createExportWorker(mainFile,
 				progressDialog,
 				forceSkipOverwrite,
-				encodeVideo, parentFile);
+				parentFile);
 		
 		ProgressDialogWorkerListener progressListener = new ProgressDialogWorkerListener(dialogMain);
 		exportWorker.addPropertyChangeListener(IWorker.PROPERTY_STATE, new ExportDoneWorkerListener(progressDialog, mainFile));
@@ -177,7 +177,7 @@ public abstract class AbstractExportWebAction implements ActionListener {
 
 	protected abstract IWorker createExportWorker(File mainFile,
 			JDialog progressDialog,
-			boolean forceSkipOverwrite, boolean encodeVideo, File parentFile)
+			boolean forceSkipOverwrite, File parentFile)
 			throws MapperException, CommandException;
 
 }

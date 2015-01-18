@@ -25,7 +25,6 @@ import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.IText;
 import org.korsakow.domain.interf.IVideo;
 import org.korsakow.ide.DataRegistry;
-import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.FlashExporter;
 import org.korsakow.services.export.task.CreateFilenameMapTask;
@@ -84,7 +83,7 @@ public class TestExporter extends BaseTestCase
 				FlashExporter.SOUND_DIR, sounds,
 				FlashExporter.TEXT_DIR, texts,
 				FlashExporter.FONT_DIR,
-				VideoCodec.H264, SoundFormat.MP3
+				VideoCodec.H264
 		);
 		System.out.println(map.toString().replace(',', '\n'));
 		Set<String> set = new HashSet<String>();
@@ -143,7 +142,7 @@ public class TestExporter extends BaseTestCase
 				FlashExporter.SOUND_DIR, sounds,
 				FlashExporter.TEXT_DIR, texts,
 				FlashExporter.FONT_DIR,
-				VideoCodec.H264, SoundFormat.MP3
+				VideoCodec.H264
 		);
 		System.out.println(map.toString().replace(',', '\n'));
 		Set<String> set = new LinkedHashSet<String>();

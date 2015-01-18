@@ -14,7 +14,6 @@ import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.task.DelegateTask;
 import org.korsakow.ide.util.Util;
 import org.korsakow.services.encoders.font.FontFormat;
-import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.task.CopyFlashPlayerExportTask;
 import org.korsakow.services.export.task.XMLExportTask;
@@ -36,7 +35,6 @@ public class FlashExporter extends AbstractExporter
 		"data/css/cross.png",
 		"data/css/embed.css",
 	};
-	private static final SoundFormat SOUND_EXPORT_FORMAT = SoundFormat.MP3;
 	private static final VideoCodec VIDEO_EXPORT_FORMAT = VideoCodec.FLV;
 	private static final FontFormat FONT_EXPORT_FORMAT = FontFormat.SWF;
 	
@@ -62,8 +60,6 @@ public class FlashExporter extends AbstractExporter
 	public String getStaticResourceRoot() { return PLAYER_ROOT; }
 	@Override
 	public Collection<String> getStaticResources() { return Arrays.asList(PLAYER_RESOURES); }
-	@Override
-	public SoundFormat getSoundFormat() { return SOUND_EXPORT_FORMAT; }
 	@Override
 	public VideoCodec getVideoFormat() { return VIDEO_EXPORT_FORMAT; }
 }
