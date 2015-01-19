@@ -189,12 +189,15 @@
 
 		<antcall target="sign-osx" />
 		
+		<!-- -size fixes an occasional error -5431 and doesnt seem to use space unless needed -->
         <exec executable="hdiutil" failonerror="true" logerror="true">
             <arg value="create" />
             <arg value="-volname" />
             <arg value="Korsakow" />
             <arg value="-srcfolder" />
             <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+            <arg value="-size" />
+            <arg value="256MB" />
             <arg value="-ov" />
             <arg value="-format" />
             <arg value="UDZO" />
