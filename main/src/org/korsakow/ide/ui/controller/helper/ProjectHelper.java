@@ -1,13 +1,7 @@
 package org.korsakow.ide.ui.controller.helper;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.dsrg.soenea.domain.MapperException;
@@ -36,12 +30,8 @@ import org.korsakow.ide.ui.settings.ExportSettingsPanel;
 import org.korsakow.ide.ui.settings.MovieSettingsPanel;
 import org.korsakow.ide.ui.settings.ProjectSettingsPanel;
 import org.korsakow.ide.ui.settings.WorkspaceSettingsPanel;
-import org.korsakow.ide.util.ResourceManager;
-import org.korsakow.services.export.IVideoEncodingProfile;
-import org.korsakow.services.export.PropertiesVideoEncodingProfile;
 
 public class ProjectHelper {
-	private static final String VIDEO_ENCODING_PROFILES = ProjectHelper.class.getCanonicalName() + ".VIDEO_ENCODING_PROFILES";
 	private static final String RULES = ProjectHelper.class.getCanonicalName() + ".RULES";
 	
 	public static void save(ProjectSettingsPanel view, Long projectId, Long settingsId) throws CommandException, InterruptedException
@@ -102,24 +92,6 @@ public class ProjectHelper {
 	}
 	private static void initView(ExportSettingsPanel view, IProject project, ISettings settings) throws MapperException
 	{
-		Map<IVideoEncodingProfile, String> profileReverseLookup = new HashMap<IVideoEncodingProfile, String>();
-		Map<String, IVideoEncodingProfile> profileLookup = new HashMap<String, IVideoEncodingProfile>();
-		view.putClientProperty(VIDEO_ENCODING_PROFILES, profileReverseLookup);
-		List<IVideoEncodingProfile> profiles = Collections.emptyList();
-		try {
-			profiles = getVideoEncodingProfiles(profileLookup, profileReverseLookup);
-		} catch (IOException e) {
-			Logger.getLogger(ProjectHelper.class).error("", e);
-		}
-		view.setVideoEncodingProfileChoices(profiles);
-		IVideoEncodingProfile profile = profileLookup.get(settings.getString(Settings.VideoEncodingProfile));
-		if (profile == null && !profiles.isEmpty()) {
-			profile = profiles.get(0);
-		}
-		view.setVideoEncodingProfile(profile);
-		
-		view.setEncodeVideoOnExport(settings.getBoolean(Settings.EncodeVideoOnExport));
-		
 		view.setExportVideos( settings.getBoolean(Settings.ExportVideos) );
 		view.setExportImages( settings.getBoolean(Settings.ExportImages) );
 		view.setExportSounds( settings.getBoolean(Settings.ExportSounds) );
@@ -231,14 +203,6 @@ public class ProjectHelper {
 		List<String> propertyIds = (List<String>)request.get(UpdateSettingsCommand.PROPERTY_IDS);
 		List<Object> propertyValues = (List<Object>)request.get(UpdateSettingsCommand.PROPERTY_VALUES);
 
-		Map<Object, String> profileLookup = (Map<Object, String>)view.getClientProperty(VIDEO_ENCODING_PROFILES);
-		view.putClientProperty(VIDEO_ENCODING_PROFILES, null);
-		propertyIds.add(Settings.VideoEncodingProfile);
-		propertyValues.add(profileLookup.get(view.getVideoEncodingProfile()));
-
-		propertyIds.add(Settings.EncodeVideoOnExport);
-		propertyValues.add(Boolean.valueOf(view.getEncodeVideoOnExport()));
-		
 		propertyIds.add(Settings.ExportVideos);
 		propertyValues.add(view.getExportVideos());
 		propertyIds.add(Settings.ExportSounds);
@@ -276,25 +240,5 @@ public class ProjectHelper {
 		
 		propertyIds.add(Settings.PutSimilarResourcesAtTop);
 		propertyValues.add(view.getPutSimilarAtTop());
-	}
-	public static List<IVideoEncodingProfile> getVideoEncodingProfiles() throws IOException
-	{
-		Map<IVideoEncodingProfile, String> profileReverseLookup = new HashMap<IVideoEncodingProfile, String>();
-		Map<String, IVideoEncodingProfile> profileLookup = new HashMap<String, IVideoEncodingProfile>();
-		return getVideoEncodingProfiles(profileLookup, profileReverseLookup);
-	}
-	public static List<IVideoEncodingProfile> getVideoEncodingProfiles(Map<String, IVideoEncodingProfile> profileLookup, Map<IVideoEncodingProfile, String> profileReverseLookup) throws IOException
-	{
-		String[] profileFiles = ResourceBundle.getBundle("MyResources").getString("encodingProfiles").split(",");
-		List<IVideoEncodingProfile> profiles = new ArrayList<IVideoEncodingProfile>();
-		for (String profileFile : profileFiles) {
-			Properties props = new Properties();
-			props.load(ResourceManager.getResourceStream("encodingprofiles/" + profileFile + ".properties"));
-			IVideoEncodingProfile profile = new PropertiesVideoEncodingProfile(props);
-			profiles.add(profile);
-			profileLookup.put(profileFile, profile);
-			profileReverseLookup.put(profile, profileFile);
-		}
-		return profiles;
 	}
 }

@@ -1,13 +1,21 @@
 <project name="Korsakow" basedir="../" xmlns:fx="javafx:com.sun.javafx.tools.ant">
 	<property environment="env" />
-	<fail unless="env.JDK_HOME" message="JDK_HOME must be set" />
-	<property name="JDK_HOME" value="${env.JDK_HOME}" />
 
-	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"       
-	            uri="javafx:com.sun.javafx.tools.ant"
-	            classpath="${JDK_HOME}/lib/ant-javafx.jar"/>
+	<target name="dependencies-common">
+		<!--
+		Normally we would use env.JAVA_HOME here but environment variables have very poor
+		support w.r.t. GUI applications on OSX, so we hope that the environment is setup
+		such that java.home is the jre embedded in the JAVA_HOME jdk.
+		-->
+    	<property name="JDK_HOME" value="${java.home}/../" />
+    	<property name="JRE_HOME" value="${java.home}" />
+
+    	<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"       
+    	            uri="javafx:com.sun.javafx.tools.ant"
+    	            classpath="${JDK_HOME}/lib/ant-javafx.jar"/>
+	</target>
 	
-	<target name="dependencies-win32">
+	<target name="dependencies-win32" depends="dependencies-common">
 		<fail unless="env.LAUNCH4J_HOME" message="LAUNCH4J_HOME must be set" />
 		<property name="LAUNCH4J_HOME" value="${env.LAUNCH4J_HOME}" />
 
@@ -16,21 +24,22 @@
 		    classpath="${LAUNCH4J_HOME}/launch4j.jar:${LAUNCH4J_HOME}/lib/xstream.jar" />	
 	</target>
 	
-	<target name="dependencies-osx">
+	<target name="dependencies-osx" depends="dependencies-common">
+	    <property name="signed" value="${env.KORSAKOW_BUILD_SIGNED}" />
+
 		<taskdef name="bundleapp"
 		         classname="com.oracle.appbundler.AppBundlerTask"
 		         classpath="lib/appbundler-1.0ea.jar" />
 	</target>
 	
 	<!-- input -->
-	<target name="userInput1">
+	<target name="userInput">
 		<input
 		    message="Milestone Version (eg: 8.0):"
 		    addproperty="release-number"
 			defaultvalue="x"
 		/>
-	</target>
-	<target name="userInput2">
+
 		<input 
 		    message="(optional) SSH username:"
 		    addproperty="ssh.user"
@@ -40,9 +49,7 @@
 		    addproperty="ssh.pass"
 		/>
 	</target>
-	<target name="userInput" depends="userInput1, userInput2">
-		<property name="release-number" value="0.0" />
-	</target>
+
 	<!-- /input -->
 
 	<!-- config -->
@@ -92,6 +99,7 @@
 	</target>
 
 	<target name="init">
+        <property name="release-number" value="999.999" />
 		<tstamp />
 		<echo message="Build ${release-number}" />
 		<buildnumber file="${resources-dir}/build"/>
@@ -124,10 +132,28 @@
 			<fileset refid="src-non-java-files" />
 		</copy>
 	</target>
+	
+	<target name="sign-osx" if="signed">
+        <exec executable="codesign" failonerror="true" logerror="true">
+            <arg value="--deep" /> <!-- required to sign bundled jre -->
+            <arg value="-f" />
+            <arg value="-s" />
+            <arg value="Developer ID Application: David Reisch" />
+            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+        </exec>
+        
+        <!-- fail the build if signing failed -->
+        <exec executable="spctl" failonerror="true" logerror="true">
+            <arg value="--assess" />
+            <arg value="--type" />
+            <arg value="execute" />
+            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+        </exec>
+	</target>
 
 	<target name="dist-osx" depends="dependencies-osx, dist-common">
 		<mkdir dir="${dist-dir}/${plaf-osx-dir}" />
-		<property name="osx-output" value="${dist-dir}/korsakow-${release-number}-${osx}.zip" />
+		<property name="osx-output" value="${dist-dir}/korsakow-${release-number}.dmg" />
 
         <fx:jar destfile="${compile-dir}/${korsakow-filename}" verbose="true">
           <fx:platform javafx="2.1+" j2se="8.0" />
@@ -143,7 +169,7 @@
         	icon="${lib-dir}/osx/korsakow.icns"
         	shortversion="${release-number}"
             mainclassname="org.korsakow.ide.Main">
-            <runtime dir="${JDK_HOME}" />
+            <runtime dir="${JDK_HOME}" /> <!-- need to pass the JDK loc so it can pick up Info.plist, but it still just bundles the embedded JRE -->
             <classpath file="${lib-dir}/osx/OSXApplication.jar" />
             <classpath file="${compile-dir}/${korsakow-filename}" />
         </bundleapp>
@@ -161,38 +187,23 @@
 			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app/Contents/Java/" />
 		</exec>
 
-		<exec executable="codesign" failonerror="true" logerror="true">
-            <arg value="--deep" /> <!-- required to sign bundled jre -->
-            <arg value="-f" />
-			<arg value="-s" />
-			<arg value="Developer ID Application: David Reisch" />
-			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
-		</exec>
+		<antcall target="sign-osx" />
 		
-		<!-- fail the build if signing failed -->
-        <exec executable="spctl" failonerror="true" logerror="true">
-		    <arg value="--assess" />
-			<arg value="--type" />
-			<arg value="execute" />
-			<arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
-		</exec>
-		
+		<!-- -size fixes an occasional error -5431 and doesnt seem to use space unless needed -->
         <exec executable="hdiutil" failonerror="true" logerror="true">
             <arg value="create" />
             <arg value="-volname" />
             <arg value="Korsakow" />
             <arg value="-srcfolder" />
             <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.app" />
+            <arg value="-size" />
+            <arg value="256MB" />
             <arg value="-ov" />
             <arg value="-format" />
             <arg value="UDZO" />
             <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.dmg" />
     	</exec>
 		
-		<zip level="9" compress="true" file="${osx-output}">
-			<zipfileset dir="${dist-dir}/${plaf-osx-dir}/" filemode="775" />
-		</zip>
-
 	</target>
 
 	<target name="build-wix-task">
@@ -216,6 +227,7 @@
 			directoryRef="INSTALLDIR"
 			sourcePath="${dist-dir}/${plaf-win32-install-dir}"
 			outputFile="${dist-dir}/${plaf-win32-dir}/wix/Files.wxs"
+			is64Bit="true"
 			/>
 		
 		<wix
@@ -227,13 +239,8 @@
 		</wix>
 	</target>
 
-	<target name="build-win32-zip">
-        <zip level="9" compress="true" basedir="${dist-dir}/${plaf-win32-dir}/install" file="${win32-zip-output}" />
-	</target>
-
-	<target name="dist-win32" depends="dist-common, dependencies-win32">
-		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}-${win32}.msi" />
-        <property name="win32-zip-output" value="${dist-dir}/korsakow-${release-number}-${win32}.zip" />
+	<target name="dist-win32" depends="dependencies-win32, dist-common">
+		<property name="win32-installer-output" value="${dist-dir}/korsakow-${release-number}.msi" />
 			
 		<mkdir dir="${dist-dir}/${plaf-win32-install-dir}" />
 		
@@ -241,35 +248,52 @@
 			outfile="${dist-dir}/${plaf-win32-install-dir}/Korsakow.exe"
 			>
 		</launch4j>
-		<jar jarfile="${dist-dir}/${plaf-win32-install-dir}/${korsakow-filename}" basedir="${main-compile-dir}" excludes="${non-win32-resources}" manifest="${korsakow-manifest}" compress="true" level="9" />
+
+        <fx:jar destfile="${dist-dir}/${plaf-win32-install-dir}/${korsakow-filename}" verbose="true">
+          <fx:platform javafx="2.1+" j2se="8.0" />
+          <fx:application mainClass="org.korsakow.ide.Main"/>
+          <fileset dir="${main-compile-dir}" />
+        </fx:jar>
+
 		<copy 
 			todir="${dist-dir}/${plaf-win32-install-dir}/resources"
 			includeemptydirs="false"
 			>
 			<fileset dir="${resources-dir}">
 				<exclude name="*/osx/*" />
-			    			</fileset>
+			</fileset>
 		</copy>
 
+		<copy 
+			todir="${dist-dir}/${plaf-win32-install-dir}/jre"
+			includeemptydirs="false"
+			>
+			<fileset dir="${JRE_HOME}">
+			</fileset>
+		</copy>
+
+        <copy 
+            todir="${dist-dir}/${plaf-win32-install-dir}/jre"
+            includeemptydirs="false"
+            >
+            <fileset dir="${JRE_HOME}">
+            </fileset>
+        </copy>
+
         <antcall target="build-win32-installer" />
-        <antcall target="build-win32-zip" />
 
-	</target>
-
-	<target name="dist-all" depends="dist-osx, dist-win32">
 	</target>
 
 	<!-- /targets -->
 
-    <target name="upload-win" depends="userInput, clean, dist-win32">
+    <target name="upload-win" depends="dist-win32">
 		<property name="ssh.host" value="korsakow.net" />
 		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
             <fileset file="${win32-installer-output}" />
-            <fileset file="${win32-zip-output}" />
 		</scp>
     </target>
 
-    <target name="upload-osx" depends="userInput, clean, dist-osx">
+    <target name="upload-osx" depends="dist-osx">
 		<property name="ssh.host" value="korsakow.net" />
 		<scp todir="${ssh.user}@${ssh.host}:korsakow.net/releases/" password="${ssh.pass}" trust="true" verbose="true">
 			<fileset file="${osx-output}" />

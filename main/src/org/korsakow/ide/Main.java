@@ -26,9 +26,6 @@ import org.korsakow.ide.util.Platform;
 import org.korsakow.ide.util.UIUtil;
 import org.korsakow.services.encoders.image.ImageEncoderFactory;
 import org.korsakow.services.encoders.image.JavaImageIOImageEncoder;
-import org.korsakow.services.encoders.sound.SoundEncoderFactory;
-import org.korsakow.services.encoders.sound.lame.plaf.LameEncoderOSX;
-import org.korsakow.services.encoders.sound.lame.plaf.LameEncoderWin32;
 import org.korsakow.services.encoders.video.VideoEncoderFactory;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderOSX;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderWin32;
@@ -111,24 +108,37 @@ public class Main {
 		}
 
 		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+			public void run() {
+				UIUtil.setUpLAF();
+			}
+		});
+
+		final JWindow splashDialog = new JWindow();
+
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+			public void run() {
+				
+				splashDialog.setAlwaysOnTop(true);
+				SplashPage page = new SplashPage();
+				page.setUUIDVisible(false);
+				splashDialog.add(page);
+				splashDialog.pack();
+
+				UIUtil.centerOnScreen(splashDialog);
+				splashDialog.setVisible(true);
+			}
+		});
+		
+		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow(){
+			public void run() throws Throwable {
+				// doing this separately avoids an issue where the splash shows up unpainted for a second
+				splashDialog.toFront();
+			}
+		});
+
 		/* without some amount of jfx initialization, strange unpredictable
-		 * failures happen when trying to load/display videos 
-         *
-         *
-         * As a note: These are not strange, or unpredictable failures.
-         * As the comment below attempts to describe, the JavaFX environment
-         * must be started up before *any* JavaFX related systems are used
-         * (which includes video, web views, etc).  If the environment is not
-         * started, playback behavior is undefined - things may or may not work
-         * as expected.  So the following "...setImplicitExit(false)" line is
-         * required, as well as the call to below to create a JFXPanel().
-         * I would call this setup to be a bug in JavaFX - Oracle should really
-         * include a simple call to setup the environment that does not
-         * require us to use a call for it's side effects.  But this is the 
-         * way things are, and this is what Oracle says to do in their own
-         * documentation.  --Phoenix...
-         
-         */
+		 * failures happen when trying to load/display videos */
 		javafx.application.Platform.setImplicitExit(false);
 		/*
 		Since we need JavaFX for the web window, and since we don't want
@@ -148,34 +158,6 @@ public class Main {
 		    }
 		});
 		
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
-			public void run() {
-				UIUtil.setUpLAF();
-			}
-		});
-
-		final JWindow splashDialog = new JWindow();
-
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
-			public void run() {
-				
-				splashDialog.setAlwaysOnTop(true);
-				SplashPage page = new SplashPage();
-				page.setUUIDVisible(false);
-				splashDialog.add(page);
-				splashDialog.pack();
-
-				UIUtil.centerOnScreen(splashDialog);
-			}
-		});
-		
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow(){
-			public void run() throws Throwable {
-				// doing this separately avoids an issue where the splash shows up unpainted for a second
-//				splashDialog.setVisible(true);
-				splashDialog.toFront();
-			}
-		});
 
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() throws Throwable {
@@ -283,6 +265,7 @@ public class Main {
 		getLogger().info(String.format("Java: JVM %s, JRE %s, ", System.getProperty("java.version"), System.getProperty("java.class.version")));
 		getLogger().info(String.format("Platform: %s %s\n\tDetected as: Operating System: %s, Architechture: %s", Platform.getArchString(), Platform.getOSString(), Platform.getOS().getCanonicalName(), Platform.getArch()));
 		getLogger().info(String.format("UUID: %s", Application.getUUID()));
+		getLogger().info(String.format("Korsakow Home set to: %s", Application.getKorsakowHome()));
 	}
 
 	private static void setupPlatform() {
@@ -291,16 +274,10 @@ public class Main {
 	public static void setupPlatformEncoders() {
 		switch (Platform.getOS()) {
 		case MAC:
-			SoundEncoderFactory.getDefaultFactory().addEncoder(
-					new LameEncoderOSX.LameEncoderOSXDescription());
 			VideoEncoderFactory.addEncoder(
 					new FFMpegEncoderOSX.FFMpegEncoderOSXDescription());
 			break;
 		case WIN:
-			// FontEncoderFactory.getDefaultFactory().addEncoder(new
-			// SwfMillEncoderOSX.SwfMillEncoderWin32XDescription());
-			SoundEncoderFactory.getDefaultFactory().addEncoder(
-					new LameEncoderWin32.LameEncoderWin32Description());
 			VideoEncoderFactory.addEncoder(
 					new FFMpegEncoderWin32.FFMpegEncoderWin32Description());
 			break;

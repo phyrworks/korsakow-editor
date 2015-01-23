@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
-	    <Component Id="DesktopShortcut" Directory="INSTALLDIR">
+	    <Component Id="DesktopShortcut" Directory="INSTALLDIR" Win64="yes">
 	    	<Condition>INSTALLDESKTOPSHORTCUT</Condition>
 	    	
 	        <RegistryValue Id="RegShortcutDesktop" Root="HKCU" 
@@ -19,7 +19,7 @@
 			
 	        <Directory Id="ProgramMenuFolder" Name="Programs">
 		        <Directory Id="ProgramMenuKorsakow" Name="Korsakow">
-				    <Component Id="StartMenuEntries">
+				    <Component Id="StartMenuEntries" Win64="yes">
 				    	<Condition>INSTALLSTARTMENUSHORTCUT</Condition>
 				    	
 				        <RegistryValue Id="RegShortcutMenu" Root="HKCU" 
@@ -41,9 +41,9 @@
 	        	</Directory>
 	    	</Directory>
 			
-			<Directory Id="ProgramFilesFolder" Name="PFiles">
+			<Directory Id="ProgramFiles64Folder" Name="PFiles">
 				<Directory Id="INSTALLDIR" Name="Korsakow">
-					<Component Id="InstallDir">
+					<Component Id="InstallDir" Win64="yes">
 				        <RegistryValue Id="RegInstalled" Root="HKCU" 
 				                Key="SOFTWARE\korsakow.org" Name="installed" Value="1" 
 				                Type="integer" KeyPath="yes" />

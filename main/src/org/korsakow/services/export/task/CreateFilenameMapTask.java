@@ -26,7 +26,6 @@ import org.korsakow.ide.task.AbstractTask;
 import org.korsakow.ide.task.TaskException;
 import org.korsakow.ide.util.FileUtil;
 import org.korsakow.ide.util.Triple;
-import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.Exporter;
 import org.korsakow.services.export.FlashExporter;
@@ -73,7 +72,7 @@ public class CreateFilenameMapTask extends AbstractTask
 	{
 		Map<String, String> map;
 		try {
-			map = createFilenameMap(imageDir, imageCollection, videoDir, videoCollection, soundDir, soundCollection, textDir, textCollection, fontDir, exporter.getVideoFormat(), exporter.getSoundFormat());
+			map = createFilenameMap(imageDir, imageCollection, videoDir, videoCollection, soundDir, soundCollection, textDir, textCollection, fontDir, exporter.getVideoFormat());
 		} catch (FileNotFoundException e) {
 			throw new TaskException(e);
 		}
@@ -121,7 +120,7 @@ public class CreateFilenameMapTask extends AbstractTask
 			String soundDir, Collection<ISound> soundCollection, 
 			String textDir, Collection<IText> textCollection,
 			String fontDir,
-			VideoCodec videoFormat, SoundFormat soundFormat
+			VideoCodec videoFormat
 			) throws FileNotFoundException
 	{
 		final CreateFilenameMapTask.SortMediaById sortById = new CreateFilenameMapTask.SortMediaById();
@@ -137,7 +136,7 @@ public class CreateFilenameMapTask extends AbstractTask
 		Map<String, Triple<String,String, String>> mangledMap = new LinkedHashMap<String, Triple<String,String, String>>(); // want the choice of non-mangling to be consistent
 		CreateFilenameMapTask.createMangledMap(imageDir, images, mangledMap, null);
 		CreateFilenameMapTask.createMangledMap(videoDir, videos, mangledMap, videoFormat.getFileExtension());
-		CreateFilenameMapTask.createMangledMap(soundDir, sounds, mangledMap, soundFormat.getFileExtension());
+		CreateFilenameMapTask.createMangledMap(soundDir, sounds, mangledMap, null);
 		CreateFilenameMapTask.createMangledMap(textDir, texts, mangledMap, "txt");
 		mangledMap.put(new File(fontDir, "font.swf").getPath(), new Triple<String, String, String>("fonts", "font", "swf"));
 		

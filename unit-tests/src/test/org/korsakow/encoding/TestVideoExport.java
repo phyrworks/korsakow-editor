@@ -16,9 +16,7 @@ import org.korsakow.ide.util.ResourceManager;
 import org.korsakow.services.encoders.video.ffmpeg.FFMpegEncoder;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderOSX;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderWin32;
-import org.korsakow.services.export.IVideoEncodingProfile;
-import org.korsakow.services.export.PropertiesVideoEncodingProfile;
-import org.korsakow.services.export.task.VideoExportTask;
+import org.korsakow.services.export.task.ThumbnailExportTask;
 
 import test.Warning;
 import test.util.BaseTestCase;
@@ -142,15 +140,13 @@ public class TestVideoExport extends BaseTestCase
 	{
 		Properties props = new Properties();
 		props.load(ResourceManager.getResourceStream("encodingprofiles/" + profileFile + ".properties"));
-		IVideoEncodingProfile profile = new PropertiesVideoEncodingProfile(props);
-		System.out.println(String.format("\tProfile: %s", profile.getName()));
 		
-		dest = File.createTempFile(profile.getName(), ".flv", parentDir);
+		dest = File.createTempFile("test", ".flv", parentDir);
 		File src = new File("resources/" + source);
 		doPre(src, dest);
 		
 		long timeBefore = System.currentTimeMillis();
-		VideoExportTask.encodeVideo(src, dest, profile, 320, 240);
+		ThumbnailExportTask.createThumbnailFromVideo(src, dest, 320, 240);
 		long timeAfter = System.currentTimeMillis();
 		
 		System.out.println(String.format("Took %f seconds", (timeAfter-timeBefore)/1000.0));

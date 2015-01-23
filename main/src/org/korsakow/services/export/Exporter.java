@@ -15,13 +15,11 @@ import org.korsakow.domain.interf.ISound;
 import org.korsakow.domain.interf.IText;
 import org.korsakow.domain.interf.IVideo;
 import org.korsakow.domain.task.ITask;
-import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.encoders.video.VideoCodec;
 
 public interface Exporter {
 
 	public abstract void setOverwriteExistingFiles(boolean overwrite);
-	public abstract void setVideoEncodingEnabled(boolean enabled);
 	
 	public abstract void setFilenameMap(Map<String, String> map);
 
@@ -46,6 +44,5 @@ public interface Exporter {
 	public abstract List<ITask> createExportTasks(File rootDir)
 			throws IOException, ExportException, InterruptedException;
 
-	public abstract SoundFormat getSoundFormat();
 	public abstract VideoCodec getVideoFormat();
 }

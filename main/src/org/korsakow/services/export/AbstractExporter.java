@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.korsakow.domain.Image;
 import org.korsakow.domain.Media;
 import org.korsakow.domain.Settings;
@@ -26,17 +25,14 @@ import org.korsakow.domain.interf.IText;
 import org.korsakow.domain.interf.IVideo;
 import org.korsakow.domain.interf.IWidget;
 import org.korsakow.domain.task.ITask;
-import org.korsakow.ide.Application;
 import org.korsakow.ide.DataRegistry;
 import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.resources.WidgetType;
 import org.korsakow.ide.task.DelegateTask;
 import org.korsakow.ide.task.TaskException;
 import org.korsakow.ide.util.FileUtil;
-import org.korsakow.ide.util.ResourceManager;
 import org.korsakow.ide.util.Util;
 import org.korsakow.services.encoders.image.ImageFormat;
-import org.korsakow.services.encoders.sound.SoundFormat;
 import org.korsakow.services.encoders.video.VideoCodec;
 import org.korsakow.services.export.task.CreateFilenameMapTask;
 import org.korsakow.services.export.task.ImageExportTask;
@@ -79,8 +75,6 @@ public abstract class AbstractExporter implements Exporter {
 
 	public abstract String getStaticResourceRoot();
 	public abstract Collection<String> getStaticResources();
-	@Override
-	public abstract SoundFormat getSoundFormat();
 	@Override
 	public abstract VideoCodec getVideoFormat();
 	
@@ -190,22 +184,6 @@ public abstract class AbstractExporter implements Exporter {
 	}
 	
 	@Override
-	public void setVideoEncodingEnabled(boolean enabled) {
-		synchronized (exportOptions) {
-			exportOptions.encodeVideo = enabled;
-		}
-	}
-	
-	public IVideoEncodingProfile getVideoEncodingProfile() throws IOException {
-		try {
-			return new PropertiesVideoEncodingProfile(ResourceManager.getResourceStream("encodingprofiles/" + settings.getString("videoEncodingProfile") + ".properties"));
-		} catch (IOException e) {
-			Application.getInstance().showAlertDialog(String.format("Encoding profile not found: %s", settings.getString("videoEncodingProfile")), "Please check your project's export settings.");
-			return new PropertiesVideoEncodingProfile(ResourceManager.getResourceStream("encodingprofiles/" + "flv_low" + ".properties"));
-		}
-	}
-
-	@Override
 	public List<ITask> createExportTasks(File rootDir) throws IOException,
 			ExportException, InterruptedException {
 				//List<IVideo> videos = Command.listVideo();
@@ -238,9 +216,8 @@ public abstract class AbstractExporter implements Exporter {
 					exportTasks.addAll(createSoundExportTasks(exportOptions, dataDir, soundsToExport));
 			
 				Dimension maxVideoSize = calculateMaxVideoSize(project, interfacesToExport);
-				Logger.getLogger(FlashExporter.class).info(String.format("Video Encoding Profile: %s", getVideoEncodingProfile().getName()));
 				if (settings.getBoolean(Settings.ExportVideos))
-					exportTasks.addAll(createVideoExportTasks(exportOptions, dataDir, getVideoEncodingProfile(), maxVideoSize, videosToExport));
+					exportTasks.addAll(createVideoExportTasks(exportOptions, dataDir, maxVideoSize, videosToExport));
 				if (settings.getBoolean(Settings.ExportSubtitles))
 					exportTasks.addAll(createSubtitleExportTasks(exportOptions, dataDir, videosToExport));
 				
@@ -285,7 +262,7 @@ public abstract class AbstractExporter implements Exporter {
 	protected abstract List<ITask> createDataExportTasks(ExportData data) throws IOException;
 
 	protected List<ITask> createVideoExportTasks(ExportOptions options, File rootDir,
-			IVideoEncodingProfile encodingProfile, Dimension maxVideoSize, Collection<IVideo> videosToExport) throws IOException, ExportException {
+			Dimension maxVideoSize, Collection<IVideo> videosToExport) throws IOException, ExportException {
 				Set<String> alreadyTasked = new HashSet<>();
 				List<ITask> tasks = new ArrayList<>();
 				for (IVideo video : videosToExport)
@@ -295,7 +272,7 @@ public abstract class AbstractExporter implements Exporter {
 						continue;
 					File destFile = new File(rootDir.getAbsolutePath() + File.separatorChar + dest);
 					destFile.getParentFile().mkdirs();
-					VideoExportTask task = new VideoExportTask(options, encodingProfile, video, destFile, rootDir);
+					VideoExportTask task = new VideoExportTask(options, video, destFile, rootDir);
 					if (maxVideoSize != null)
 						task.setMaxSize(maxVideoSize.width, maxVideoSize.height);
 					tasks.add(task);
@@ -394,7 +371,7 @@ public abstract class AbstractExporter implements Exporter {
 					File subtitleFile = null;
 					if (sound.getSubtitles() != null)
 						subtitleFile = new File(rootDir.getAbsolutePath() + File.separatorChar + getFilename(Media.getAbsoluteFilename(sound.getSubtitles())));
-					tasks.add(new SoundExportTask(options, getSoundFormat(), sound, destFile, subtitleFile));
+					tasks.add(new SoundExportTask(options, sound, destFile, subtitleFile));
 				}
 				return Util.list(ITask.class, new DelegateTask(LanguageBundle.getString("export.task.encodingsound"), tasks));
 			}

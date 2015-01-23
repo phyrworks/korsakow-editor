@@ -97,80 +97,80 @@
         <Video>
             <id><![CDATA[34]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[man04.mov]]></name>
-            <filename><![CDATA[media/movies/man04.mov]]></filename>
+            <name><![CDATA[man04.mp4]]></name>
+            <filename><![CDATA[media/movies/man04.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[17]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[woman03.mov]]></name>
-            <filename><![CDATA[media/movies/woman03.mov]]></filename>
+            <name><![CDATA[woman03.mp4]]></name>
+            <filename><![CDATA[media/movies/woman03.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[13]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[woman02.mov]]></name>
-            <filename><![CDATA[media/movies/woman02.mov]]></filename>
+            <name><![CDATA[woman02.mp4]]></name>
+            <filename><![CDATA[media/movies/woman02.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[54]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[girl.mov]]></name>
-            <filename><![CDATA[media/movies/girl.mov]]></filename>
+            <name><![CDATA[girl.mp4]]></name>
+            <filename><![CDATA[media/movies/girl.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[3]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[woman01.mov]]></name>
-            <filename><![CDATA[media/movies/woman01.mov]]></filename>
+            <name><![CDATA[woman01.mp4]]></name>
+            <filename><![CDATA[media/movies/woman01.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[38]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[woman04.mov]]></name>
-            <filename><![CDATA[media/movies/woman04.mov]]></filename>
+            <name><![CDATA[woman04.mp4]]></name>
+            <filename><![CDATA[media/movies/woman04.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[50]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[boy.mov]]></name>
-            <filename><![CDATA[media/movies/boy.mov]]></filename>
+            <name><![CDATA[boy.mp4]]></name>
+            <filename><![CDATA[media/movies/boy.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[46]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[couple_naked.mov]]></name>
-            <filename><![CDATA[media/movies/couple_naked.mov]]></filename>
+            <name><![CDATA[couple_naked.mp4]]></name>
+            <filename><![CDATA[media/movies/couple_naked.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[42]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[couple.mov]]></name>
-            <filename><![CDATA[media/movies/couple.mov]]></filename>
+            <name><![CDATA[couple.mp4]]></name>
+            <filename><![CDATA[media/movies/couple.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[21]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[man01.mov]]></name>
-            <filename><![CDATA[media/movies/man01.mov]]></filename>
+            <name><![CDATA[man01.mp4]]></name>
+            <filename><![CDATA[media/movies/man01.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[30]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[man03.mov]]></name>
-            <filename><![CDATA[media/movies/man03.mov]]></filename>
+            <name><![CDATA[man03.mp4]]></name>
+            <filename><![CDATA[media/movies/man03.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[58]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[family.mov]]></name>
-            <filename><![CDATA[media/movies/family.mov]]></filename>
+            <name><![CDATA[family.mp4]]></name>
+            <filename><![CDATA[media/movies/family.mp4]]></filename>
         </Video>
         <Video>
             <id><![CDATA[25]]></id>
             <version><![CDATA[3]]></version>
-            <name><![CDATA[man02.mov]]></name>
-            <filename><![CDATA[media/movies/man02.mov]]></filename>
+            <name><![CDATA[man02.mp4]]></name>
+            <filename><![CDATA[media/movies/man02.mp4]]></filename>
         </Video>
     </videos>
     <sounds/>
@@ -302,7 +302,7 @@
             </rules>
             <id><![CDATA[55]]></id>
             <version><![CDATA[6]]></version>
-            <name><![CDATA[girl.mov]]></name>
+            <name><![CDATA[girl.mp4]]></name>
             <mainMediaId><![CDATA[54]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -354,7 +354,7 @@
             </rules>
             <id><![CDATA[31]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[man03.mov]]></name>
+            <name><![CDATA[man03.mp4]]></name>
             <mainMediaId><![CDATA[30]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -406,7 +406,7 @@
             </rules>
             <id><![CDATA[59]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[family.mov]]></name>
+            <name><![CDATA[family.mp4]]></name>
             <mainMediaId><![CDATA[58]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -459,7 +459,7 @@
             </rules>
             <id><![CDATA[51]]></id>
             <version><![CDATA[7]]></version>
-            <name><![CDATA[boy.mov]]></name>
+            <name><![CDATA[boy.mp4]]></name>
             <mainMediaId><![CDATA[50]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -511,7 +511,7 @@
             </rules>
             <id><![CDATA[14]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[woman02.mov]]></name>
+            <name><![CDATA[woman02.mp4]]></name>
             <mainMediaId><![CDATA[13]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -563,7 +563,7 @@
             </rules>
             <id><![CDATA[43]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[couple.mov]]></name>
+            <name><![CDATA[couple.mp4]]></name>
             <mainMediaId><![CDATA[42]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -615,7 +615,7 @@
             </rules>
             <id><![CDATA[47]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[couple_naked.mov]]></name>
+            <name><![CDATA[couple_naked.mp4]]></name>
             <mainMediaId><![CDATA[46]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -667,7 +667,7 @@
             </rules>
             <id><![CDATA[4]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[woman01.mov]]></name>
+            <name><![CDATA[woman01.mp4]]></name>
             <mainMediaId><![CDATA[3]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -719,7 +719,7 @@
             </rules>
             <id><![CDATA[39]]></id>
             <version><![CDATA[7]]></version>
-            <name><![CDATA[woman04.mov]]></name>
+            <name><![CDATA[woman04.mp4]]></name>
             <mainMediaId><![CDATA[38]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -775,7 +775,7 @@
             </rules>
             <id><![CDATA[35]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[man04.mov]]></name>
+            <name><![CDATA[man04.mp4]]></name>
             <mainMediaId><![CDATA[34]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -840,7 +840,7 @@
             </rules>
             <id><![CDATA[26]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[man02.mov]]></name>
+            <name><![CDATA[man02.mp4]]></name>
             <mainMediaId><![CDATA[25]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -892,7 +892,7 @@
             </rules>
             <id><![CDATA[22]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[man01.mov]]></name>
+            <name><![CDATA[man01.mp4]]></name>
             <mainMediaId><![CDATA[21]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -944,7 +944,7 @@
             </rules>
             <id><![CDATA[18]]></id>
             <version><![CDATA[5]]></version>
-            <name><![CDATA[woman03.mov]]></name>
+            <name><![CDATA[woman03.mp4]]></name>
             <mainMediaId><![CDATA[17]]></mainMediaId>
             <rating><![CDATA[1.0]]></rating>
             <backgroundSoundVolume><![CDATA[1.0]]></backgroundSoundVolume>
@@ -988,19 +988,19 @@
     <resources>
         <Folder name="/">
             <Resource class="org.korsakow.resource.Image" id="150" name="startscreen.jpg"/>
-            <Resource class="org.korsakow.resource.Snu" id="51" name="boy.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="43" name="couple.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="47" name="couple_naked.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="59" name="family.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="55" name="girl.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="22" name="man01.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="26" name="man02.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="31" name="man03.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="35" name="man04.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="4" name="woman01.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="14" name="woman02.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="18" name="woman03.mov"/>
-            <Resource class="org.korsakow.resource.Snu" id="39" name="woman04.mov"/>
+            <Resource class="org.korsakow.resource.Snu" id="51" name="boy.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="43" name="couple.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="47" name="couple_naked.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="59" name="family.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="55" name="girl.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="22" name="man01.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="26" name="man02.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="31" name="man03.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="35" name="man04.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="4" name="woman01.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="14" name="woman02.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="18" name="woman03.mp4"/>
+            <Resource class="org.korsakow.resource.Snu" id="39" name="woman04.mp4"/>
             <Resource class="org.korsakow.resource.Image" id="52" name="boy.jpg"/>
             <Resource class="org.korsakow.resource.Image" id="44" name="couple.jpg"/>
             <Resource class="org.korsakow.resource.Image" id="48" name="couple_naked.jpg"/>
