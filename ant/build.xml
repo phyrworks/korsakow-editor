@@ -29,7 +29,7 @@
 
 		<taskdef name="bundleapp"
 		         classname="com.oracle.appbundler.AppBundlerTask"
-		         classpath="lib/appbundler-1.0ea.jar" />
+		         classpath="main/lib/appbundler-1.0.jar" />
 	</target>
 	
 	<!-- input -->
