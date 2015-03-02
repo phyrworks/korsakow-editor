@@ -201,7 +201,7 @@
             <arg value="-ov" />
             <arg value="-format" />
             <arg value="UDZO" />
-            <arg value="${dist-dir}/${plaf-osx-dir}/Korsakow.dmg" />
+            <arg value="${osx-output}" />
     	</exec>
 		
 	</target>

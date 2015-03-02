@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
@@ -39,6 +40,10 @@ import javax.swing.event.EventListenerList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import javax.swing.tree.TreeNode;
 
 import org.apache.log4j.Logger;
@@ -572,5 +577,25 @@ public class UIUtil
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(event);
 		SunToolkit.flushPendingEvents(); // force them to happen synchronously
 		window.dispose(); // for some reason the above doesn't always work
+	}
+	
+	public static class UppercaseDocumentFilter extends DocumentFilter {
+	    @Override
+		public void insertString(DocumentFilter.FilterBypass fb, int offset,
+	            String text, AttributeSet attr) throws BadLocationException {
+
+	        fb.insertString(offset, text.toUpperCase(), attr);
+	    }
+
+	    @Override
+		public void replace(DocumentFilter.FilterBypass fb, int offset, int length,
+	            String text, AttributeSet attrs) throws BadLocationException {
+
+	        fb.replace(offset, length, text.toUpperCase(), attrs);
+	    }
+	}
+	public static void setDocumentFilter(JTextField field, DocumentFilter filter) {
+		AbstractDocument doc = (AbstractDocument)field.getDocument();
+		doc.setDocumentFilter(filter);
 	}
 }

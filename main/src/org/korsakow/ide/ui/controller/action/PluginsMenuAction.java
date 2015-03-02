@@ -26,6 +26,8 @@ public class PluginsMenuAction implements ActionListener
 
 		Collection<KorsakowPlugin> plugins = PluginRegistry.get().getPlugins();
 		for (KorsakowPlugin plugin : plugins) {
+			if (!plugin.isPublic())
+				continue;
 			JMenu menu = new JMenu();
 			menu.setText(plugin.getName());
 			pluginsMenu.add(menu);

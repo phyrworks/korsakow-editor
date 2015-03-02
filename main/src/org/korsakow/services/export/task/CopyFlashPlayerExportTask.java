@@ -5,11 +5,13 @@ package org.korsakow.services.export.task;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
 import org.antlr.stringtemplate.StringTemplate;
+import org.apache.commons.io.IOUtils;
 import org.korsakow.domain.interf.IProject;
 import org.korsakow.ide.Build;
 import org.korsakow.ide.lang.LanguageBundle;
@@ -48,7 +50,9 @@ public class CopyFlashPlayerExportTask extends AbstractTask
 	{
 		try {
 			for (String resource : staticResources) {
-				FileUtil.copyFile(ResourceManager.getResourceFile(resourceRoot + resource), new File(rootDir, resource));
+				File destFile = new File(rootDir, resource);
+				destFile.getParentFile().mkdirs();
+				IOUtils.copy(ResourceManager.getResourceStream(resourceRoot + resource), new FileOutputStream(destFile));
 			}
 			
 			FileUtil.writeFileFromString(new File(rootDir, FlashExporter.PLAYER_RESOURCE_CSS), createCSS());

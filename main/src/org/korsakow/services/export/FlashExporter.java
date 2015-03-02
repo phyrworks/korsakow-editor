@@ -21,9 +21,10 @@ import org.korsakow.services.export.task.XMLExportTask;
 public class FlashExporter extends AbstractExporter
 {
 	public static final String PLAYER_ROOT = "players/flash/";
+	public static final String SWF_RESOURCE = "data/KorsakowPlayer.swf";
 	public static final String PLAYER_RESOURCE_CSS = "data/css/style.css";
 	private static final String[] PLAYER_RESOURES = {
-		"data/KorsakowPlayer.swf",
+		SWF_RESOURCE,
 		"data/Embed.swf",
 		"data/DebugWindow.swf",
 		"data/swf/expressInstall.swf",

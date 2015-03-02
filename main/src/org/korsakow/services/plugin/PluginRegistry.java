@@ -15,6 +15,8 @@ public class PluginRegistry
 
 	private final Collection<KorsakowPlugin> plugins = new ArrayList<KorsakowPlugin>();
 	
+	private final KorsakowSystem system = new KorsakowSystemImpl();
+	
 	public Collection<KorsakowPlugin> getPlugins() {
 		return Collections.unmodifiableCollection(plugins);
 	}
@@ -25,7 +27,7 @@ public class PluginRegistry
 			existing.shutdown();
 		}
 		plugins.add(plugin);
-		plugin.initialize();
+		plugin.initialize(system);
 	}
 	
 	public void unregister(KorsakowPlugin plugin) {

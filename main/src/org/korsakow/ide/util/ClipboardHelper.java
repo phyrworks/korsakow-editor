@@ -10,14 +10,13 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.korsakow.ide.ui.dnd.EmptyTransferable;
-import org.korsakow.ide.ui.dnd.TransferableTreeTableNodes;
 
 public class ClipboardHelper
 {
 	public static class ClipboardResult
 	{
-		private Transferable transferable;
-		private int action;
+		private final Transferable transferable;
+		private final int action;
 		public ClipboardResult(Transferable transferable, int action)
 		{
 			this.transferable = transferable;
@@ -31,16 +30,19 @@ public class ClipboardHelper
 		{
 			return action;
 		}
+		public String getStringValue() throws UnsupportedFlavorException, IOException {
+			return (String)transferable.getTransferData(DataFlavor.stringFlavor);
+		}
 	}
 	private static class CopyCutProxy implements Transferable
 	{
 		int action;
-		private Transferable innerTransferable;
+		private final Transferable innerTransferable;
 		
 		public CopyCutProxy(int action, Transferable t)
 		{
 			this.action = action;
-			this.innerTransferable = t;
+			innerTransferable = t;
 		}
 		
 		public int getAction() {

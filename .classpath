@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="main/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="main/lib/ekit-1.4.jar"/>
 	<classpathentry kind="lib" path="main/lib/junit-4.8.2.jar"/>
-	<classpathentry kind="lib" path="main/lib/log4j-1.2.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="main/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="main/lib/resolver.jar"/>
 	<classpathentry kind="lib" path="main/lib/serializer.jar"/>
 	<classpathentry exported="true" kind="lib" path="main/lib/SoenEAK.jar"/>

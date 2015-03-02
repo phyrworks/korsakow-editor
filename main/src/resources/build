@@ -1,5 +1,6 @@
-#Mon, 01 Dec 2014 23:50:22 -0500
+#Fri, 20 Feb 2015 09:37:48 -0800
 #Build Number for ANT. Do not edit!
-build.number=366
-version.number=5.1.0.0
-release.number=30.0
+#Fri Feb 20 09:37:48 PST 2015
+build.number=371
+version.number=5.1.0.2
+release.number=999.999

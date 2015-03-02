@@ -23,15 +23,16 @@ import org.korsakow.ide.lang.LanguageBundle;
 import org.korsakow.ide.ui.ProjectExplorer;
 import org.korsakow.ide.ui.SplashPage;
 import org.korsakow.ide.util.Platform;
+import org.korsakow.ide.util.ResourceManager;
 import org.korsakow.ide.util.UIUtil;
 import org.korsakow.services.encoders.image.ImageEncoderFactory;
 import org.korsakow.services.encoders.image.JavaImageIOImageEncoder;
 import org.korsakow.services.encoders.video.VideoEncoderFactory;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderOSX;
 import org.korsakow.services.encoders.video.ffmpeg.plaf.FFMpegEncoderWin32;
+import org.korsakow.services.plugin.KorsakowPlugin;
 import org.korsakow.services.plugin.PluginHelper;
 import org.korsakow.services.plugin.PluginRegistry;
-import org.korsakow.services.plugin.export.ExportPlugin;
 import org.korsakow.services.updater.Updater;
 
 public class Main {
@@ -158,15 +159,25 @@ public class Main {
 		    }
 		});
 		
-
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() throws Throwable {
-				File pluginDir = PluginHelper.ensurePluginsDir();
-				getLogger().info("Loading plugins from ..." + pluginDir.getPath());
+				File publicPluginsDir = PluginHelper.ensurePluginsDir();
+				getLogger().info("Loading plugins from ..." + publicPluginsDir.getPath());
+
+				File privatePluginsDir = ResourceManager.getResourceFile("plugins");
 
 				PluginManager pluginManager = PluginManagerFactory.createPluginManager();
-				if (pluginDir.listFiles() != null) {
-					for (File child : pluginDir.listFiles()) {
+				
+				if (privatePluginsDir.listFiles() != null) {
+					for (File child : privatePluginsDir.listFiles()) {
+						if (child.isFile()) {
+							getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
+							pluginManager.addPluginsFrom(child.toURI());
+						}
+					}
+				}
+				if (publicPluginsDir.listFiles() != null) {
+					for (File child : publicPluginsDir.listFiles()) {
 						if (child.isFile()) {
 							getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
 							pluginManager.addPluginsFrom(child.toURI());
@@ -176,11 +187,10 @@ public class Main {
 				
 				PluginManagerUtil pluginUtil = new PluginManagerUtil(pluginManager);
 				
-				for (ExportPlugin plugin : pluginUtil.getPlugins(ExportPlugin.class)) {
-					getLogger().info(String.format("Installing Export Plugin: %s", plugin.getName()));
+				for (KorsakowPlugin plugin : pluginUtil.getPlugins(KorsakowPlugin.class)) {
+					getLogger().info(String.format("Installing Plugin: %s", plugin.getName()));
 					PluginRegistry.get().register(plugin);
 				}
-				
 			}
 		});
 		
@@ -289,3 +299,7 @@ public class Main {
 		ImageEncoderFactory.addEncoder(new JavaImageIOImageEncoder.JavaImageIOEncoderDescription());
 	}
 }
+
+
+
+

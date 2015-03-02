@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.MissingResourceException;
 
 public class ResourceManager
@@ -54,22 +57,60 @@ public class ResourceManager
 		}
 		
 	}
-	private static IResourceSource resourceSource = new MyResourceSource(ResourceManager.class);
+	private static List<IResourceSource> resourceSources = Collections.synchronizedList(new ArrayList<IResourceSource>());
+	static {
+		resourceSources.add(0, new MyResourceSource(ResourceManager.class));
+	}
+	
+	public static void addResourceSource(IResourceSource resourceSource) {
+		if (resourceSource == null)
+			throw new NullPointerException();
+		resourceSources.add(0, resourceSource);
+	}
 	public static void setResourceSource(IResourceSource resourceSource)
 	{
 		if (resourceSource == null)
 			throw new NullPointerException();
-		ResourceManager.resourceSource = resourceSource;
+		resourceSources.clear();
+		resourceSources.add(0, resourceSource);
 	}
 	public static IResourceSource getResourceSource() {
-		return resourceSource;
+		return resourceSources.get(0);
 	}
 	public static File getResourceFile(String name)
 	{
-		return resourceSource.getResourceFile(name);
+		MissingResourceException firstException = null;
+		for (IResourceSource resourceSource : resourceSources) {
+			try {
+				File file = resourceSource.getResourceFile(name);
+				if (file != null)
+					return file;
+			} catch (MissingResourceException e) {
+				if (firstException == null)
+					firstException = e;
+				continue;
+			}
+		}
+		if (firstException != null)
+			throw firstException;
+		throw new MissingResourceException(name, ResourceManager.class.getCanonicalName(), name);
 	}
 	public static InputStream getResourceStream(String name)
 	{
-		return resourceSource.getResourceStream(name);
+		MissingResourceException firstException = null;
+		for (IResourceSource resourceSource : resourceSources) {
+			try {
+				InputStream stream = resourceSource.getResourceStream(name);
+				if (stream != null)
+					return stream;
+			} catch (MissingResourceException e) {
+				if (firstException == null)
+					firstException = e;
+				continue;
+			}
+		}
+		if (firstException != null)
+			throw firstException;
+		throw new MissingResourceException(name, ResourceManager.class.getCanonicalName(), name);
 	}
 }
