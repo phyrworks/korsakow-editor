@@ -159,40 +159,53 @@ public class Main {
 		    }
 		});
 		
-		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
-			public void run() throws Throwable {
-				File publicPluginsDir = PluginHelper.ensurePluginsDir();
-				getLogger().info("Loading plugins from ..." + publicPluginsDir.getPath());
+		try {
+			UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
+				public void run() throws Throwable {
+					File publicPluginsDir = PluginHelper.ensurePluginsDir();
+					getLogger().info("Loading plugins from ..." + publicPluginsDir.getPath());
+	
+					PluginManager pluginManager = PluginManagerFactory.createPluginManager();
 
-				File privatePluginsDir = ResourceManager.getResourceFile("plugins");
-
-				PluginManager pluginManager = PluginManagerFactory.createPluginManager();
-				
-				if (privatePluginsDir.listFiles() != null) {
-					for (File child : privatePluginsDir.listFiles()) {
-						if (child.isFile()) {
-							getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
-							pluginManager.addPluginsFrom(child.toURI());
+					try {
+						File privatePluginsDir = ResourceManager.getResourceFile("plugins");
+								
+						if (privatePluginsDir.listFiles() != null) {
+							for (File child : privatePluginsDir.listFiles()) {
+								if (child.isFile()) {
+									getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
+									pluginManager.addPluginsFrom(child.toURI());
+								}
+							}
 						}
+					} catch (Exception e) {
+						getLogger().error("", e);
+					}
+					
+					try {
+						if (publicPluginsDir.listFiles() != null) {
+							for (File child : publicPluginsDir.listFiles()) {
+								if (child.isFile()) {
+									getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
+									pluginManager.addPluginsFrom(child.toURI());
+								}
+							}
+						} 
+					} catch(Exception e) {
+						getLogger().error("", e);
+					}
+					
+					PluginManagerUtil pluginUtil = new PluginManagerUtil(pluginManager);
+					
+					for (KorsakowPlugin plugin : pluginUtil.getPlugins(KorsakowPlugin.class)) {
+						getLogger().info(String.format("Installing Plugin: %s", plugin.getName()));
+						PluginRegistry.get().register(plugin);
 					}
 				}
-				if (publicPluginsDir.listFiles() != null) {
-					for (File child : publicPluginsDir.listFiles()) {
-						if (child.isFile()) {
-							getLogger().info(String.format("Found possible plugin at: %s", child.getPath()));
-							pluginManager.addPluginsFrom(child.toURI());
-						}
-					}
-				}
-				
-				PluginManagerUtil pluginUtil = new PluginManagerUtil(pluginManager);
-				
-				for (KorsakowPlugin plugin : pluginUtil.getPlugins(KorsakowPlugin.class)) {
-					getLogger().info(String.format("Installing Plugin: %s", plugin.getName()));
-					PluginRegistry.get().register(plugin);
-				}
-			}
-		});
+			});
+		} catch (Exception e) {
+			getLogger().error("", e);	
+		}
 		
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() throws Throwable {
