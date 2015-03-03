@@ -90,7 +90,7 @@ public class MissingMediaDialog extends JDialog
 			return this;
 		}
 	}
-	private final Collection<IMedia> mediaCache = new HashSet<IMedia>();
+	private final Collection<IMedia> mediaCache = new HashSet<>();
 	private ResourceTreeTable tree;
 	private ResourceTreeTableModel treeModel;
 	private final JTextArea messageLabel = new JTextArea();
@@ -138,7 +138,7 @@ public class MissingMediaDialog extends JDialog
 	}
 	public Collection<IMedia> getMissingMedia()
 	{
-		return new HashSet<IMedia>(mediaCache);
+		return new HashSet<>(mediaCache);
 	}
 	public void expandAll()
 	{
@@ -189,6 +189,7 @@ public class MissingMediaDialog extends JDialog
 		getRootPane().getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
 		getRootPane().getActionMap().put("escape", new AbstractAction()
 		{
+			@Override
 			public void actionPerformed(ActionEvent event) {
 				closeButton.doClick();
 			}
@@ -196,10 +197,8 @@ public class MissingMediaDialog extends JDialog
 	}
 	private void initListeners()
 	{
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				onCloseAction();
-			}
+		closeButton.addActionListener((ActionEvent event) -> {
+		    onCloseAction();
 		});
 	}
 	public void setFindMissingAction(ActionListener action)

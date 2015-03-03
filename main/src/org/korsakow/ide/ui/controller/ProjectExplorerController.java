@@ -32,6 +32,7 @@ import org.korsakow.ide.ui.controller.action.OpenProjectFileAction;
 import org.korsakow.ide.ui.controller.action.PasteAction;
 import org.korsakow.ide.ui.controller.action.PluginsMenuAction;
 import org.korsakow.ide.ui.controller.action.ProjectSettingsAction;
+import org.korsakow.ide.ui.controller.action.RelinkMediaAction;
 import org.korsakow.ide.ui.controller.action.SaveProjectAction;
 import org.korsakow.ide.ui.controller.action.SaveProjectAsAction;
 import org.korsakow.ide.ui.controller.action.ShowKeywordPoolWindowAction;
@@ -44,16 +45,15 @@ import org.korsakow.ide.ui.controller.action.interf.ExportInterfaceAction;
 import org.korsakow.ide.ui.controller.action.interf.ImportInterfaceAction;
 import org.korsakow.ide.ui.controller.action.media.ImportMediaAction;
 
+public class ProjectExplorerController {
 
-public class ProjectExplorerController
-{
 	private final ProjectExplorer projectExplorer;
 	private final ResourceExplorerController resourceExplorerController;
 	private final AboutAction aboutAction;
 	private final ExitAction exitAction;
 	private WindowTitleUpdater windowTitleUpdater;
-	public ProjectExplorerController(ProjectExplorer projectExplorer)
-	{
+
+    public ProjectExplorerController(ProjectExplorer projectExplorer) {
 		this.projectExplorer = projectExplorer;
 		resourceExplorerController = new ResourceExplorerController(projectExplorer.getResourceBrowser());
 		Application.getInstance().addApplicationListener(resourceExplorerController);
@@ -70,6 +70,7 @@ public class ProjectExplorerController
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExportWeb, new ExportWebAction());
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExportInterface, new ExportInterfaceAction(projectExplorer.getResourceBrowser().getResourceTreeTable()));
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFilePlugins, new PluginsMenuAction());
+	projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileRelinkMedia, new RelinkMediaAction());
 		
 		exitAction = new ExitAction();
 		projectExplorer.addMenuAction(ProjectExplorer.Action.MenuFileExit, exitAction);
@@ -137,15 +138,15 @@ public class ProjectExplorerController
 	public static class ProgressBarWorkerListener implements PropertyChangeListener
 	{
 		JProgressBar progressBar;
-		public ProgressBarWorkerListener(JProgressBar progressBar)
-		{
-			progressBar = progressBar;
+
+	public ProgressBarWorkerListener(JProgressBar progressBar) {
+	    this.progressBar = progressBar;
 		}
+
 		public void propertyChange(PropertyChangeEvent event) {
 			if (event.getPropertyName().equals("progress")) {
 				progressBar.setValue((Integer)event.getNewValue());
-			} else
-			if (event.getPropertyName().equals("displayString")) {
+	    } else if (event.getPropertyName().equals("displayString")) {
 				progressBar.setString((String)event.getNewValue());
 			}
 		}

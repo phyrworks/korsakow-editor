@@ -25,11 +25,10 @@ import org.korsakow.ide.util.Platform;
 import org.korsakow.ide.util.UIResourceManager;
 import org.korsakow.ide.util.UIUtil;
 
+public class ProjectExplorer extends JFrame {
 
-public class ProjectExplorer extends JFrame
-{
-	public static enum Action
-	{
+    public static enum Action {
+
 		MenuFile,
 		MenuFileImport,
 		MenuFileImportK3Project,
@@ -43,6 +42,9 @@ public class ProjectExplorer extends JFrame
 		MenuFileOpen,
 		MenuFileNew,
 		MenuFileRecent,
+		
+		MenuFileRelinkMedia,
+		
 		MenuFileProjectSettings,
 		MenuFilePlugins,
 		MenuFileExit,
@@ -77,23 +79,22 @@ public class ProjectExplorer extends JFrame
 	private final EventListenerList listenerList = new EventListenerList();
 	private ResourceBrowser resourceBrowser;
 	private JMenuBar mainMenu;
-	private final HashMap<Action, JMenuItem> menus = new HashMap<Action, JMenuItem>();
+    private final HashMap<Action, JMenuItem> menus = new HashMap<>();
 	
-	public ProjectExplorer()
-	{
+    public ProjectExplorer() {
 		initUI();
 		initListeners();
 //		resourceExplorer.setSelectedTab(Tab.SNU);
 //		showResourceList(ResourceType.ALL);
 	}
+
 	@Override
-	public void finalize() throws Throwable
-	{
+    public void finalize() throws Throwable {
 		super.finalize();
 		System.err.println("ProjectExplorer.finalize");
 	}
-	private void initUI()
-	{
+
+    private void initUI() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		//setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -114,6 +115,8 @@ public class ProjectExplorer extends JFrame
 		menu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.save.label"), Action.MenuFileSave, KeyEvent.VK_S, 'S'));
 		menu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.saveas.label"), Action.MenuFileSaveAs, KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_S, UIUtil.getPlatformCommandKeyMask() | InputEvent.SHIFT_MASK)));
 		menu.add(new JSeparator());
+	menu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.relinkmedia.label"), Action.MenuFileRelinkMedia, KeyEvent.VK_L));
+	menu.add(new JSeparator());
 		JMenu importMenu;
 		menu.add(importMenu = createMenu(LanguageBundle.getString("projectexplorer.menu.file.import.label"), Action.MenuFileImport, KeyEvent.VK_I));
 		importMenu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.import.media.label"), Action.MenuFileImportMedia, KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, UIUtil.getPlatformCommandKeyMask() | InputEvent.SHIFT_MASK)));
@@ -135,7 +138,6 @@ public class ProjectExplorer extends JFrame
 		menu.add(createMenuItem(LanguageBundle.getString("projectexplorer.menu.file.projectsettings.label"), Action.MenuFileProjectSettings, KeyEvent.VK_COMMA, ','));
 
 		menu.add(menu = createMenu(LanguageBundle.getString("projectexplorer.menu.file.plugins.label"), Action.MenuFilePlugins, KeyEvent.VK_P));
-		
 		
 		JSeparator exitSeparator = new JSeparator(); // keep reference so we can hide on Mac
 		menu.add(exitSeparator);
@@ -182,41 +184,54 @@ public class ProjectExplorer extends JFrame
 		getMenu(Action.MenuEditCopy).setVisible(false);
 		getMenu(Action.MenuEditPaste).setVisible(false);
 	}
-	private void initListeners()
-	{
+
+    private void initListeners() {
 	}
-	public ResourceBrowser getResourceBrowser()
-	{
+
+    public ResourceBrowser getResourceBrowser() {
 		return resourceBrowser;
 	}
-	public void addActionListener(ActionListener listener)
-	{
+
+    public void addActionListener(ActionListener listener) {
 		listenerList.add(ActionListener.class, listener);
 	}
-	public void addMenuAction(final Action key, final ActionListener action)
-	{
+
+    public void addMenuAction(final Action key, final ActionListener action) {
 		JMenuItem menuItem = getMenu(key);
-		if (menuItem instanceof JMenu)
+	if (menuItem instanceof JMenu) {
 			((JMenu)menuItem).addMenuListener(new MenuListener() {
-				public void menuCanceled(MenuEvent e) {}
-				public void menuDeselected(MenuEvent e) {}
+		@Override
+		public void menuCanceled(MenuEvent e) {
+		}
+
+		@Override
+		public void menuDeselected(MenuEvent e) {
+		}
+
+		@Override
 				public void menuSelected(MenuEvent e) {
 					action.actionPerformed(new ActionEvent(ProjectExplorer.this, ActionEvent.ACTION_PERFORMED, key.name()));
 				}
 				
 			});
-		else
+	} else {
 			menuItem.addActionListener(action);
 	}
-	public JMenu createMenu(String label, final Action action, int mnemonic)
-	{
+    }
+
+    public JMenu createMenu(String label, final Action action, int mnemonic) {
 		JMenu menu = new JMenu(label);
 		menu.setMnemonic(mnemonic);
 		menu.addMenuListener(new MenuListener() {
+	    @Override
 			public void menuCanceled(MenuEvent e) {
 			}
+
+	    @Override
 			public void menuDeselected(MenuEvent e) {
 			}
+
+	    @Override
 			public void menuSelected(MenuEvent e) {
 				UIUtil.dispatchEvent(listenerList, new ActionEvent(ProjectExplorer.this, ActionEvent.ACTION_PERFORMED, action.name()));
 			}
@@ -225,43 +240,44 @@ public class ProjectExplorer extends JFrame
 		menus.put(action, menu);
 		return menu;
 	}
-	public JMenuItem createMenuItem(String label, final Action action, int mnemonic)
-	{
+
+    public JMenuItem createMenuItem(String label, final Action action, int mnemonic) {
 		return createMenuItem(label, action, mnemonic, null);
 	}
-	public JMenuItem createMenuItem(String label, final Action action, int mnemonic, char acceleratorKeyCode)
-	{
+
+    public JMenuItem createMenuItem(String label, final Action action, int mnemonic, char acceleratorKeyCode) {
 		return createMenuItem(label, action, mnemonic, KeyStroke.getKeyStroke(acceleratorKeyCode, UIUtil.getPlatformShortcutKeyMask()));
 	}
-	public JMenuItem createMenuItem(String label, final Action action, int mnemonic, final KeyStroke stroke)
-	{
+
+    public JMenuItem createMenuItem(String label, final Action action, int mnemonic, final KeyStroke stroke) {
 		final JMenuItem menu = new JMenuItem(label, mnemonic);
 		if (stroke != null) {
 			menu.setAccelerator(stroke);
 		}
-		menu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
+	menu.addActionListener((ActionEvent event) -> {
 				UIUtil.dispatchEvent(listenerList, new ActionEvent(ProjectExplorer.this, ActionEvent.ACTION_PERFORMED, action.name()));
-			}
 		});
 		menus.put(action, menu);
 		return menu;
 	}
+
 	public void addAccelerator(final JMenuItem item, KeyStroke stroke) {
 		SwingUtilities.getUIInputMap(item, JComponent.WHEN_IN_FOCUSED_WINDOW).put(stroke, "doClick");
 	}
-	public void setTitleExtra(String projectName, String fileName)
-	{
-		if (projectName == null)
+
+    public void setTitleExtra(String projectName, String fileName) {
+	if (projectName == null) {
 			projectName = "";
-		if (fileName == null)
+	}
+	if (fileName == null) {
 			fileName = "";
-		else
+	} else {
 			fileName = "(" + fileName + ")";
+	}
 		setTitle(LanguageBundle.getString("projectexplorer.window.title2", projectName + " " + fileName));
 	}
-	public JMenuItem getMenu(Action action)
-	{
+
+    public JMenuItem getMenu(Action action) {
 		return menus.get(action);
 	}
 }

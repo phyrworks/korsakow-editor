@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.swing.JDialog;
 import javax.swing.JProgressBar;
@@ -15,8 +16,14 @@ import org.dsrg.soenea.domain.MapperException;
 import org.dsrg.soenea.domain.command.CommandException;
 import org.korsakow.domain.CommandExecutor;
 import org.korsakow.domain.Settings;
+import org.korsakow.domain.command.FixInvalidMediaCommand;
+import org.korsakow.domain.command.Request;
+import org.korsakow.domain.command.Response;
 import org.korsakow.domain.command.UpdateSettingsCommand;
+import org.korsakow.domain.interf.IMedia;
+import org.korsakow.domain.interf.IProject;
 import org.korsakow.domain.interf.ISettings;
+import org.korsakow.domain.mapper.input.ProjectInputMapper;
 import org.korsakow.domain.mapper.input.SettingsInputMapper;
 import org.korsakow.domain.task.IWorker;
 import org.korsakow.ide.Application;
@@ -97,8 +104,13 @@ public abstract class AbstractExportWebAction implements ActionListener {
 	
 	protected final Logger logger = Logger.getLogger(getClass());
 
+    @Override
 	public void actionPerformed(ActionEvent event) {
 		try {
+	    if (!checkForInvalidMedia()) {
+		return;
+	    }
+
 			boolean isModifierDown = (event.getModifiers()&KeyEvent.SHIFT_MASK)==KeyEvent.SHIFT_MASK;
 			
 			ISettings settings = SettingsInputMapper.find();
@@ -129,7 +141,7 @@ public abstract class AbstractExportWebAction implements ActionListener {
 			
 		} catch (IOException e) {
 			Application.getInstance().showUnhandledErrorDialog(LanguageBundle.getString("general.errors.cantexport.title"), e);
-		} catch (Exception e) {
+	} catch (MapperException | CommandException e) {
 			Application.getInstance().showUnhandledErrorDialog(LanguageBundle.getString("general.errors.cantexport.title"), e);
 		}
 	}
@@ -174,6 +186,59 @@ public abstract class AbstractExportWebAction implements ActionListener {
 		progressDialog.setVisible(true);
 		System.gc(); // purely speculative
 	}
+
+    /*
+     * @return true if all media is valid, or if the user wants to continue even if there is invalid media.
+     */
+    boolean checkForInvalidMedia() {
+	IProject project;
+	try {
+	    project = ProjectInputMapper.find();
+	} catch (MapperException e) {
+	    Application.getInstance().showUnhandledErrorDialog(e);
+
+	    return true;
+	}
+
+	Request request = new Request();
+	request.set("id", project.getId());
+	Response response = new Response();
+
+	try {
+	    response = CommandExecutor.executeCommand(FixInvalidMediaCommand.class, request);
+	} catch (CommandException e) {
+	    Application.getInstance().showUnhandledErrorDialog(e);
+	}
+
+	Collection<IMedia> missing = null;
+
+	if (response.has("missingMedia")) {
+	    missing = (Collection<IMedia>) response.get("missingMedia");
+	}
+
+	Collection<IMedia> invalid = null;
+	if (response.has("invalidMedia")) {
+	    invalid = (Collection<IMedia>) response.get("invalidMedia");
+	}
+
+	if (invalid != null || missing != null) {
+	    String message = "";
+
+	    if (invalid != null) {
+		message = "There are " + invalid.size() + " invalid media files in your project.\n";
+	    }
+
+	    if (missing != null) {
+		message = message + "There are " + missing.size() + " missing files in your project.\n";
+	    }
+
+	    message = message + "Invalid media files may not play properly.\nAre you sure you want to continue?";
+	    return Application.getInstance().showOKCancelDialog("Invalid or Missing Media", message);
+	} else {
+	    return true;
+	}
+
+    }
 
 	protected abstract IWorker createExportWorker(File mainFile,
 			JDialog progressDialog,

@@ -112,6 +112,14 @@ public class DomHelper extends XPathHelper
 	{
 		DomUtil.setInt(document, elm, childName, value);
 	}
+	public Double getDouble(Element elm, String childName)
+	{
+	    return DomUtil.getDouble(elm, childName);
+	}
+	public void setDouble(Element elm, String childName, Double value)
+	{
+	    DomUtil.setDouble(document, elm, childName, value);
+	}
 	public Float getFloat(Element elm, String childName)
 	{
 		return DomUtil.getFloat(elm, childName);

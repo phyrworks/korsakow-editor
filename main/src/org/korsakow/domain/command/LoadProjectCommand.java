@@ -18,9 +18,12 @@ import org.dsrg.soenea.environment.KeyNotFoundException;
 import org.dsrg.soenea.uow.UoW;
 import org.korsakow.domain.interf.IMedia;
 import org.korsakow.domain.interf.IProject;
+import org.korsakow.domain.interf.ISound;
+import org.korsakow.domain.interf.IVideo;
 import org.korsakow.domain.mapper.input.ProjectInputMapper;
 import org.korsakow.ide.DataRegistry;
 import org.korsakow.ide.util.DomUtil;
+import org.korsakow.ide.util.FileUtil;
 import org.korsakow.services.conversion.ConversionException;
 import org.korsakow.services.conversion.ConversionFactory;
 import org.w3c.dom.Document;
@@ -33,6 +36,30 @@ public class LoadProjectCommand extends AbstractCommand{
 		super(request, response);
 		
 	}
+		
+	/*
+	@param IMedia media
+	@param IMedia mediumFilename 
+	
+	@returns true if media is invalid, false if it is valid
+	*/
+	private boolean checkforInvalidMedia(IMedia medium, String mediumFilename) {
+	    if (medium instanceof IVideo) {
+		//for videos, check the extension to see if it is 
+		//one of our very limited mp4/m4v types (h264)
+		
+		return !FileUtil.VIDEO_FILE_EXTENSION_PATTERN.matcher(mediumFilename).matches();
+	    } else if (medium instanceof ISound) {
+		//for audio, check the extension to see if it is 
+		//one of our very limited set of types (wav/mp3/m4a/aif/aiff)
+		
+		return !FileUtil.SOUND_FILE_EXTENSION_PATTERN.matcher(mediumFilename).matches();
+	    }
+	    
+	    return false;
+	}
+	
+	@Override
 	public void execute()
 			throws CommandException {
 		try {
@@ -41,38 +68,33 @@ public class LoadProjectCommand extends AbstractCommand{
 			response.set("project", p);
 			
 			Collection<IMedia> media = p.getMedia();
-			Collection<IMedia> missing = new HashSet<IMedia>();
-			for (IMedia medium : media) {
+			//A Collection of media where the file is missing
+			Collection<IMedia> missing = new HashSet<>();
+			//A Collection of media where the file is an older invalid type
+			Collection<IMedia> invalid = new HashSet<>();
+			
+			media.stream().forEach((medium) -> {
 				try {
-					medium.getAbsoluteFilename();
+				String mediumFilename = medium.getAbsoluteFilename();
+				
+				if (checkforInvalidMedia(medium, mediumFilename))
+				    invalid.add(medium);
+				
 				} catch (FileNotFoundException e) {
 					missing.add(medium);
 				}
-			}
+			});
 			
 			if (!missing.isEmpty())
 				response.set("missingMedia", missing);
 			
+			if (!invalid.isEmpty())
+				response.set("invalidMedia", invalid);
+			
 			UoW.getCurrent().commit();
 			UoW.newCurrent();
 			
-		} catch (MapperException e) {
-			throw new CommandException(e);
-		} catch (XPathExpressionException e) {
-			throw new CommandException(e);
-		} catch (SQLException e) {
-			throw new CommandException(e);
-		} catch (SAXException e) {
-			throw new CommandException(e);
-		} catch (ParserConfigurationException e) {
-			throw new CommandException(e);
-		} catch (IOException e) {
-			throw new CommandException(e);
-		} catch (KeyNotFoundException e) {
-			throw new CommandException(e);
-		} catch (CreationException e) {
-			throw new CommandException(e);
-		} catch (ConversionException e) {
+		} catch (MapperException | XPathExpressionException | SQLException | SAXException | ParserConfigurationException | IOException | KeyNotFoundException | CreationException | ConversionException e) {
 			throw new CommandException(e);
 		}
 	}

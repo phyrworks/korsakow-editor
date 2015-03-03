@@ -120,7 +120,7 @@ public class Main {
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() {
 				
-				splashDialog.setAlwaysOnTop(true);
+				//splashDialog.setAlwaysOnTop(true);
 				SplashPage page = new SplashPage();
 				page.setUUIDVisible(false);
 				splashDialog.add(page);
@@ -258,17 +258,13 @@ public class Main {
 
 	private void shutdownUoW() throws Exception {
 		final Exception[] remoteException = new SQLException[1];
-		Runnable runnable = new Runnable() {
-			public void run() {
+		Runnable runnable = () -> {
 				try {
 					DbRegistry.getDbConnection().rollback();
 				} catch (SQLException e) {
 					Logger.getLogger(Application.class).error("", e);
 					remoteException[0] = e;
-					return;
 				}
-
-			}
 		};
 		UIUtil.runUITaskNow(runnable);
 		if (remoteException[0] != null)
@@ -312,7 +308,3 @@ public class Main {
 		ImageEncoderFactory.addEncoder(new JavaImageIOImageEncoder.JavaImageIOEncoderDescription());
 	}
 }
-
-
-
-

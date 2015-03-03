@@ -70,8 +70,8 @@ public class FindMissingFilesCommand extends AbstractCommand{
 		
 		MultiMap<String, File, Set<File>> filesToPossibleMatches = new MultiHashMapHashSet<String, File>();
 		boolean modified = false;
-		Collection<String> uniqueMatches = new HashSet<String>();
-		Collection<IMedia> uniqueMatchedMedia = new HashSet<IMedia>();
+		Collection<String> uniqueMatches = new HashSet<>();
+		Collection<IMedia> uniqueMatchedMedia = new HashSet<>();
 		// find possible matches to the missing files
 		for (IMedia medium : mediaMissingFiles)
 		{
@@ -117,13 +117,7 @@ public class FindMissingFilesCommand extends AbstractCommand{
 		if (modified) {
 			try {
 				UoW.getCurrent().commit();
-			} catch (SQLException e) {
-				throw new CommandException(e);
-			} catch (KeyNotFoundException e) {
-				throw new CommandException(e);
-			} catch (CreationException e) {
-				throw new CommandException(e);
-			} catch (MapperException e) {
+			} catch (SQLException | KeyNotFoundException | CreationException | MapperException e) {
 				throw new CommandException(e);
 			}
 		}
@@ -151,39 +145,46 @@ public class FindMissingFilesCommand extends AbstractCommand{
 		private final Map<KeyType, Set<ValueType>> map;
 		public MultiHashMapHashSet()
 		{
-			this.map = new HashMap<KeyType, Set<ValueType>>();
+			this.map = new HashMap<>();
 		}
 		private Set<ValueType> ensure(KeyType key)
 		{
 			Set<ValueType> values = map.get(key);
 			if (values == null) {
-				values = new HashSet<ValueType>();
+				values = new HashSet<>();
 				map.put(key, values);
 			}
 			return values;
 		}
+		@Override
 		public void add(KeyType key, ValueType value)
 		{
 			ensure(key).add(value);
 		}
+		@Override
 		public Set<ValueType> get(KeyType key) {
 			return map.get(key);
 		}
+		@Override
 		public boolean containsKey(KeyType key) {
 			return map.containsKey(key);
 		}
+		@Override
 		public int size()
 		{
 			return map.size();
 		}
+		@Override
 		public int size(KeyType key)
 		{
 			return ensure(key).size();
 		}
+		@Override
 		public boolean isEmpty()
 		{
 			return map.isEmpty();
 		}
+		@Override
 		public boolean isEmpty(KeyType key)
 		{
 			Set<ValueType> values = map.get(key);
@@ -191,6 +192,7 @@ public class FindMissingFilesCommand extends AbstractCommand{
 				return true;
 			return values.isEmpty();
 		}
+		@Override
 		public boolean removeAll(Collection<KeyType> keys)
 		{
 			boolean modified = false;

@@ -285,6 +285,23 @@ public class DomUtil
 			elm.removeChild(child);
 		appendNumberNode(doc, elm, childName, value);
 	}
+	
+	public static Double getDouble(Element elm, String childName) {
+	    String str = getString(elm, childName);
+	    
+	    if (str == null)
+		    return null;
+	    
+	    return Double.parseDouble(str);
+	}
+	
+	public static void setDouble(Document doc, Element elm, String childName, Double value) {
+		Collection<Element> list = findChildrenByTagName(elm, childName);
+		for (Element child : list)
+			elm.removeChild(child);
+		appendNumberNode(doc, elm, childName, value);	    
+	}
+	
 	public static Float getFloat(Element elm, String childName)
 	{
 		String str = getString(elm, childName);

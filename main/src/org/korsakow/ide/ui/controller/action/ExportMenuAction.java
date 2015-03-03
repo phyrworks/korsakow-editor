@@ -21,9 +21,9 @@ import org.korsakow.services.plugin.export.ExportPlugin;
 public class ExportMenuAction implements ActionListener
 {
 	private final ResourceTreeTable resourceTreeTable;
-	private final List<JMenuItem> defaultItems = new ArrayList<JMenuItem>(); 
-	public ExportMenuAction(ResourceTreeTable resourceTreeTable)
-	{
+    private final List<JMenuItem> defaultItems = new ArrayList<>();
+
+    public ExportMenuAction(ResourceTreeTable resourceTreeTable) {
 		this.resourceTreeTable = resourceTreeTable;
 		
 		ProjectExplorer projectExplorer = Application.getInstance().getProjectExplorer();
@@ -32,8 +32,9 @@ public class ExportMenuAction implements ActionListener
 			defaultItems.add((JMenuItem)child); 
 		}
 	}
-	public void actionPerformed(ActionEvent event)
-	{
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
 		boolean enabled = false;
 		KNode selectedNode = resourceTreeTable.getSelectedNode();
 		if (selectedNode != null) {
@@ -49,12 +50,12 @@ public class ExportMenuAction implements ActionListener
 		ProjectExplorer projectExplorer = Application.getInstance().getProjectExplorer();
 		projectExplorer.getMenu(ProjectExplorer.Action.MenuFileExportInterface).setEnabled(enabled);
 		
-		
 		JMenu exportMenu = (JMenu)projectExplorer.getMenu(ProjectExplorer.Action.MenuFileExport);
 		
 		exportMenu.removeAll();
-		for (JMenuItem item : defaultItems)
+	for (JMenuItem item : defaultItems) {
 			exportMenu.add(item);
+	}
 		
 		for (ExportPlugin plugin : PluginRegistry.get().getExportPlugins()) {
 			JMenuItem item = new JMenuItem();
