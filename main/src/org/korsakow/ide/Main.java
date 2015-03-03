@@ -120,7 +120,7 @@ public class Main {
 		UIUtil.runUITaskNowThrow(new UIUtil.RunnableThrow() {
 			public void run() {
 				
-				//splashDialog.setAlwaysOnTop(true);
+				splashDialog.setAlwaysOnTop(true);
 				SplashPage page = new SplashPage();
 				page.setUUIDVisible(false);
 				splashDialog.add(page);
